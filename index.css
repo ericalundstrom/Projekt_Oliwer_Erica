@@ -1,0 +1,7 @@
+.flag-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover; /* Ensure the image covers the entire container */
+  background-position: center; /* Center the image within the container */
+  border-radius: 50%; /* Make the container (circle) round */
+}
