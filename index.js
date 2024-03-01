@@ -92,7 +92,6 @@ async function CreateBubbles(key) {
         .append("circle")
         .attr("r", (d) => radiusScale(d.r))
         .style("fill", "none")
-        .style("stroke", "black");
 
     // Append foreignObject with the same size as the circle and hover effect
     gViz
@@ -122,22 +121,22 @@ async function CreateBubbles(key) {
         })
         .on("mouseenter", function (event, d) {
             let foreign = d3.select(this);
-            // Update width and height attributes using the D3 selection
-            foreign.style("transform", "scale(2)");
-            // d3.select(this)
-            //     .select(".flag-image") // Select the child element with class flag-image
-            //     .style("transform", "scale(2)"); // Double the size using CSS
+            foreign.transition()
+                .style("transform", "scale(2.5)")
+
+            let flagImage = d3.select(this).select(".flag-image").html(`<p>${d.data.City}</p>`);
+            flagImage.style("display", "flex")
+                .style("justify-content", "center")
+                .style("align-items", "center")
+                .style("z-index", 1);
         })
         .on("mouseleave", function (event, d) {
             let foreign = d3.select(this);
-            // Update width and height attributes using the D3 selection
-            foreign.style("transform", "scale(1)");
-            // d3.select(this)
-            //     .select(".flag-image") // Select the child element with class flag-image
-            //     .style("transform", "scale(1)"); // Revert back to original size using CSS
+            foreign.transition().style("transform", "scale(1)")
+            d3.select(this)
+                .select(".flag-image")
+                .html(``);
         });
-
-
 
     // Create a tooltip
     let tooltip = d3
@@ -145,6 +144,7 @@ async function CreateBubbles(key) {
         .append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
+
 
 
 }
@@ -165,36 +165,5 @@ function hoverFunction(d, e, va) {
         // console.log(d.r);
     }
 }
-
-// function hoverFunction(d, e, va) {
-//     if (va) {
-//         console.log(e.r);
-//         // console.log(d.target.children.length);
-
-//         for (let i = 0; i < d.target.children.length; i++) {
-//             let currentChild = d.target.children[i].tagName
-//             let CurrentChildRadius = d.target.children[i].__data__.r
-
-//             // console.log(currentChild);
-//             if (currentChild === "circle") {
-//                 // console.log(e);
-//                 d.target.children[i].__data__.r = d.target.children[i].__data__.r * 3
-//                 console.log(d.target.children[i]);
-//                 console.log(e.r);
-//             } else {
-//                 console.log("inte");
-//                 // e.r = e.r * 3
-//                 d.target.children[i].__data__.r = d.target.children[i].__data__.r * 3
-//                 // console.log(d.target.children[i].__data__.r);
-//                 console.log(e.r);
-//                 // console.log(d.target.children[i]);
-//             }
-//         }
-//     } else {
-//         e.r = e.r / 3;
-//         console.log(d.target.children);
-//     }
-
-// }
 
 CreateButtons();
