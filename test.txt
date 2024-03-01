@@ -1,3 +1,4 @@
+
 async function fetching() {
     const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
     return data;
