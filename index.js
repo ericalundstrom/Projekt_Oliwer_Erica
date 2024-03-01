@@ -121,11 +121,23 @@ async function CreateBubbles(key) {
             tooltip.style("opacity", 0);
         })
         .on("mouseenter", function (event, d) {
-            hoverFunction(d, d3.select(this), true); // Pass the D3 selection of the circle
+            let foreign = d3.select(this);
+            // Update width and height attributes using the D3 selection
+            foreign.style("transform", "scale(2)");
+            // d3.select(this)
+            //     .select(".flag-image") // Select the child element with class flag-image
+            //     .style("transform", "scale(2)"); // Double the size using CSS
         })
         .on("mouseleave", function (event, d) {
-            hoverFunction(d, d3.select(this), false); // Pass the D3 selection of the circle
+            let foreign = d3.select(this);
+            // Update width and height attributes using the D3 selection
+            foreign.style("transform", "scale(1)");
+            // d3.select(this)
+            //     .select(".flag-image") // Select the child element with class flag-image
+            //     .style("transform", "scale(1)"); // Revert back to original size using CSS
         });
+
+
 
     // Create a tooltip
     let tooltip = d3
@@ -150,7 +162,7 @@ function hoverFunction(d, e, va) {
         d.r = d.r / 2;
         // Apply the change to the circle element
         e.attr("r", d.r);
-        console.log(d.r);
+        // console.log(d.r);
     }
 }
 
