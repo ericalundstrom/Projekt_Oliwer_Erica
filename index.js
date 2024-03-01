@@ -70,6 +70,15 @@ async function CreateBubbles(key) {
 
   const root = pack(d3.hierarchy({ children: bigDataset }).sum((d) => d[key])); // Use the selected property for sizing
 
+  const pack = d3
+    .pack()
+    .size([wViz - margin * 2, hViz - margin * 2])
+    .padding(3);
+
+  const bigDataset = await fetching();
+
+  const root = pack(d3.hierarchy({ children: bigDataset }).sum((d) => d[key])); // Use the selected property for sizing
+
   fetching().then((data) => {
     // Extract keys from the JSON object
     let keys = Object.keys(data);
@@ -79,12 +88,15 @@ async function CreateBubbles(key) {
       .data(root.leaves())
       .enter()
       .append("g")
-      .attr("transform", (d) => `translate(${d.x},${d.y})`)
+      .attr("transform", (d) => `translate(${d.x},${d.y})`);
+
+    gViz
       .append("circle")
       .attr("r", 50)
       .attr("margin", 10)
-      // .attr("fill", "none")
-      .style("border", "1px solid black")
+      .style("border", "1px solid black");
+
+    gViz
       .append("svg:image")
       .attr("xlink:href", (d) => d.data.flag)
       .attr("x", -25) // Adjust the image position relative to the circle
@@ -92,6 +104,15 @@ async function CreateBubbles(key) {
       .attr("width", 50) // Adjust the image width
       .attr("height", 50);
   });
+
+  // let gViz = svg.append("g")
+  //     .selectAll()
+  //     .data(root.leaves())
+  //     .enter()
+  //     .append("g")
+  //     .attr("transform", d => `translate(${Randomize()[0] * 6.5}, ${Randomize()[1] * 6.5})`)
+  //     .append("circle")
+  //     .attr("r", 10)
 
   // let gViz = svg.append("g")
   //     .selectAll()
