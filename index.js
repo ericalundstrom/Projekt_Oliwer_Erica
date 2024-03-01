@@ -88,12 +88,13 @@ async function CreateBubbles(key) {
             .enter()
             .append("g")
             .attr("transform", d => `translate(${d.x},${d.y})`)
-            .append("circle")
+
+        gViz.append("circle")
             .attr("r", 50)
             .attr("margin", 10)
-            // .attr("fill", "none")
-            .style("border", "1px solid black")
-            .append("svg:image")
+            .style("border", "1px solid black");
+
+        gViz.append("svg:image")
             .attr("xlink:href", d => d.data.flag)
             .attr("x", -25)  // Adjust the image position relative to the circle
             .attr("y", -25)  // Adjust the image position relative to the circle
