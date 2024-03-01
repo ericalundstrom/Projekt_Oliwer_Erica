@@ -90,10 +90,10 @@ async function CreateBubbles(key) {
             // .attr("transform", d => `translate(${Randomize()[0] * 6.5}, ${Randomize()[1] * 6.5})`)
             .attr("transform", d => `translate(${d.x},${d.y})`)
             .append("circle")
-            .attr("r", 10)
+            .attr("r", 50)
+            .attr("margin", 10)
+            .attr("fill", d => `url(${d.data.flag})`);
 
-
-        console.log(gViz);
     });
 
     // let gViz = svg.append("g")
