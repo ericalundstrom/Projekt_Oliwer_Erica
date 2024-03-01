@@ -11,7 +11,8 @@
 		"Happiness": "7.44",
 		"Outdoor_activities": "422",
 		"take_out_places": "1048",
-		"gym_cost": "34.9"
+		"gym_cost": "34.9",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Sydney",
@@ -25,7 +26,8 @@
 		"Happiness": "7.22",
 		"Outdoor_activities": "406",
 		"take_out_places": "1103",
-		"gym_cost": "41.66"
+		"gym_cost": "41.66",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Vienna",
@@ -39,7 +41,8 @@
 		"Happiness": "7.29",
 		"Outdoor_activities": "132",
 		"take_out_places": "1008",
-		"gym_cost": "25.74"
+		"gym_cost": "25.74",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Stockholm",
@@ -53,7 +56,8 @@
 		"Happiness": "7.35",
 		"Outdoor_activities": "129",
 		"take_out_places": "598",
-		"gym_cost": "37.31"
+		"gym_cost": "37.31",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Copenhagen",
@@ -67,7 +71,8 @@
 		"Happiness": "7.64",
 		"Outdoor_activities": "154",
 		"take_out_places": "523",
-		"gym_cost": "32.53"
+		"gym_cost": "32.53",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Helsinki",
@@ -81,7 +86,8 @@
 		"Happiness": "7.8",
 		"Outdoor_activities": "113",
 		"take_out_places": "309",
-		"gym_cost": "35.23"
+		"gym_cost": "35.23",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Fukuoka",
@@ -95,7 +101,8 @@
 		"Happiness": "5.87",
 		"Outdoor_activities": "35",
 		"take_out_places": "539",
-		"gym_cost": "55.87"
+		"gym_cost": "55.87",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Berlin",
@@ -109,7 +116,8 @@
 		"Happiness": "7.07",
 		"Outdoor_activities": "254",
 		"take_out_places": "1729",
-		"gym_cost": "26.11"
+		"gym_cost": "26.11",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Barcelona",
@@ -123,7 +131,8 @@
 		"Happiness": "6.4",
 		"Outdoor_activities": "585",
 		"take_out_places": "2344",
-		"gym_cost": "37.8"
+		"gym_cost": "37.8",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Vancouver",
@@ -137,7 +146,8 @@
 		"Happiness": "7.23",
 		"Outdoor_activities": "218",
 		"take_out_places": "788",
-		"gym_cost": "31.04"
+		"gym_cost": "31.04",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Melbourne",
@@ -151,7 +161,8 @@
 		"Happiness": "7.22",
 		"Outdoor_activities": "243",
 		"take_out_places": "813",
-		"gym_cost": "36.89"
+		"gym_cost": "36.89",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Beijing",
@@ -165,7 +176,8 @@
 		"Happiness": "5.12",
 		"Outdoor_activities": "223",
 		"take_out_places": "261",
-		"gym_cost": "38.62"
+		"gym_cost": "38.62",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Bangkok",
@@ -179,7 +191,8 @@
 		"Happiness": "5.99",
 		"Outdoor_activities": "377",
 		"take_out_places": "1796",
-		"gym_cost": "50.03"
+		"gym_cost": "50.03",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Buenos Aires",
@@ -193,7 +206,8 @@
 		"Happiness": "5.97",
 		"Outdoor_activities": "246",
 		"take_out_places": "1435",
-		"gym_cost": "22.45"
+		"gym_cost": "22.45",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Toronto",
@@ -207,7 +221,8 @@
 		"Happiness": "7.23",
 		"Outdoor_activities": "174",
 		"take_out_places": "1656",
-		"gym_cost": "32.64"
+		"gym_cost": "32.64",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Madrid",
@@ -221,7 +236,8 @@
 		"Happiness": "6.4",
 		"Outdoor_activities": "216",
 		"take_out_places": "2491",
-		"gym_cost": "34.54"
+		"gym_cost": "34.54",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Jakarta",
@@ -235,7 +251,8 @@
 		"Happiness": "5.28",
 		"Outdoor_activities": "114",
 		"take_out_places": "833",
-		"gym_cost": "29.94"
+		"gym_cost": "29.94",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Seoul",
@@ -249,7 +266,8 @@
 		"Happiness": "5.87",
 		"Outdoor_activities": "144",
 		"take_out_places": "389",
-		"gym_cost": "43.03"
+		"gym_cost": "43.03",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Frankfurt",
@@ -263,7 +281,8 @@
 		"Happiness": "7.07",
 		"Outdoor_activities": "23",
 		"take_out_places": "551",
-		"gym_cost": "39.01"
+		"gym_cost": "39.01",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Geneva",
@@ -277,7 +296,8 @@
 		"Happiness": "7.56",
 		"Outdoor_activities": "44",
 		"take_out_places": "444",
-		"gym_cost": "70"
+		"gym_cost": "70",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Tel Aviv",
@@ -291,7 +311,8 @@
 		"Happiness": "7.12",
 		"Outdoor_activities": "139",
 		"take_out_places": "420",
-		"gym_cost": "58.31"
+		"gym_cost": "58.31",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Istanbul",
@@ -305,7 +326,8 @@
 		"Happiness": "5.13",
 		"Outdoor_activities": "419",
 		"take_out_places": "934",
-		"gym_cost": "16.97"
+		"gym_cost": "16.97",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Cairo",
@@ -319,7 +341,8 @@
 		"Happiness": "4.15",
 		"Outdoor_activities": "323",
 		"take_out_places": "250",
-		"gym_cost": "23.25"
+		"gym_cost": "23.25",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Taipei",
@@ -333,7 +356,8 @@
 		"Happiness": "5.12",
 		"Outdoor_activities": "134",
 		"take_out_places": "717",
-		"gym_cost": "34.76"
+		"gym_cost": "34.76",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Los Angeles",
@@ -347,7 +371,8 @@
 		"Happiness": "6.94",
 		"Outdoor_activities": "223",
 		"take_out_places": "1439",
-		"gym_cost": "32"
+		"gym_cost": "32",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Mumbai",
@@ -361,7 +386,8 @@
 		"Happiness": "3.57",
 		"Outdoor_activities": "187",
 		"take_out_places": "1183",
-		"gym_cost": "19.54"
+		"gym_cost": "19.54",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Boston",
@@ -375,7 +401,8 @@
 		"Happiness": "6.94",
 		"Outdoor_activities": "88",
 		"take_out_places": "588",
-		"gym_cost": "46.27"
+		"gym_cost": "46.27",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Dublin",
@@ -389,7 +416,8 @@
 		"Happiness": "7.09",
 		"Outdoor_activities": "159",
 		"take_out_places": "659",
-		"gym_cost": "37.35"
+		"gym_cost": "37.35",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Tokyo",
@@ -403,7 +431,8 @@
 		"Happiness": "5.87",
 		"Outdoor_activities": "387",
 		"take_out_places": "5802",
-		"gym_cost": "70.82"
+		"gym_cost": "70.82",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Chicago",
@@ -417,7 +446,8 @@
 		"Happiness": "6.94",
 		"Outdoor_activities": "171",
 		"take_out_places": "1320",
-		"gym_cost": "41.14"
+		"gym_cost": "41.14",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Hong Kong",
@@ -431,7 +461,8 @@
 		"Happiness": "5.51",
 		"Outdoor_activities": "277",
 		"take_out_places": "1257",
-		"gym_cost": "57.95"
+		"gym_cost": "57.95",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Shanghai",
@@ -445,7 +476,8 @@
 		"Happiness": "5.12",
 		"Outdoor_activities": "108",
 		"take_out_places": "346",
-		"gym_cost": "44.68"
+		"gym_cost": "44.68",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Brussels",
@@ -459,7 +491,8 @@
 		"Happiness": "6.86",
 		"Outdoor_activities": "55",
 		"take_out_places": "988",
-		"gym_cost": "25.34"
+		"gym_cost": "25.34",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "San Francisco",
@@ -473,7 +506,8 @@
 		"Happiness": "6.94",
 		"Outdoor_activities": "242",
 		"take_out_places": "1031",
-		"gym_cost": "65.13"
+		"gym_cost": "65.13",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Paris",
@@ -487,7 +521,8 @@
 		"Happiness": "6.66",
 		"Outdoor_activities": "331",
 		"take_out_places": "4363",
-		"gym_cost": "35.93"
+		"gym_cost": "35.93",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Sao Paulo",
@@ -501,7 +536,8 @@
 		"Happiness": "6.37",
 		"Outdoor_activities": "158",
 		"take_out_places": "3355",
-		"gym_cost": "16.07"
+		"gym_cost": "16.07",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Zurich",
@@ -515,7 +551,8 @@
 		"Happiness": "7.56",
 		"Outdoor_activities": "69",
 		"take_out_places": "538",
-		"gym_cost": "73.11"
+		"gym_cost": "73.11",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "London",
@@ -529,7 +566,8 @@
 		"Happiness": "7.16",
 		"Outdoor_activities": "433",
 		"take_out_places": "6417",
-		"gym_cost": "42.71"
+		"gym_cost": "42.71",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Johannesburg",
@@ -543,7 +581,8 @@
 		"Happiness": "4.81",
 		"Outdoor_activities": "194",
 		"take_out_places": "492",
-		"gym_cost": "24.28"
+		"gym_cost": "24.28",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Milan",
@@ -557,7 +596,8 @@
 		"Happiness": "6.38",
 		"Outdoor_activities": "110",
 		"take_out_places": "2396",
-		"gym_cost": "53.49"
+		"gym_cost": "53.49",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "\"Washington",
@@ -571,7 +611,8 @@
 		"Happiness": "1779",
 		"Outdoor_activities": "6.94",
 		"take_out_places": "83",
-		"gym_cost": "744"
+		"gym_cost": "744",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "New York",
@@ -585,7 +626,8 @@
 		"Happiness": "6.94",
 		"Outdoor_activities": "359",
 		"take_out_places": "3081",
-		"gym_cost": "64.66"
+		"gym_cost": "64.66",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Moscow",
@@ -599,7 +641,8 @@
 		"Happiness": "5.54",
 		"Outdoor_activities": "322",
 		"take_out_places": "3206",
-		"gym_cost": "31.4"
+		"gym_cost": "31.4",
+		"flag": "../images/nether-flag.jpg"
 	},
 	{
 		"City": "Mexico City",
@@ -613,9 +656,7 @@
 		"Happiness": "6.46",
 		"Outdoor_activities": "192",
 		"take_out_places": "1313",
-		"gym_cost": "41.99"
-	},
-	{
-		"City": ""
+		"gym_cost": "41.99",
+		"flag": "../images/nether-flag.jpg"
 	}
 ]
