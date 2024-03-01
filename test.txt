@@ -19,7 +19,7 @@ async function CreateButtons() {
   let ButtonWrapper = document.createElement("div");
   ButtonWrapper.classList.add("ButtonBox");
   document.querySelector("body").append(ButtonWrapper);
-  console.log(keys);
+
   keys.forEach((d) => {
     let ButtonDom = document.createElement("button");
     ButtonDom.classList.add("button");
@@ -27,16 +27,12 @@ async function CreateButtons() {
     ButtonDom.textContent = text;
     ButtonWrapper.append(ButtonDom);
     ButtonDom.addEventListener("click", (e) => {
-      filterDataViz(e);
+      filterDataViz(e, d);
     });
   });
 }
 
 CreateButtons();
-
-function filterDataViz(e) {
-  console.log(e.target.textContent);
-}
 
 let wSvg = 1000;
 let hSvg = 800;
@@ -51,11 +47,37 @@ let svg = d3
   .attr("height", hSvg)
   .attr("width", wSvg);
 
-fetching().then((data) => {
-  // Extract keys from the JSON object
-  let keys = Object.keys(data);
-  console.log(data);
-  let gViz = svg.append("g").selectAll().data(keys).enter().append("circle");
+function createBubbleChart(property) {
+  let bigDataset;
 
-  console.log(gViz);
-});
+  fetching().then((data) => {
+    bigDataset = data;
+
+    // Extract the property values for scaling the radius
+    let values = bigDataset.map((d) => parseFloat(d[property]));
+
+    // Set up a scale for the radius
+    let scaleRadius = d3
+      .scaleLinear()
+      .domain([d3.min(values), d3.max(values)])
+      .range([5, 30]); // Adjust the range based on your preference
+
+    // Set up your SVG container
+    let gViz = svg
+      .append("g")
+      .selectAll()
+      .data(bigDataset)
+      .enter()
+      .append("circle")
+      .attr("cx", (d, i) => i * 30 + 50) // Adjust the x-coordinate as needed
+      .attr("cy", hSvg / 2)
+      .attr("r", (d) => scaleRadius(parseFloat(d[property])))
+      .attr("fill", "blue") // You can customize the color
+      .attr("stroke", "white"); // You can customize the stroke
+  });
+}
+
+function filterDataViz(e, property) {
+  console.log(e.target.textContent);
+  createBubbleChart(property);
+}
