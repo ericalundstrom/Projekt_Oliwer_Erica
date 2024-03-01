@@ -46,8 +46,8 @@ function filterDataViz(e, key) {
   }
 }
 
-let wSvg = 1000;
-let hSvg = 800;
+let wSvg = 1100;
+let hSvg = 1100;
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
 let wPadding = (wSvg - wViz) / 2;
@@ -64,55 +64,67 @@ async function CreateBubbles(key) {
   const pack = d3
     .pack()
     .size([wViz - margin * 2, hViz - margin * 2])
-    .padding(3);
+    .padding(100); // Increase padding to add more space between circles
 
   const bigDataset = await fetching();
 
-  const root = pack(d3.hierarchy({ children: bigDataset }).sum((d) => d[key])); // Use the selected property for sizing
+  const root = pack(d3.hierarchy({ children: bigDataset }).sum((d) => d[key]));
 
-  fetching().then((data) => {
-    // Extract keys from the JSON object
-    let keys = Object.keys(data);
-    let gViz = svg
-      .append("g")
-      .selectAll()
-      .data(root.leaves())
-      .enter()
-      .append("g")
-      .attr("transform", (d) => `translate(${d.x},${d.y})`);
+  // Create a scale for the radius
+  const radiusScale = d3
+    .scaleLinear()
+    .domain([
+      d3.min(root.leaves(), (d) => d.r),
+      d3.max(root.leaves(), (d) => d.r),
+    ])
+    .range([20, 70]);
 
-    let radius = 50;
+  let gViz = svg
+    .append("g")
+    .selectAll()
+    .data(root.leaves())
+    .enter()
+    .append("g")
+    .attr("transform", (d) => `translate(${d.x},${d.y})`);
 
-    // Append circle
-    gViz
-      .append("circle")
-      .attr("r", radius)
-      .style("fill", "none")
-      .style("stroke", "black");
+  // Append circle with dynamic radius
+  gViz
+    .append("circle")
+    .attr("r", (d) => radiusScale(d.r))
+    .style("fill", "none")
+    .style("stroke", "black");
 
-    // Append foreignObject with the same size as the circle
-    gViz
-      .append("foreignObject")
-      .attr("width", 100) // Adjust the width based on your requirements
-      .attr("height", 100) // Adjust the height based on your requirements
-      .attr("x", -50) // Adjust the position based on your requirements
-      .attr("y", -50)
-      .html(
-        (d) =>
-          `<div class="flag-image" style="background-image: url(${d.data.flag});"></div>`
-      );
-  });
-}
+  // Append foreignObject with the same size as the circle and hover effect
+  gViz
+    .append("foreignObject")
+    .attr("width", (d) => radiusScale(d.r) * 2)
+    .attr("height", (d) => radiusScale(d.r) * 2)
+    .attr("x", (d) => -radiusScale(d.r))
+    .attr("y", (d) => -radiusScale(d.r))
+    .html(
+      (d) =>
+        `<div class="flag-image" style="background-image: url(${d.data.flag});"></div>`
+    )
+    .on("mouseover", function (event, d) {
+      // Show tooltip on hover
+      tooltip.style("opacity", 0.9);
+    })
+    .on("mousemove", function (event, d) {
+      // Move tooltip to follow the mouse
+      tooltip
+        .html(`${key}: ${d.data[key]}`)
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 28 + "px");
+    })
+    .on("mouseout", function (event, d) {
+      // Hide tooltip on mouseout
+      tooltip.style("opacity", 0);
+    });
 
-function Randomize() {
-  let x = [10, 20, 30, 40, 50, 60];
-  let y = [50, 10, 40, 70, 60, 30, 20];
-
-  // Randomly select an index for array x
-  let randomIndexX = Math.floor(Math.random() * x.length);
-  // Randomly select an index for array y
-  let randomIndexY = Math.floor(Math.random() * y.length);
-
-  // Return an array with the randomly selected values from x and y
-  return [x[randomIndexX], y[randomIndexY]];
+  // Create a tooltip
+  let tooltip = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 }
