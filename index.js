@@ -50,7 +50,3 @@ let svg = d3
   .append("svg")
   .attr("height", hSvg)
   .attr("width", wSvg);
-//   .append("image")
-//   .attr("xlink:href", "images/africa-flag.jpg")
-//   .attr("height", 100)
-//   .attr("width", 200);
