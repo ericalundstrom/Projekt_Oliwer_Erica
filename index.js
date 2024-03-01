@@ -87,12 +87,19 @@ async function CreateBubbles(key) {
             .data(root.leaves())
             .enter()
             .append("g")
-            // .attr("transform", d => `translate(${Randomize()[0] * 6.5}, ${Randomize()[1] * 6.5})`)
             .attr("transform", d => `translate(${d.x},${d.y})`)
             .append("circle")
             .attr("r", 50)
             .attr("margin", 10)
-            .attr("fill", d => `url(${d.data.flag})`);
+            // .attr("fill", "none")
+            .style("border", "1px solid black")
+            .append("svg:image")
+            .attr("xlink:href", d => d.data.flag)
+            .attr("x", -25)  // Adjust the image position relative to the circle
+            .attr("y", -25)  // Adjust the image position relative to the circle
+            .attr("width", 50)  // Adjust the image width
+            .attr("height", 50);
+
 
     });
 

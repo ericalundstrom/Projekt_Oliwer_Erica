@@ -27,7 +27,7 @@
 		"Outdoor_activities": "406",
 		"take_out_places": "1103",
 		"gym_cost": "41.66",
-		"flag": "../images/australia-flag.jpg"
+		"flag": "images/australia-flag.jpg"
 	},
 	{
 		"City": "Vienna",
@@ -42,7 +42,7 @@
 		"Outdoor_activities": "132",
 		"take_out_places": "1008",
 		"gym_cost": "25.74",
-		"flag": "../images/italy-flag.jpg"
+		"flag": "images/italy-flag.jpg"
 	},
 	{
 		"City": "Stockholm",
@@ -57,7 +57,7 @@
 		"Outdoor_activities": "129",
 		"take_out_places": "598",
 		"gym_cost": "37.31",
-		"flag": "../images/sweden-flag.jpg"
+		"flag": "images/sweden-flag.jpg"
 	},
 	{
 		"City": "Copenhagen",
@@ -72,7 +72,7 @@
 		"Outdoor_activities": "154",
 		"take_out_places": "523",
 		"gym_cost": "32.53",
-		"flag": "../images/denmark-flag.jpg"
+		"flag": "images/denmark-flag.jpg"
 	},
 	{
 		"City": "Helsinki",
@@ -87,7 +87,7 @@
 		"Outdoor_activities": "113",
 		"take_out_places": "309",
 		"gym_cost": "35.23",
-		"flag": "../images/finland-flag.jpg"
+		"flag": "images/finland-flag.jpg"
 	},
 	{
 		"City": "Fukuoka",
@@ -102,7 +102,7 @@
 		"Outdoor_activities": "35",
 		"take_out_places": "539",
 		"gym_cost": "55.87",
-		"flag": "../images/japan-flag.jpg"
+		"flag": "images/japan-flag.jpg"
 	},
 	{
 		"City": "Berlin",
@@ -117,7 +117,7 @@
 		"Outdoor_activities": "254",
 		"take_out_places": "1729",
 		"gym_cost": "26.11",
-		"flag": "../images/germany-flag.jpg"
+		"flag": "images/germany-flag.jpg"
 	},
 	{
 		"City": "Barcelona",
@@ -132,7 +132,7 @@
 		"Outdoor_activities": "585",
 		"take_out_places": "2344",
 		"gym_cost": "37.8",
-		"flag": "../images/spain-flag.jpg"
+		"flag": "images/spain-flag.jpg"
 	},
 	{
 		"City": "Vancouver",
@@ -147,7 +147,7 @@
 		"Outdoor_activities": "218",
 		"take_out_places": "788",
 		"gym_cost": "31.04",
-		"flag": "../images/canada-flag.jpg"
+		"flag": "images/canada-flag.jpg"
 	},
 	{
 		"City": "Melbourne",
@@ -162,7 +162,7 @@
 		"Outdoor_activities": "243",
 		"take_out_places": "813",
 		"gym_cost": "36.89",
-		"flag": "../images/australia-flag.jpg"
+		"flag": "images/australia-flag.jpg"
 	},
 	{
 		"City": "Beijing",
@@ -177,7 +177,7 @@
 		"Outdoor_activities": "223",
 		"take_out_places": "261",
 		"gym_cost": "38.62",
-		"flag": "../images/china-flag.jpg"
+		"flag": "images/china-flag.jpg"
 	},
 	{
 		"City": "Bangkok",
@@ -192,7 +192,7 @@
 		"Outdoor_activities": "377",
 		"take_out_places": "1796",
 		"gym_cost": "50.03",
-		"flag": "../images/thailand-flag.jpg"
+		"flag": "images/thailand-flag.jpg"
 	},
 	{
 		"City": "Buenos Aires",
@@ -207,7 +207,7 @@
 		"Outdoor_activities": "246",
 		"take_out_places": "1435",
 		"gym_cost": "22.45",
-		"flag": "../images/argentina-flag.jpg"
+		"flag": "images/argentina-flag.jpg"
 	},
 	{
 		"City": "Toronto",
@@ -222,7 +222,7 @@
 		"Outdoor_activities": "174",
 		"take_out_places": "1656",
 		"gym_cost": "32.64",
-		"flag": "../images/canada-flag.jpg"
+		"flag": "images/canada-flag.jpg"
 	},
 	{
 		"City": "Madrid",
@@ -237,7 +237,7 @@
 		"Outdoor_activities": "216",
 		"take_out_places": "2491",
 		"gym_cost": "34.54",
-		"flag": "../images/spain-flag.jpg"
+		"flag": "images/spain-flag.jpg"
 	},
 	{
 		"City": "Jakarta",
@@ -252,7 +252,7 @@
 		"Outdoor_activities": "114",
 		"take_out_places": "833",
 		"gym_cost": "29.94",
-		"flag": "../images/indo-flag.jpg"
+		"flag": "images/indo-flag.jpg"
 	},
 	{
 		"City": "Seoul",
@@ -267,7 +267,7 @@
 		"Outdoor_activities": "144",
 		"take_out_places": "389",
 		"gym_cost": "43.03",
-		"flag": "../images/korea-flag.jpg"
+		"flag": "images/korea-flag.jpg"
 	},
 	{
 		"City": "Frankfurt",
@@ -282,7 +282,7 @@
 		"Outdoor_activities": "23",
 		"take_out_places": "551",
 		"gym_cost": "39.01",
-		"flag": "../images/germany-flag.jpg"
+		"flag": "images/germany-flag.jpg"
 	},
 	{
 		"City": "Geneva",
@@ -297,7 +297,7 @@
 		"Outdoor_activities": "44",
 		"take_out_places": "444",
 		"gym_cost": "70",
-		"flag": "../images/switzerland-flag.jpg"
+		"flag": "images/switzerland-flag.jpg"
 	},
 	{
 		"City": "Tel Aviv",
@@ -312,7 +312,7 @@
 		"Outdoor_activities": "139",
 		"take_out_places": "420",
 		"gym_cost": "58.31",
-		"flag": "../images/israel-flag.jpg"
+		"flag": "images/israel-flag.jpg"
 	},
 	{
 		"City": "Istanbul",
@@ -327,7 +327,7 @@
 		"Outdoor_activities": "419",
 		"take_out_places": "934",
 		"gym_cost": "16.97",
-		"flag": "../images/turkey-flag.jpg"
+		"flag": "images/turkey-flag.jpg"
 	},
 	{
 		"City": "Cairo",
@@ -342,7 +342,7 @@
 		"Outdoor_activities": "323",
 		"take_out_places": "250",
 		"gym_cost": "23.25",
-		"flag": "../images/egypt-flag.jpg"
+		"flag": "images/egypt-flag.jpg"
 	},
 	{
 		"City": "Taipei",
@@ -357,7 +357,7 @@
 		"Outdoor_activities": "134",
 		"take_out_places": "717",
 		"gym_cost": "34.76",
-		"flag": "../images/taiwan-flag.jpg"
+		"flag": "images/taiwan-flag.jpg"
 	},
 	{
 		"City": "Los Angeles",
@@ -372,7 +372,7 @@
 		"Outdoor_activities": "223",
 		"take_out_places": "1439",
 		"gym_cost": "32",
-		"flag": "../images/usa-flag.jpg"
+		"flag": "images/usa-flag.jpg"
 	},
 	{
 		"City": "Mumbai",
@@ -387,7 +387,7 @@
 		"Outdoor_activities": "187",
 		"take_out_places": "1183",
 		"gym_cost": "19.54",
-		"flag": "../images/india-flag.jpg"
+		"flag": "images/india-flag.jpg"
 	},
 	{
 		"City": "Boston",
@@ -402,7 +402,7 @@
 		"Outdoor_activities": "88",
 		"take_out_places": "588",
 		"gym_cost": "46.27",
-		"flag": "../images/usa-flag.jpg"
+		"flag": "images/usa-flag.jpg"
 	},
 	{
 		"City": "Dublin",
@@ -417,7 +417,7 @@
 		"Outdoor_activities": "159",
 		"take_out_places": "659",
 		"gym_cost": "37.35",
-		"flag": "../images/ireland-flag.jpg"
+		"flag": "images/ireland-flag.jpg"
 	},
 	{
 		"City": "Tokyo",
@@ -432,7 +432,7 @@
 		"Outdoor_activities": "387",
 		"take_out_places": "5802",
 		"gym_cost": "70.82",
-		"flag": "../images/japan-flag.jpg"
+		"flag": "images/japan-flag.jpg"
 	},
 	{
 		"City": "Chicago",
@@ -447,7 +447,7 @@
 		"Outdoor_activities": "171",
 		"take_out_places": "1320",
 		"gym_cost": "41.14",
-		"flag": "../images/usa-flag.jpg"
+		"flag": "images/usa-flag.jpg"
 	},
 	{
 		"City": "Hong Kong",
@@ -462,7 +462,7 @@
 		"Outdoor_activities": "277",
 		"take_out_places": "1257",
 		"gym_cost": "57.95",
-		"flag": "../images/china-flag.jpg"
+		"flag": "images/china-flag.jpg"
 	},
 	{
 		"City": "Shanghai",
@@ -477,7 +477,7 @@
 		"Outdoor_activities": "108",
 		"take_out_places": "346",
 		"gym_cost": "44.68",
-		"flag": "../images/china-flag.jpg"
+		"flag": "images/china-flag.jpg"
 	},
 	{
 		"City": "Brussels",
@@ -492,7 +492,7 @@
 		"Outdoor_activities": "55",
 		"take_out_places": "988",
 		"gym_cost": "25.34",
-		"flag": "../images/belgium-flag.jpg"
+		"flag": "images/belgium-flag.jpg"
 	},
 	{
 		"City": "San Francisco",
@@ -507,7 +507,7 @@
 		"Outdoor_activities": "242",
 		"take_out_places": "1031",
 		"gym_cost": "65.13",
-		"flag": "../images/usa-flag.jpg"
+		"flag": "images/usa-flag.jpg"
 	},
 	{
 		"City": "Paris",
@@ -522,7 +522,7 @@
 		"Outdoor_activities": "331",
 		"take_out_places": "4363",
 		"gym_cost": "35.93",
-		"flag": "../images/france-flag.jpg"
+		"flag": "images/france-flag.jpg"
 	},
 	{
 		"City": "Sao Paulo",
@@ -537,7 +537,7 @@
 		"Outdoor_activities": "158",
 		"take_out_places": "3355",
 		"gym_cost": "16.07",
-		"flag": "../images/brazil-flag.jpg"
+		"flag": "images/brazil-flag.jpg"
 	},
 	{
 		"City": "Zurich",
@@ -552,7 +552,7 @@
 		"Outdoor_activities": "69",
 		"take_out_places": "538",
 		"gym_cost": "73.11",
-		"flag": "../images/switzerland-flag.jpg"
+		"flag": "images/switzerland-flag.jpg"
 	},
 	{
 		"City": "London",
@@ -567,7 +567,7 @@
 		"Outdoor_activities": "433",
 		"take_out_places": "6417",
 		"gym_cost": "42.71",
-		"flag": "../images/uk-flag.jpg"
+		"flag": "images/uk-flag.jpg"
 	},
 	{
 		"City": "Johannesburg",
@@ -582,7 +582,7 @@
 		"Outdoor_activities": "194",
 		"take_out_places": "492",
 		"gym_cost": "24.28",
-		"flag": "../images/africa-flag.jpg"
+		"flag": "images/africa-flag.jpg"
 	},
 	{
 		"City": "Milan",
@@ -597,7 +597,7 @@
 		"Outdoor_activities": "110",
 		"take_out_places": "2396",
 		"gym_cost": "53.49",
-		"flag": "../images/italy-flag.jpg"
+		"flag": "images/italy-flag.jpg"
 	},
 	{
 		"City": "\"Washington",
@@ -612,7 +612,7 @@
 		"Outdoor_activities": "6.94",
 		"take_out_places": "83",
 		"gym_cost": "744",
-		"flag": "../images/usa-flag.jpg"
+		"flag": "images/usa-flag.jpg"
 	},
 	{
 		"City": "New York",
@@ -627,7 +627,7 @@
 		"Outdoor_activities": "359",
 		"take_out_places": "3081",
 		"gym_cost": "64.66",
-		"flag": "../images/usa-flag.jpg"
+		"flag": "images/usa-flag.jpg"
 	},
 	{
 		"City": "Moscow",
@@ -642,7 +642,7 @@
 		"Outdoor_activities": "322",
 		"take_out_places": "3206",
 		"gym_cost": "31.4",
-		"flag": "../images/russia-flag.jpg"
+		"flag": "images/russia-flag.jpg"
 	},
 	{
 		"City": "Mexico City",
@@ -657,6 +657,6 @@
 		"Outdoor_activities": "192",
 		"take_out_places": "1313",
 		"gym_cost": "41.99",
-		"flag": "../images/mexico-flag.jpg"
+		"flag": "images/mexico-flag.jpg"
 	}
 ]
