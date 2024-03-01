@@ -99,7 +99,7 @@ async function CreateBubbles(key) {
             .attr("x", -25)  // Adjust the image position relative to the circle
             .attr("y", -25)  // Adjust the image position relative to the circle
             .attr("width", 50)  // Adjust the image width
-            .attr("height", 50);
+            .attr("height", 60);
 
 
     });
