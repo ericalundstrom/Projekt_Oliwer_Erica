@@ -10,7 +10,7 @@ async function CreateButtons() {
     let firstData = bigDataset[0];
 
     for (const key in firstData) {
-        if (key === "City" || key === "flag") {
+        if (key === "City" || key === "flag" || key === "Rank") {
             console.log("blå");
         } else {
             keys.push(key);
