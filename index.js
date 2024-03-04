@@ -11,7 +11,7 @@ async function CreateButtons() {
 
   for (const key in firstData) {
     if (key === "City" || key === "flag" || key === "Rank") {
-      console.log("blå");
+      console.log("blÃ¥");
     } else {
       keys.push(key);
     }
@@ -166,54 +166,6 @@ async function CreateBubbles(key) {
     const k = wSvg / v[2];
 
     view = v;
-
-    gViz.attr(
-      "transform",
-      (d) => `translate(${(d.x - focus.x) * k},${(d.y - focus.y) * k})`
-    );
-
-    gViz.select("circle").attr("r", (d) => radiusScale(d.r) * k);
-
-    gViz
-      .select("foreignObject")
-      .attr("width", (d) => radiusScale(d.r) * 2 * k)
-      .attr("height", (d) => radiusScale(d.r) * 2 * k)
-      .attr("x", (d) => -radiusScale(d.r) * k)
-      .attr("y", (d) => -radiusScale(d.r) * k);
-  }
-
-  function zoom(event, d) {
-    const focus0 = focus;
-    focus = d;
-    console.log(view); // Log the SVG element passed as an argument
-    console.log(focus.r, focus.x, focus.y);
-
-    const transition = svg
-      .transition() // Use the passed SVG element directly
-      .duration(event.altKey ? 7500 : 750)
-      .tween("zoom", () => {
-        const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
-        return (t) => zoomTo(i(t));
-      });
-  }
-
-  // Create a tooltip
-  let tooltip = d3
-    .select("body")
-    .append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
-
-  let focus = root;
-  let view;
-
-  svg.on("click", (event) => zoom(event, root));
-  zoomTo([focus.x, focus.y, focus.r * 2]);
-
-  function zoomTo(v) {
-    const k = wSvg / v[2];
-
-    view = v;
     console.log(v);
 
     gViz.attr(
@@ -238,7 +190,7 @@ async function CreateBubbles(key) {
       .transition() // Use the passed SVG element directly
       .duration(event.altKey ? 7500 : 750)
       .tween("zoom", () => {
-        const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2.8]);
+        const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2.9]);
         return (t) => zoomTo(i(t));
       });
   }
@@ -247,20 +199,3 @@ async function CreateBubbles(key) {
 }
 
 CreateButtons();
-
-// function ZoomFunction(e, d) {
-//     // console.log(e, d);
-//     // let labelText = d3.select(".flag-image > p")
-//     // console.log(labelText.html);
-//     let svg = d3.select("svg")
-//     let focus0 = focus;
-
-//     focus = d;
-
-//     let transition = svg.transition()
-//         .duration(e.altKey ? 7500 : 750)
-//         .tween("zoom", d => {
-//             const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
-//             return t => zoomTo(i(t));
-//         });
-// }
