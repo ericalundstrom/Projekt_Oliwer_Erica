@@ -197,6 +197,52 @@ async function CreateBubbles(key) {
       });
   }
 
+  // Create a tooltip
+  let tooltip = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+  let focus = root;
+  let view;
+
+  svg.on("click", (event) => zoom(event, root));
+  zoomTo([focus.x, focus.y, focus.r * 2]);
+
+  function zoomTo(v) {
+    const k = wSvg / v[2];
+
+    view = v;
+    console.log(v);
+
+    gViz.attr(
+      "transform",
+      (d) => `translate(${(d.x - v[0]) * k + 500},${(d.y - v[1]) * k + 400})`
+    );
+    gViz.select("circle").attr("r", (d) => radiusScale(d.r) * k);
+    gViz
+      .select("foreignObject")
+      .attr("width", (d) => radiusScale(d.r) * 2 * k)
+      .attr("height", (d) => radiusScale(d.r) * 2 * k)
+      .attr("x", (d) => -radiusScale(d.r) * k)
+      .attr("y", (d) => -radiusScale(d.r) * k);
+  }
+  function zoom(event, d) {
+    const focus0 = focus;
+    focus = d;
+    console.log(view); // Log the SVG element passed as an argument
+    console.log(focus.r, focus.x, focus.y);
+
+    const transition = svg
+      .transition() // Use the passed SVG element directly
+      .duration(event.altKey ? 7500 : 750)
+      .tween("zoom", () => {
+        const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2.8]);
+        return (t) => zoomTo(i(t));
+      });
+  }
+
   // svg.on("click", (event) => zoom(svg, event, root));
 }
 
