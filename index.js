@@ -45,9 +45,8 @@ function filterDataViz(e, key) {
     }
 }
 
-
-let wSvg = 1100;
-let hSvg = 1100;
+let wSvg = 1000;
+let hSvg = 1000;
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
 let wPadding = (wSvg - wViz) / 2;
@@ -55,30 +54,37 @@ let hPadding = (hSvg - hViz) / 2;
 let margin = 1;
 
 async function CreateBubbles(key) {
-    const svg = d3
+
+    const bigDataset = await fetching();
+    console.log(bigDataset);
+
+
+    let svg = d3
         .select("body")
         .append("svg")
         .attr("height", hSvg)
         .attr("width", wSvg);
 
-
     const pack = d3
         .pack()
         .size([wViz - margin * 2, hViz - margin * 2])
-        .padding(100); // Increase padding to add more space between circles
+        .padding(10);
 
-    const bigDataset = await fetching();
+    const root = pack(
+        d3
+            .hierarchy({ children: bigDataset })
+            .sum((d) => (!isNaN(d[key]) ? d[key] : 1))
+    );
+    console.log(root);
 
-    const root = pack(d3.hierarchy({ children: bigDataset }).sum((d) => d[key]));
-
-    // Create a scale for the radius
     const radiusScale = d3
         .scaleLinear()
         .domain([
             d3.min(root.leaves(), (d) => d.r),
             d3.max(root.leaves(), (d) => d.r),
         ])
-        .range([20, 70]);
+        .range([10, 50]);
+
 
     let gViz = svg
         .append("g")
@@ -149,6 +155,7 @@ async function CreateBubbles(key) {
         .append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
+
 
 
     let focus = root;
