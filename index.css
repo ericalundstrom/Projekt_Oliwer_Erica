@@ -1,4 +1,9 @@
 /* Add this to your existing CSS or create a new stylesheet */
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .tooltip {
     position: absolute;
@@ -19,13 +24,35 @@
     background-size: cover;
     background-position: center;
     border-radius: 50%;
+    border: 1px solid #d2cdcd;
 }
 
-.flag-image p {
-    padding: 40% 0%;
-    font-size: 80%;
+.flag-image #info {
+    padding: 20% 0%;
+    font-size: 90%;
     width: 100%;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition-timing-function: ease-in-out;
+    background-color: #ffffff75;
+    height: 100%;
+}
+
+.flag-image #info #title {
+    font-size: 300%;
+    margin: 0;
+}
+
+.flag-image #info div {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+}
+
+.flag-image #info p {
+    padding: 5px;
+    margin: 0;
 }
 
 /* Add any additional styles you need */
