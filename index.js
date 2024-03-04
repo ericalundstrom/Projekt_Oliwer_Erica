@@ -173,7 +173,7 @@ async function CreateBubbles(key) {
         view = v;
         console.log(v);
 
-        gViz.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+        gViz.attr("transform", d => `translate(${(d.x - v[0]) * k + 500},${(d.y - v[1]) * k + 400})`);
         gViz.select("circle").attr("r", d => radiusScale(d.r) * k);
         gViz.select("foreignObject")
             .attr("width", (d) => radiusScale(d.r) * 2 * k)
@@ -191,7 +191,7 @@ async function CreateBubbles(key) {
         const transition = svg.transition() // Use the passed SVG element directly
             .duration(event.altKey ? 7500 : 750)
             .tween("zoom", () => {
-                const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
+                const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2.8]);
                 return t => zoomTo(i(t));
             });
     }
