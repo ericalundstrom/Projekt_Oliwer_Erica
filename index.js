@@ -92,7 +92,8 @@ async function CreateBubbles(key) {
         .data(root.leaves())
         .enter()
         .append("g")
-        .attr("transform", (d) => `translate(${d.x},${d.y})`);
+        .attr("transform", (d) => `translate(${d.x},${d.y})`)
+        .on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()));
 
     // Append circle with dynamic radius
     gViz
@@ -129,7 +130,7 @@ async function CreateBubbles(key) {
         .on("mouseenter", function (event, d) {
             let foreign = d3.select(this);
             foreign.transition()
-                .style("transform", "scale(2.5)")
+                .style("transform", "scale(1.5)")
 
             let flagImage = d3.select(this).select(".flag-image").html(`<p>${d.data.City}</p>`);
             flagImage.style("display", "flex")
@@ -145,8 +146,8 @@ async function CreateBubbles(key) {
                 .html(``)
             // console.log(svg._groups[0][0]);
         })
-        // .on("click", (event, d) => ZoomFunction(event, d))
-        .on("click", (event, d) => zoom(event, d));
+    // .on("click", (event, d) => ZoomFunction(event, d))
+    // .on("click", (event, d) => zoom(event, d));
 
 
     // Create a tooltip
@@ -161,11 +162,13 @@ async function CreateBubbles(key) {
     let focus = root;
     let view;
 
-    // svg.on("click", (event) => zoom(event, root));
+    svg.on("click", (event) => zoom(event, root));
+    zoomTo([focus.x, focus.y, focus.r * 2]);
 
 
     function zoomTo(v) {
         const k = wSvg / v[2];
+
 
         view = v;
         console.log(v);
@@ -177,12 +180,12 @@ async function CreateBubbles(key) {
             .attr("height", (d) => radiusScale(d.r) * 2 * k)
             .attr("x", (d) => -radiusScale(d.r) * k)
             .attr("y", (d) => -radiusScale(d.r) * k);
-    }
 
+    }
     function zoom(event, d) {
         const focus0 = focus;
         focus = d;
-        console.log(svg); // Log the SVG element passed as an argument
+        console.log(view); // Log the SVG element passed as an argument
         console.log(focus.r, focus.x, focus.y);
 
         const transition = svg.transition() // Use the passed SVG element directly
