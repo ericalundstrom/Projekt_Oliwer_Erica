@@ -1,48 +1,47 @@
-
 async function fetching() {
-    const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
-    return data;
+  const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
+  return data;
 }
 
 async function CreateButtons() {
-    let keys = [];
-    let bigDataset = await fetching();
+  let keys = [];
+  let bigDataset = await fetching();
 
-    let firstData = bigDataset[0];
+  let firstData = bigDataset[0];
 
-    for (const key in firstData) {
-        if (key === "City" || key === "flag") {
-            console.log("blå");
-        } else {
-            keys.push(key);
-        }
+  for (const key in firstData) {
+    if (key === "City" || key === "flag" || key === "Rank") {
+      console.log("blå");
+    } else {
+      keys.push(key);
     }
-    let ButtonWrapper = document.createElement("div");
-    ButtonWrapper.classList.add("ButtonBox");
-    document.querySelector("body").append(ButtonWrapper);
-    console.log(keys);
-    keys.forEach((d) => {
-        let ButtonDom = document.createElement("button");
-        ButtonDom.classList.add("button");
-        let text = d.replace("_", " ");
-        ButtonDom.textContent = text;
-        ButtonWrapper.append(ButtonDom);
-        ButtonDom.addEventListener("click", (e) => {
-            filterDataViz(e, d);
-        });
+  }
+  let ButtonWrapper = document.createElement("div");
+  ButtonWrapper.classList.add("ButtonBox");
+  document.querySelector("body").append(ButtonWrapper);
+  console.log(keys);
+  keys.forEach((d) => {
+    let ButtonDom = document.createElement("button");
+    ButtonDom.classList.add("button");
+    let text = d.replace("_", " ");
+    ButtonDom.textContent = text;
+    ButtonWrapper.append(ButtonDom);
+    ButtonDom.addEventListener("click", (e) => {
+      filterDataViz(e, d);
     });
+  });
 }
 
 function filterDataViz(e, key) {
-    console.log(e);
-    console.log(key);
-    let svg = document.querySelector("svg");
-    if (svg) {
-        svg.remove();
-        CreateBubbles(key);
-    } else {
-        CreateBubbles(key);
-    }
+  console.log(e);
+  console.log(key);
+  let svg = document.querySelector("svg");
+  if (svg) {
+    svg.remove();
+    CreateBubbles(key);
+  } else {
+    CreateBubbles(key);
+  }
 }
 
 let wSvg = 1000;
@@ -144,52 +143,21 @@ async function CreateBubbles(key) {
     .attr("class", "tooltip")
     .style("opacity", 0);
 }
+
 function hoverFunction(d, e, va) {
-    if (va) {
-        // Double the radius when hovered over
-        d.r = d.r * 2;
-        // Apply the change to the circle element
-        e.attr("r", d.r);
-        console.log(d.r);
-    } else {
-        // Return to original size when not hovered
-        d.r = d.r / 2;
-        // Apply the change to the circle element
-        e.attr("r", d.r);
-        console.log(d.r);
-    }
+  if (va) {
+    // Double the radius when hovered over
+    d.r = d.r * 2;
+    // Apply the change to the circle element
+    e.attr("r", d.r);
+    console.log(d.r);
+  } else {
+    // Return to original size when not hovered
+    d.r = d.r / 2;
+    // Apply the change to the circle element
+    e.attr("r", d.r);
+    // console.log(d.r);
+  }
 }
-
-
-// function hoverFunction(d, e, va) {
-//     if (va) {
-//         console.log(e.r);
-//         // console.log(d.target.children.length);
-
-//         for (let i = 0; i < d.target.children.length; i++) {
-//             let currentChild = d.target.children[i].tagName
-//             let CurrentChildRadius = d.target.children[i].__data__.r
-
-//             // console.log(currentChild);
-//             if (currentChild === "circle") {
-//                 // console.log(e);
-//                 d.target.children[i].__data__.r = d.target.children[i].__data__.r * 3
-//                 console.log(d.target.children[i]);
-//                 console.log(e.r);
-//             } else {
-//                 console.log("inte");
-//                 // e.r = e.r * 3
-//                 d.target.children[i].__data__.r = d.target.children[i].__data__.r * 3
-//                 // console.log(d.target.children[i].__data__.r);
-//                 console.log(e.r);
-//                 // console.log(d.target.children[i]);
-//             }
-//         }
-//     } else {
-//         e.r = e.r / 3;
-//         console.log(d.target.children);
-//     }
-
-// }
 
 CreateButtons();
