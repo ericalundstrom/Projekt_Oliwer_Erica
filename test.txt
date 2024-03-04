@@ -11,7 +11,7 @@ async function CreateButtons() {
 
   for (const key in firstData) {
     if (key === "City" || key === "flag" || key === "Rank") {
-      console.log("blå");
+      console.log("blÃ¥");
     } else {
       keys.push(key);
     }
@@ -88,13 +88,19 @@ async function CreateBubbles(key) {
     .data(root.leaves())
     .enter()
     .append("g")
-    .attr("transform", (d) => `translate(${d.x},${d.y})`);
+    .attr("transform", (d) => `translate(${d.x},${d.y})`)
+    .on(
+      "click",
+      (event, d) => focus !== d && (zoom(event, d), event.stopPropagation())
+    );
 
+  // Append circle with dynamic radius
   gViz
     .append("circle")
     .attr("r", (d) => radiusScale(d.r))
     .style("fill", "none");
 
+  // Append foreignObject with the same size as the circle and hover effect
   gViz
     .append("foreignObject")
     .attr("width", (d) => radiusScale(d.r) * 2)
@@ -106,15 +112,18 @@ async function CreateBubbles(key) {
         `<div class="flag-image" style="background-image: url(${d.data.flag});"></div>`
     )
     .on("mouseover", function (event, d) {
+      // Show tooltip on hover
       tooltip.style("opacity", 0.9);
     })
     .on("mousemove", function (event, d) {
+      // Move tooltip to follow the mouse
       tooltip
         .html(`${key}: ${d.data[key]}`)
         .style("left", event.pageX + 10 + "px")
         .style("top", event.pageY - 28 + "px");
     })
     .on("mouseout", function (event, d) {
+      // Hide tooltip on mouseout
       tooltip.style("opacity", 0);
     })
     .on("mouseenter", function (event, d) {
@@ -135,28 +144,56 @@ async function CreateBubbles(key) {
       let foreign = d3.select(this);
       foreign.transition().style("transform", "scale(1)");
       d3.select(this).select(".flag-image").html(``);
+      // console.log(svg._groups[0][0]);
     });
+  // .on("click", (event, d) => ZoomFunction(event, d))
+  // .on("click", (event, d) => zoom(event, d));
 
+  // Create a tooltip
   let tooltip = d3
     .select("body")
     .append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-}
 
-function hoverFunction(d, e, va) {
-  if (va) {
-    // Double the radius when hovered over
-    d.r = d.r * 2;
-    // Apply the change to the circle element
-    e.attr("r", d.r);
-    console.log(d.r);
-  } else {
-    // Return to original size when not hovered
-    d.r = d.r / 2;
-    // Apply the change to the circle element
-    e.attr("r", d.r);
-    // console.log(d.r);
+  let focus = root;
+  let view;
+
+  svg.on("click", (event) => {
+    zoom(event, root);
+  });
+
+  zoomTo([focus.x, focus.y, focus.r * 2]);
+
+  function zoomTo(v, d) {
+    const k = wSvg / v[2];
+    console.log(d);
+    view = v;
+
+    gViz.attr(
+      "transform",
+      (d) => `translate(${(d.x - v[0]) * k + 500},${(d.y - v[1]) * k + 400})`
+    );
+    gViz.select("circle").attr("r", (d) => radiusScale(d.r) * k);
+    gViz
+      .select("foreignObject")
+      .attr("width", (d) => radiusScale(d.r) * 2 * k)
+      .attr("height", (d) => radiusScale(d.r) * 2 * k)
+      .attr("x", (d) => -radiusScale(d.r) * k)
+      .attr("y", (d) => -radiusScale(d.r) * k);
+  }
+
+  function zoom(event, d) {
+    focus = d;
+    (d) => (!isNaN(d[key]) ? d[key] : 1);
+
+    const transition = svg
+      .transition() // Use the passed SVG element directly
+      .duration(event.altKey ? 7500 : 750)
+      .tween("zoom", () => {
+        const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2.9]);
+        return (t) => zoomTo(i(t), d);
+      });
   }
 }
 
