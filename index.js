@@ -1,4 +1,5 @@
 
+
 async function fetching() {
     const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
     return data;
@@ -42,6 +43,7 @@ function filterDataViz(e, key) {
     }
 }
 
+
 let wSvg = 1000;
 let hSvg = 800;
 let hViz = 0.9 * hSvg;
@@ -50,8 +52,9 @@ let wPadding = (wSvg - wViz) / 2;
 let hPadding = (hSvg - hViz) / 2;
 let margin = 1;
 
-async function CreateBubbles(key) {
+let gViz;
 
+async function CreateBubbles(key) {
     const bigDataset = await fetching();
 
     let svg = d3
@@ -59,6 +62,7 @@ async function CreateBubbles(key) {
         .append("svg")
         .attr("height", hSvg)
         .attr("width", wSvg);
+
 
     const pack = d3
         .pack()
@@ -80,20 +84,24 @@ async function CreateBubbles(key) {
         .range([10, 50]);
 
 
-    let gViz = svg
+
+    gViz = svg // Assign gViz here
         .append("g")
         .selectAll()
         .data(root.leaves())
         .enter()
         .append("g")
         .attr("transform", (d) => `translate(${d.x},${d.y})`)
-        .on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()));
+        .on(
+            "click",
+            (event, d) => focus !== d && (zoom(event, d), event.stopPropagation())
+        );
 
     // Append circle with dynamic radius
     gViz
         .append("circle")
         .attr("r", (d) => radiusScale(d.r))
-        .style("fill", "none")
+        .style("fill", "none");
 
     // Append foreignObject with the same size as the circle and hover effect
     gViz
@@ -184,7 +192,7 @@ async function CreateBubbles(key) {
             flagImage.style("display", "flex")
                 .style("justify-content", "center")
                 .style("align-items", "center")
-                .style("z-index", 1)
+            // .style("z-index", 1)
 
         })
         .on("mouseleave", function (event, d) {
@@ -202,7 +210,6 @@ async function CreateBubbles(key) {
         .append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
-
 
 
     let focus = root;
@@ -248,8 +255,7 @@ async function CreateBubbles(key) {
         chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
     }
 
+
 }
-
-
 
 CreateButtons();
