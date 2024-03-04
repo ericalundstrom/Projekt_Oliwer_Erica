@@ -1,3 +1,4 @@
+
 async function fetching() {
     const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
     return data;
@@ -54,7 +55,7 @@ let hPadding = (hSvg - hViz) / 2;
 let margin = 1;
 
 async function CreateBubbles(key) {
-    let svg = d3
+    const svg = d3
         .select("body")
         .append("svg")
         .attr("height", hSvg)
@@ -135,8 +136,12 @@ async function CreateBubbles(key) {
             foreign.transition().style("transform", "scale(1)")
             d3.select(this)
                 .select(".flag-image")
-                .html(``);
-        });
+                .html(``)
+            // console.log(svg._groups[0][0]);
+        })
+        // .on("click", (event, d) => ZoomFunction(event, d))
+        .on("click", (event, d) => zoom(event, d));
+
 
     // Create a tooltip
     let tooltip = d3
@@ -146,24 +151,66 @@ async function CreateBubbles(key) {
         .style("opacity", 0);
 
 
+    let focus = root;
+    let view;
 
-}
+    // svg.on("click", (event) => zoom(event, root));
 
 
-function hoverFunction(d, e, va) {
-    if (va) {
-        // Double the radius when hovered over
-        d.r = d.r * 2;
-        // Apply the change to the circle element
-        e.attr("r", d.r);
-        console.log(d.r);
-    } else {
-        // Return to original size when not hovered
-        d.r = d.r / 2;
-        // Apply the change to the circle element
-        e.attr("r", d.r);
-        // console.log(d.r);
+    function zoomTo(v) {
+        const k = wSvg / v[2];
+
+        view = v;
+        console.log(v);
+
+        gViz.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+        gViz.select("circle").attr("r", d => radiusScale(d.r) * k);
+        gViz.select("foreignObject")
+            .attr("width", (d) => radiusScale(d.r) * 2 * k)
+            .attr("height", (d) => radiusScale(d.r) * 2 * k)
+            .attr("x", (d) => -radiusScale(d.r) * k)
+            .attr("y", (d) => -radiusScale(d.r) * k);
     }
+
+    function zoom(event, d) {
+        const focus0 = focus;
+        focus = d;
+        console.log(svg); // Log the SVG element passed as an argument
+        console.log(focus.r, focus.x, focus.y);
+
+        const transition = svg.transition() // Use the passed SVG element directly
+            .duration(event.altKey ? 7500 : 750)
+            .tween("zoom", () => {
+                const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
+                return t => zoomTo(i(t));
+            });
+    }
+
+
+
+
+
+    // svg.on("click", (event) => zoom(svg, event, root));
 }
+
+
 
 CreateButtons();
+
+
+// function ZoomFunction(e, d) {
+//     // console.log(e, d);
+//     // let labelText = d3.select(".flag-image > p")
+//     // console.log(labelText.html);
+//     let svg = d3.select("svg")
+//     let focus0 = focus;
+
+//     focus = d;
+
+//     let transition = svg.transition()
+//         .duration(e.altKey ? 7500 : 750)
+//         .tween("zoom", d => {
+//             const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
+//             return t => zoomTo(i(t));
+//         });
+// }
