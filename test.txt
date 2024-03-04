@@ -54,63 +54,96 @@ let hPadding = (hSvg - hViz) / 2;
 let margin = 1;
 
 async function CreateBubbles(key) {
-    let svg = d3
-        .select("body")
-        .append("svg")
-        .attr("height", hSvg)
-        .attr("width", wSvg);
+  const bigDataset = await fetching();
+  console.log(bigDataset);
 
-    const pack = d3
-        .pack()
-        .size([wViz - margin * 4, hViz - margin * 4])
-        .padding(3);
+  let svg = d3
+    .select("body")
+    .append("svg")
+    .attr("height", hSvg)
+    .attr("width", wSvg);
 
-    const bigDataset = await fetching();
+  const pack = d3
+    .pack()
+    .size([wViz - margin * 2, hViz - margin * 2])
+    .padding(10);
 
-    const root = pack(d3.hierarchy({ children: bigDataset }).sum((d) => d[key])); // Use the selected property for sizing
+  const root = pack(
+    d3
+      .hierarchy({ children: bigDataset })
+      .sum((d) => (!isNaN(d[key]) ? d[key] : 1))
+  );
+  console.log(root);
 
-    fetching().then((data) => {
-        // Extract keys from the JSON object
-        let keys = Object.keys(data);
-        let gViz = svg
-            .append("g")
-            .selectAll()
-            .data(root.leaves())
-            .enter()
-            .append("g")
-            .attr("transform", (d) => `translate(${d.x},${d.y})`)
+  const radiusScale = d3
+    .scaleLinear()
+    .domain([
+      d3.min(root.leaves(), (d) => d.r),
+      d3.max(root.leaves(), (d) => d.r),
+    ])
+    .range([10, 50]);
 
+  let gViz = svg
+    .append("g")
+    .selectAll()
+    .data(root.leaves())
+    .enter()
+    .append("g")
+    .attr("transform", (d) => `translate(${d.x},${d.y})`);
 
-        let radius = 50;
+  gViz
+    .append("circle")
+    .attr("r", (d) => radiusScale(d.r))
+    .style("fill", "none");
 
-        // Append circle
-        gViz
-            .append("circle")
-            .attr("r", radius)
-            .style("fill", "none")
-            .style("stroke", "black")
+  gViz
+    .append("foreignObject")
+    .attr("width", (d) => radiusScale(d.r) * 2)
+    .attr("height", (d) => radiusScale(d.r) * 2)
+    .attr("x", (d) => -radiusScale(d.r))
+    .attr("y", (d) => -radiusScale(d.r))
+    .html(
+      (d) =>
+        `<div class="flag-image" style="background-image: url(${d.data.flag});"></div>`
+    )
+    .on("mouseover", function (event, d) {
+      tooltip.style("opacity", 0.9);
+    })
+    .on("mousemove", function (event, d) {
+      tooltip
+        .html(`${key}: ${d.data[key]}`)
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 28 + "px");
+    })
+    .on("mouseout", function (event, d) {
+      tooltip.style("opacity", 0);
+    })
+    .on("mouseenter", function (event, d) {
+      let foreign = d3.select(this);
+      foreign.transition().style("transform", "scale(1.5)");
 
-        // Append foreignObject with the same size as the circle
-        gViz
-            .append("foreignObject")
-            .attr("width", 100) // Adjust the width based on your requirements
-            .attr("height", 100) // Adjust the height based on your requirements
-            .attr("x", -50) // Adjust the position based on your requirements
-            .attr("y", -50)
-            .html(
-                (d) =>
-                    `<div class="flag-image" style="background-image: url(${d.data.flag});"></div>`
-            )
-            .on("mouseenter", function (event, d) {
-                hoverFunction(d, d3.select(this), true); // Pass the D3 selection of the circle
-            })
-            .on("mouseleave", function (event, d) {
-                hoverFunction(d, d3.select(this), false); // Pass the D3 selection of the circle
-            });
-
+      let flagImage = d3
+        .select(this)
+        .select(".flag-image")
+        .html(`<p>${d.data.City}</p>`);
+      flagImage
+        .style("display", "flex")
+        .style("justify-content", "center")
+        .style("align-items", "center")
+        .style("z-index", 1);
+    })
+    .on("mouseleave", function (event, d) {
+      let foreign = d3.select(this);
+      foreign.transition().style("transform", "scale(1)");
+      d3.select(this).select(".flag-image").html(``);
     });
-}
 
+  let tooltip = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+}
 function hoverFunction(d, e, va) {
     if (va) {
         // Double the radius when hovered over
