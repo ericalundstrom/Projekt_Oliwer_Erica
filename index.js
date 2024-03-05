@@ -82,7 +82,7 @@ async function CreateBubbles(key) {
   gViz = svg // Assign gViz here
     .append("g")
     .selectAll()
-    .data(root.leaves())
+    .data(root.leaves().filter((d) => !isNaN(d.data[key])))
     .enter()
     .append("g")
     .attr("transform", (d) => `translate(${d.x},${d.y})`)
