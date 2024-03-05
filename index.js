@@ -64,7 +64,7 @@ async function CreateBubbles(key) {
     const pack = d3
         .pack()
         .size([wViz - margin * 2, hViz - margin * 2])
-        .padding(3);
+        .padding(5);
 
     const root = pack(
         d3
@@ -78,7 +78,7 @@ async function CreateBubbles(key) {
             d3.min(root.leaves(), (d) => d.r),
             d3.max(root.leaves(), (d) => d.r),
         ])
-        .range([10, 40]);
+        .range([15, 40]);
 
     gViz = svg // Assign gViz here
         .append("g")
