@@ -88,7 +88,7 @@ async function CreateBubbles(key) {
         .data(root.leaves())
         .enter()
         .append("g")
-        .attr("transform", (d) => `translate(${d.x},${d.y})`)
+        .attr("transform", (d) => `translate(${d.x + 10},${d.y + 10})`)
         .on(
             "click",
             (event, d) => focus !== d && (zoom(event, d), event.stopPropagation())
