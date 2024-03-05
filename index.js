@@ -44,8 +44,8 @@ function filterDataViz(e, key) {
 }
 
 
-let wSvg = 1000;
-let hSvg = 800;
+let wSvg = 800;
+let hSvg = 900;
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
 let wPadding = (wSvg - wViz) / 2;
@@ -66,8 +66,8 @@ async function CreateBubbles(key) {
 
     const pack = d3
         .pack()
-        .size([wViz - margin * 2, hViz - margin * 2])
-        .padding(10);
+        .size([wViz - margin, hViz - margin])
+        .padding(0);
 
     const root = pack(
         d3
@@ -106,8 +106,8 @@ async function CreateBubbles(key) {
     // Append foreignObject with the same size as the circle and hover effect
     gViz
         .append("foreignObject")
-        .attr("width", (d) => radiusScale(d.r) * 2)
-        .attr("height", (d) => radiusScale(d.r) * 2)
+        .attr("width", (d) => radiusScale(d.r) * 1.3)
+        .attr("height", (d) => radiusScale(d.r) * 1.3)
         .attr("x", (d) => -radiusScale(d.r))
         .attr("y", (d) => -radiusScale(d.r))
         .html(
