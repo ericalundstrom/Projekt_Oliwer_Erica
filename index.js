@@ -42,6 +42,7 @@ function filterDataViz(e, key) {
 
 let wSvg = 800;
 let hSvg = 800;
+
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
 let wPadding = (wSvg - wViz) / 2;
@@ -64,12 +65,6 @@ async function CreateBubbles(key) {
     .pack()
     .size([wViz - margin * 2, hViz - margin * 2])
     .padding(3);
-
-  const root = pack(
-    d3
-      .hierarchy({ children: bigDataset })
-      .sum((d) => (!isNaN(d[key]) ? d[key] : 1))
-  );
 
   const radiusScale = d3
     .scaleLinear()
@@ -100,13 +95,13 @@ async function CreateBubbles(key) {
   // Append foreignObject with the same size as the circle and hover effect
   gViz
     .append("foreignObject")
-    .attr("width", (d) => radiusScale(d.r) * 2)
-    .attr("height", (d) => radiusScale(d.r) * 2)
+    .attr("width", (d) => radiusScale(d.r) * 1.3)
+    .attr("height", (d) => radiusScale(d.r) * 1.3)
     .attr("x", (d) => -radiusScale(d.r))
     .attr("y", (d) => -radiusScale(d.r))
     .html(
       (d) =>
-        `<div class="flag-image" style="background-image: url(${d.data.flag});">
+        `        <div class="flag-image" style="background-image: url(${d.data.flag})">
                     <div id="info" style="opacity: 0">
                        <p id="title"> ${d.data.City} </p>
                         <div id="Rank"> 
@@ -155,7 +150,8 @@ async function CreateBubbles(key) {
                         </div>
 
                     </div>
-                </div>`
+                </div>
+                `
     )
     // .select("flag-image > p").style("opacity", 0)
     .on("mouseover", function (event, d) {
