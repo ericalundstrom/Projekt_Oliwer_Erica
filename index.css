@@ -18,6 +18,23 @@
     /* Add a smooth transition effect */
 }
 
+.ButtonBox {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+button {
+    font-family: 'Times New Roman', Times, serif;
+    padding: 10px;
+    background-color: beige;
+    border-radius: 10px;
+    border: 1px solid brown;
+    margin: 5px;
+    width: 120px;
+    height: 50px;
+}
+
 .flag-image {
     width: 100%;
     height: 100%;
@@ -42,7 +59,7 @@
 }
 
 .flag-image #info #title {
-    font-size: 300%;
+    font-size: 250%;
     margin: 0;
 }
 
@@ -50,6 +67,10 @@
     display: flex;
     justify-content: space-between;
     width: 170px;
+}
+
+.infodivs {
+    font-size: 80%;
 }
 
 .flag-image #info p {
