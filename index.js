@@ -1,5 +1,3 @@
-
-
 async function fetching() {
     const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
     return data;
@@ -13,7 +11,6 @@ async function CreateButtons() {
 
     for (const key in firstData) {
         if (key === "City" || key === "flag" || key === "Rank") {
-
         } else {
             keys.push(key);
         }
@@ -24,7 +21,7 @@ async function CreateButtons() {
     keys.forEach((d) => {
         let ButtonDom = document.createElement("button");
         ButtonDom.classList.add("button");
-        let text = d.replace(/_/g, ' ');
+        let text = d.replace(/_/g, " ");
         ButtonDom.textContent = text;
         ButtonWrapper.append(ButtonDom);
         ButtonDom.addEventListener("click", (e) => {
@@ -43,9 +40,9 @@ function filterDataViz(e, key) {
     }
 }
 
-
 let wSvg = 800;
-let hSvg = 900;
+let hSvg = 800;
+
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
 let wPadding = (wSvg - wViz) / 2;
@@ -53,6 +50,7 @@ let hPadding = (hSvg - hViz) / 2;
 let margin = 1;
 
 let gViz;
+let view;
 
 async function CreateBubbles(key) {
     const bigDataset = await fetching();
@@ -63,11 +61,11 @@ async function CreateBubbles(key) {
         .attr("height", hSvg)
         .attr("width", wSvg);
 
-
     const pack = d3
         .pack()
-        .size([wViz - margin, hViz - margin])
-        .padding(0);
+        .size([wViz - margin * 2, hViz - margin * 2])
+        .padding(3);
+
 
     const root = pack(
         d3
@@ -75,15 +73,14 @@ async function CreateBubbles(key) {
             .sum((d) => (!isNaN(d[key]) ? d[key] : 1))
     );
 
+
     const radiusScale = d3
         .scaleLinear()
         .domain([
             d3.min(root.leaves(), (d) => d.r),
             d3.max(root.leaves(), (d) => d.r),
         ])
-        .range([10, 50]);
-
-
+        .range([10, 40]);
 
     gViz = svg // Assign gViz here
         .append("g")
@@ -103,6 +100,7 @@ async function CreateBubbles(key) {
         .attr("r", (d) => radiusScale(d.r))
         .style("fill", "none");
 
+
     // Append foreignObject with the same size as the circle and hover effect
     gViz
         .append("foreignObject")
@@ -113,7 +111,7 @@ async function CreateBubbles(key) {
         .html(
             (d) =>
 
-                `<div class="flag-image" style="background-image: url(${d.data.flag});">
+                `        <div class="flag-image" style="background-image: url(${d.data.flag})">
                     <div id="info" style="opacity: 0">
                        <p id="title"> ${d.data.City} </p>
                         <div id="Rank"> 
@@ -162,8 +160,8 @@ async function CreateBubbles(key) {
                         </div>
 
                     </div>
-                </div>`
-
+                </div>
+                `
         )
         // .select("flag-image > p").style("opacity", 0)
         .on("mouseover", function (event, d) {
@@ -172,7 +170,7 @@ async function CreateBubbles(key) {
         })
         .on("mousemove", function (event, d) {
             // Move tooltip to follow the mouse
-            let text = key.replace(/_/g, ' ')
+            let text = key.replace(/_/g, " ");
 
             tooltip
                 .html(` <b>${d.data.City}</b>, ${text}: ${d.data[key]}`)
@@ -185,24 +183,20 @@ async function CreateBubbles(key) {
         })
         .on("mouseenter", function (event, d) {
             let foreign = d3.select(this);
-            foreign.transition()
-                .style("transform", "scale(1.5)")
+            foreign.transition().style("transform", "scale(1.5)");
 
             let flagImage = d3.select(this);
-            flagImage.style("display", "flex")
+            flagImage
+                .style("display", "flex")
                 .style("justify-content", "center")
-                .style("align-items", "center")
+                .style("align-items", "center");
             // .style("z-index", 1)
-
         })
         .on("mouseleave", function (event, d) {
             let foreign = d3.select(this);
-            foreign.transition().style("transform", "scale(1)")
-            d3.select(this)
-                .select(".flag-image")
-
-        })
-
+            foreign.transition().style("transform", "scale(1)");
+            d3.select(this).select(".flag-image");
+        });
 
     // Create a tooltip
     let tooltip = d3
@@ -211,14 +205,14 @@ async function CreateBubbles(key) {
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-
     let focus = root;
     let view;
 
-    svg.on("click", (event) => { zoom(event, root) });
+    svg.on("click", (event) => {
+        zoom(event, root);
+    });
 
     zoomTo([focus.x, focus.y, focus.r * 2]);
-
 
     function zoomTo(v, e) {
         const k = wSvg / v[2];
@@ -227,35 +221,37 @@ async function CreateBubbles(key) {
         const centerY = hSvg / 2 - 30;
         view = v;
 
-        gViz.attr("transform", d => `translate(${(d.x - v[0]) * k + centerX},${(d.y - v[1]) * k + centerY})`);
-        gViz.select("circle").attr("r", d => radiusScale(d.r) * k);
-        gViz.select("foreignObject")
+        gViz.attr(
+            "transform",
+            (d) =>
+                `translate(${(d.x - v[0]) * k + centerX},${(d.y - v[1]) * k + centerY})`
+        );
+        gViz.select("circle").attr("r", (d) => radiusScale(d.r) * k);
+        gViz
+            .select("foreignObject")
             .attr("width", (d) => radiusScale(d.r) * 2 * k)
             .attr("height", (d) => radiusScale(d.r) * 2 * k)
             .attr("x", (d) => -radiusScale(d.r) * k)
-            .attr("y", (d) => -radiusScale(d.r) * k)
-
+            .attr("y", (d) => -radiusScale(d.r) * k);
     }
-
 
     function zoom(event, d) {
         focus = d;
-        (d) => (!isNaN(d[key]) ? d[key] : 1)
+        (d) => (!isNaN(d[key]) ? d[key] : 1);
 
-        const transition = svg.transition() // Use the passed SVG element directly
+        const transition = svg
+            .transition() // Use the passed SVG element directly
             .duration(event.altKey ? 7500 : 750)
             .tween("zoom", () => {
                 const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2.5]);
-                return t => zoomTo(i(t), d);
+                return (t) => zoomTo(i(t), d);
             });
 
-        let chosen = event.target.offsetParent.children[0].children[0]
+        let chosen = event.target.offsetParent.children[0].children[0];
         chosen.classList.toggle("chosen");
 
         chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
     }
-
-
 }
 
 CreateButtons();
