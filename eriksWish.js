@@ -51,7 +51,7 @@ async function filterDataViz(e, key) {
 
 
 let wSvg = 1200;
-let hSvg = 800;
+let hSvg = 300;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
@@ -106,7 +106,7 @@ async function CreateBubbles(key, value) {
     // maxValue * 1.2
     let xScale = d3.scaleLinear()
         .domain([0, sortedData.length - 1])
-        .range([0, wViz]);
+        .range([0, wViz])
 
 
 
