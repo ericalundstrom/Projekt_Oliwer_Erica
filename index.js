@@ -101,13 +101,13 @@ async function CreateBubbles(key) {
     // Append foreignObject with the same size as the circle and hover effect
     gViz
         .append("foreignObject")
-        .attr("width", (d) => radiusScale(d.r) * 1.3)
-        .attr("height", (d) => radiusScale(d.r) * 1.3)
-        .attr("x", (d) => -radiusScale(d.r))
-        .attr("y", (d) => -radiusScale(d.r))
+        .attr("width", (d) => radiusScale(d.r) * 2) // Set the width based on the radius of the circle
+        .attr("height", (d) => radiusScale(d.r) * 2) // Set the height based on the radius of the circle
+        .attr("x", (d) => -radiusScale(d.r)) // Adjust x-position to center the foreignObject
+        .attr("y", (d) => -radiusScale(d.r))  // Set the height based on the radius of the circle
         .html(
             (d) =>
-                `        <div class="flag-image" style="background-image: url(${d.data.flag})">
+                `   <div class="flag-image" style="background-image: url(${d.data.flag})">
                     <div id="info" style="opacity: 0">
                        <p id="title"> ${d.data.City} </p>
                         <div class="infodivs" id="Rank"> 
@@ -250,4 +250,4 @@ async function CreateBubbles(key) {
     }
 }
 
-CreateButtons();
+// CreateButtons();
