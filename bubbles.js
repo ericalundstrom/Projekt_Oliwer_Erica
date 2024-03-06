@@ -71,6 +71,11 @@ function createSvg() {
     .attr("height", hSvg)
     .attr("width", wSvg);
 }
+let tooltip = d3
+  .select("body")
+  .append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
 
 async function CreateBubbles(key, value) {
   const bigDataset = await fetching();
@@ -84,10 +89,9 @@ async function CreateBubbles(key, value) {
     };
   });
 
-  let n_cols = 6;
+  let n_cols = 7;
   let w = Math.floor(wViz / n_cols + wPadding);
-  console.log(w);
-  let h = Math.floor(hViz / n_cols + hPadding);
+  let h = Math.floor(hViz / n_cols - 20);
 
   function grid_coords(index) {
     let x = (index % n_cols) * w;
@@ -116,96 +120,92 @@ async function CreateBubbles(key, value) {
     gViz
       .append("foreignObject")
       .attr("width", (d, i) => {
-        // Check for NaN values and assign the minimum size if NaN
         const size = isNaN(sizeScale(d[key]))
           ? sizeScale.range()[0]
           : sizeScale(d[key]);
         return size;
       })
       .attr("height", (d, i) => {
-        // Check for NaN values and assign the minimum size if NaN
         const size = isNaN(sizeScale(d[key]))
           ? sizeScale.range()[0]
           : sizeScale(d[key]);
         return size;
       })
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("transform", "translate(0,0)")
       .html(
         (d) =>
-          `   <div class="flag-image" style="background-image: url(${d.flag})"></div>
-                  `
+          `<div class="flag-image" style="background-image: url(${d.flag})"></div>`
       )
-      .on("mouseover", function (event, d) {
-        // Show tooltip on hover
-        tooltip.style("opacity", 0.9);
-      })
-      .on("mousemove", function (event, d) {
-        // Move tooltip to follow the mouse
-        let text = key.replace(/_/g, " ");
-
-        tooltip
-          .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
-          .style("left", event.pageX + 10 + "px")
-          .style("top", event.pageY - 28 + "px");
-      })
-      .on("mouseout", function (event, d) {
-        // Hide tooltip on mouseout
-        tooltip.style("opacity", 0);
-      })
-      .on("mouseenter", function (event, d) {
-        let foreign = d3.select(this);
-        foreign.transition().style("transform", "scale(1.5)");
-
-        let flagImage = d3.select(this);
-        flagImage
-          .style("display", "flex")
-          .style("justify-content", "center")
-          .style("align-items", "center");
-        // .style("z-index", 1)
-      })
-      .on("mouseleave", function (event, d) {
-        let foreign = d3.select(this);
-        foreign.transition().style("transform", "scale(1)");
-        d3.select(this).select(".flag-image");
-      })
-      .attr("transform", "translate(0,0)"); // Add this line to ensure foreign object position
-
-    // Create a tooltip
-    let tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0)
-      .on("mouseover", function (event, d) {
-        // Show tooltip on hover
-        tooltip.style("opacity", 0.9);
-      });
+      .on("mouseover", handleMouseOver)
+      .on("mousemove", handleMouseMove)
+      .on("mouseout", handleMouseOut)
+      .on("mouseenter", handleMouseEnter)
+      .on("mouseleave", handleMouseLeave);
   } else {
-    svg.selectAll("g").data(processedData).transition().duration(500);
+    let gViz = svg.selectAll(".bubble").data(processedData);
 
-    svg
+    gViz
       .selectAll("foreignObject")
-      .data(processedData)
       .transition()
       .duration(500)
       .attr("width", (d, i) => {
-        // Check for NaN values and assign the minimum size if NaN
         const size = isNaN(sizeScale(d[key]))
           ? sizeScale.range()[0]
           : sizeScale(d[key]);
         return size;
       })
       .attr("height", (d, i) => {
-        // Check for NaN values and assign the minimum size if NaN
         const size = isNaN(sizeScale(d[key]))
           ? sizeScale.range()[0]
           : sizeScale(d[key]);
         return size;
       });
 
+    // Handle interactions for existing bubbles
+    gViz
+      .on("click", (event, d) => zoom(event, d, sizeScale))
+      .on("mouseover", handleMouseOver)
+      .on("mousemove", handleMouseMove)
+      .on("mouseout", handleMouseOut);
+    //   .on("mouseenter", handleMouseEnter)
+    //   .on("mouseleave", handleMouseLeave);
+
     console.log(svg);
+  }
+
+  function handleMouseOver(event, d) {
+    // Show tooltip on hover
+    tooltip.style("opacity", 0.9);
+  }
+
+  function handleMouseMove(event, d) {
+    // Move tooltip to follow the mouse
+    let text = key.replace(/_/g, " ");
+    tooltip
+      .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+      .style("left", event.pageX + 10 + "px")
+      .style("top", event.pageY - 28 + "px");
+  }
+
+  function handleMouseOut(event, d) {
+    // Hide tooltip on mouseout
+    tooltip.style("opacity", 0);
+  }
+
+  function handleMouseEnter(event, d) {
+    let foreign = d3.select(this);
+    foreign.transition().style("transform", "scale(1.2)");
+
+    let flagImage = d3.select(this);
+    flagImage
+      .style("display", "flex")
+      .style("justify-content", "center")
+      .style("align-items", "center");
+  }
+
+  function handleMouseLeave(event, d) {
+    let foreign = d3.select(this);
+    foreign.transition().style("transform", "scale(1)");
+    d3.select(this).select(".flag-image");
   }
 }
 
