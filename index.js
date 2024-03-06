@@ -72,14 +72,6 @@ async function CreateBubbles(key) {
       .sum((d) => (!isNaN(d[key]) ? d[key] : 1))
   );
 
-  const radiusScale = d3
-    .scaleLinear()
-    .domain([
-      d3.min(root.leaves(), (d) => d.r),
-      d3.max(root.leaves(), (d) => d.r),
-    ])
-    .range([10, 40]);
-
   gViz = svg // Assign gViz here
     .append("g")
     .selectAll()
@@ -270,4 +262,4 @@ async function CreateBubbles(key) {
   }
 }
 
-// CreateButtons();
+CreateButtons();
