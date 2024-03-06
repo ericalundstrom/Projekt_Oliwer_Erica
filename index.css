@@ -1,7 +1,23 @@
+body {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
 #wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.chosenFilter {
+    font-size: 30px;
+}
+
+.info {
+    text-align: center;
+}
+
+.active {
+    background-color: #dfc063;
 }
 
 .tooltip {
@@ -24,7 +40,6 @@
 }
 
 button {
-    font-family: 'Times New Roman', Times, serif;
     padding: 10px;
     background-color: beige;
     border-radius: 10px;
@@ -43,7 +58,7 @@ button {
     border: 1px solid #d2cdcd;
 }
 
-.flag-image #info {
+#info {
     padding: 10%;
     font-size: 70%;
     width: 80%;
@@ -57,12 +72,12 @@ button {
     justify-content: center;
 }
 
-.flag-image #info #title {
+#info #title {
     font-size: 250%;
     margin: 0;
 }
 
-.flag-image #info div {
+#info div {
     display: flex;
     justify-content: space-between;
     width: 170px;
@@ -72,7 +87,7 @@ button {
     font-size: 80%;
 }
 
-.flag-image #info p {
+#info p {
     padding: 1.5%;
     margin: 0;
 }
