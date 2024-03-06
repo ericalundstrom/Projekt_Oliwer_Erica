@@ -66,6 +66,12 @@ async function CreateBubbles(key) {
     .size([wViz - margin * 2, hViz - margin * 2])
     .padding(3);
 
+  const root = pack(
+    d3
+      .hierarchy({ children: bigDataset })
+      .sum((d) => (!isNaN(d[key]) ? d[key] : 1))
+  );
+
   const radiusScale = d3
     .scaleLinear()
     .domain([
