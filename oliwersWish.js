@@ -26,6 +26,7 @@ async function CreateButtons() {
     ButtonWrapper.append(ButtonDom);
     ButtonDom.addEventListener("click", (e) => {
       filterDataViz(e, d);
+      console.log(d);
     });
   });
 }
@@ -52,6 +53,15 @@ async function filterDataViz(e, key) {
   }
 }
 
+
+function createSvg() {
+  let svg = d3
+    .select("#wrapper")
+    .append("svg")
+    .attr("height", hSvg)
+    .attr("width", wSvg);
+}
+
 let wSvg = 1200;
 let hSvg = 1500;
 
@@ -64,30 +74,19 @@ let margin = 1;
 let gViz;
 let view;
 
-function createSvg() {
-  let svg = d3
-    .select("#wrapper")
-    .append("svg")
-    .attr("height", hSvg)
-    .attr("width", wSvg);
-}
+
+let n_cols = 7;
+let w = Math.floor(wViz / n_cols + wPadding);
+console.log(w);
+let h = Math.floor(hViz / n_cols) - 20;
+
+
 
 async function CreateBubbles(key, value) {
+
   const bigDataset = await fetching();
   let svg = d3.select("svg");
 
-  const processedData = bigDataset.map((d) => {
-    const value = parseFloat(d[key]);
-    return {
-      ...d,
-      [key]: isNaN(value) ? "NaN" : value, // Replace NaN with 0 or any default value
-    };
-  });
-
-  let n_cols = 6;
-  let w = Math.floor(wViz / n_cols + wPadding);
-  console.log(w);
-  let h = Math.floor(hViz / n_cols + hPadding);
 
   function grid_coords(index) {
     let x = (index % n_cols) * w;
@@ -95,12 +94,23 @@ async function CreateBubbles(key, value) {
     return { x, y };
   }
 
-  let sizeScale = d3
-    .scaleLinear()
+  const processedData = bigDataset.map((d) => {
+    const value = parseFloat(d[key]);
+    console.log(value);
+    return {
+      ...d,
+      [key]: isNaN(value) ? "NaN" : value, // Replace NaN with 0 or any default value
+    };
+  });
+
+
+  let sizeScale = d3.scaleLinear()
     .domain([0, d3.max(processedData, (d) => d[key])])
     .range([60, 0.8 * w]);
 
+
   if (value) {
+
     let gViz = svg
       .selectAll(".bubble")
       .data(processedData)
@@ -111,23 +121,17 @@ async function CreateBubbles(key, value) {
         const { x, y } = grid_coords(i);
         return `translate(${x},${y})`; // Use grid_coords for positioning
       })
-      .on("click", (event, d) => zoom(event, d, sizeScale));
+    // .on("click", (event, d) => zoom(event, d, sizeScale));
 
     gViz
       .append("foreignObject")
       .attr("width", (d, i) => {
         // Check for NaN values and assign the minimum size if NaN
-        const size = isNaN(sizeScale(d[key]))
-          ? sizeScale.range()[0]
-          : sizeScale(d[key]);
-        return size;
+        const size = isNaN(sizeScale(d[key])) ? sizeScale.range()[0] : sizeScale(d[key]); return size;
       })
       .attr("height", (d, i) => {
         // Check for NaN values and assign the minimum size if NaN
-        const size = isNaN(sizeScale(d[key]))
-          ? sizeScale.range()[0]
-          : sizeScale(d[key]);
-        return size;
+        const size = isNaN(sizeScale(d[key])) ? sizeScale.range()[0] : sizeScale(d[key]); return size;
       })
       .attr("x", 0)
       .attr("y", 0)
@@ -141,9 +145,11 @@ async function CreateBubbles(key, value) {
         // Show tooltip on hover
         tooltip.style("opacity", 0.9);
       })
-      .on("mousemove", function (event, d) {
+      .on("mousemove", function divInfo(event, d) {
         // Move tooltip to follow the mouse
         let text = key.replace(/_/g, " ");
+        console.log(text);
+        console.log(key);
 
         tooltip
           .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
@@ -183,27 +189,35 @@ async function CreateBubbles(key, value) {
         tooltip.style("opacity", 0.9);
       });
   } else {
+
+
     svg.selectAll("g").data(processedData).transition().duration(500);
+
+    console.log(processedData);
+
+    let tooltip = d3.select(".tooltip");
 
     svg
       .selectAll("foreignObject")
       .data(processedData)
       .transition()
       .duration(500)
-      .attr("width", (d, i) => {
-        // Check for NaN values and assign the minimum size if NaN
-        const size = isNaN(sizeScale(d[key]))
-          ? sizeScale.range()[0]
-          : sizeScale(d[key]);
-        return size;
+      .attr("width", d => sizeScale(d[key] / 4))
+      .attr("height", d => sizeScale(d[key] / 4))
+    console.log(key)
+
+    let fore = d3.selectAll("foreignObject")
+      .on("mousemove", function divInfo(event, d) {
+        // Move tooltip to follow the mouse
+        let text = key.replace(/_/g, " ");
+        console.log(text);
+        console.log(key);
+
+        tooltip
+          .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px");
       })
-      .attr("height", (d, i) => {
-        // Check for NaN values and assign the minimum size if NaN
-        const size = isNaN(sizeScale(d[key]))
-          ? sizeScale.range()[0]
-          : sizeScale(d[key]);
-        return size;
-      });
 
     console.log(svg);
   }
