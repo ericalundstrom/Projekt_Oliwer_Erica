@@ -64,7 +64,7 @@ async function CreateBubbles(key) {
   const pack = d3
     .pack()
     .size([wViz - margin * 2, hViz - margin * 2])
-    .padding(3);
+    .padding(5);
 
   const root = pack(
     d3
@@ -92,6 +92,26 @@ async function CreateBubbles(key) {
       (event, d) => focus !== d && (zoom(event, d), event.stopPropagation())
     );
 
+  const radiusScale = d3
+    .scaleLinear()
+    .domain([
+      d3.min(root.leaves(), (d) => d.r),
+      d3.max(root.leaves(), (d) => d.r),
+    ])
+    .range([15, 40]);
+
+  gViz = svg // Assign gViz here
+    .append("g")
+    .selectAll()
+    .data(root.leaves().filter((d) => !isNaN(d.data[key])))
+    .enter()
+    .append("g")
+    .attr("transform", (d) => `translate(${d.x},${d.y})`)
+    .on(
+      "click",
+      (event, d) => focus !== d && (zoom(event, d), event.stopPropagation())
+    );
+
   // Append circle with dynamic radius
   gViz
     .append("circle")
@@ -101,56 +121,56 @@ async function CreateBubbles(key) {
   // Append foreignObject with the same size as the circle and hover effect
   gViz
     .append("foreignObject")
-    .attr("width", (d) => radiusScale(d.r) * 1.3)
-    .attr("height", (d) => radiusScale(d.r) * 1.3)
-    .attr("x", (d) => -radiusScale(d.r))
-    .attr("y", (d) => -radiusScale(d.r))
+    .attr("width", (d) => radiusScale(d.r) * 2) // Set the width based on the radius of the circle
+    .attr("height", (d) => radiusScale(d.r) * 2) // Set the height based on the radius of the circle
+    .attr("x", (d) => -radiusScale(d.r)) // Adjust x-position to center the foreignObject
+    .attr("y", (d) => -radiusScale(d.r)) // Set the height based on the radius of the circle
     .html(
       (d) =>
-        `        <div class="flag-image" style="background-image: url(${d.data.flag})">
+        `   <div class="flag-image" style="background-image: url(${d.data.flag})">
                     <div id="info" style="opacity: 0">
                        <p id="title"> ${d.data.City} </p>
-                        <div id="Rank"> 
+                        <div class="infodivs" id="Rank"> 
                             <p class="key">Rank: </p> 
                             <p id="value">${d.data.Rank} </p>
                         </div>
-                        <div id="Sunshine_hours"> 
+                        <div class="infodivs" id="Sunshine_hours"> 
                             <p class="key"> Sunshine hours: </p> 
                             <p id="value">${d.data.Sunshine_hours} </p>
                         </div>
-                        <div id="bottle_water_cost"> 
+                        <div class="infodivs" id="bottle_water_cost"> 
                             <p class="key"> Bottle water cost: </p> 
                             <p id="value">${d.data.bottle_water_cost} </p>
                         </div>
-                        <div id="Obesity"> 
+                        <div class="infodivs" id="Obesity"> 
                             <p class="Obesity"> Obesity: </p> 
                             <p id="value">${d.data.Obesity} </p>
                         </div>
-                        <div id="Life_expectancy"> 
+                        <div class="infodivs" id="Life_expectancy"> 
                             <p class="key"> Life expectancy: </p> 
                             <p id="value">${d.data.Life_expectancy} </p>
                         </div>
-                        <div id="Pollution"> 
+                        <div  class="infodivs" id="Pollution"> 
                             <p class="key"> Pollution: </p> 
                             <p id="value">${d.data.Pollution} </p>
                         </div>
-                        <div id="hours_worked"> 
+                        <div  class="infodivs" id="hours_worked"> 
                             <p class="key"> Hours worked: </p> 
                             <p id="value">${d.data.hours_worked} </p>
                         </div>
-                        <div id="raHappinessnk"> 
+                        <div  class="infodivs"id="raHappinessnk"> 
                             <p class="key"> Happiness: </p> 
                             <p id="value">${d.data.Happiness} </p>
                         </div>
-                        <div id="Outdoor_activities"> 
+                        <div class="infodivs" id="Outdoor_activities"> 
                             <p class="key"> Outdoor activities: </p> 
                             <p id="value">${d.data.Outdoor_activities} </p>
                         </div>
-                        <div id="take_out_places"> 
+                        <div class="infodivs" id="take_out_places"> 
                             <p class="key"> Take out places: </p> 
                             <p id="value">${d.data.take_out_places} </p>
                         </div>
-                        <div id="gym_cost"> 
+                        <div class="infodivs" id="gym_cost"> 
                             <p class="key"> Gym cost: </p> 
                             <p id="value">${d.data.gym_cost} </p>
                         </div>
@@ -250,4 +270,4 @@ async function CreateBubbles(key) {
   }
 }
 
-CreateButtons();
+// CreateButtons();
