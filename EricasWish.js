@@ -114,19 +114,15 @@ function createSvg() {
     .attr("width", wSvg);
 }
 
-let wSvg = 1500;
+let wSvg = 1400;
 let hSvg = 1000;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
-let wPadding = (wSvg - wViz) / 2;
-let hPadding = (hSvg - hViz) / 2;
 let margin = 1;
-
-let gViz;
-let view;
-
 let n_cols = 7;
+let w = 200;
+let h = 100;
 
 async function CreateBubbles(key, value) {
   const bigDataset = await fetching();
@@ -143,9 +139,6 @@ async function CreateBubbles(key, value) {
   });
 
   let range = d3.select(".range");
-
-  let w = 200;
-  let h = 100;
 
   range
     .transition()
@@ -188,7 +181,7 @@ async function CreateBubbles(key, value) {
     var legendGroup = svg
       .append("g")
       .attr("class", "legendOrdinal")
-      .attr("transform", `translate(${hSvg / 2 - 30},20)`);
+      .attr("transform", `translate(${hSvg / 2 + 20},20)`);
 
     var ordinal = d3
       .scaleOrdinal()
@@ -252,7 +245,7 @@ async function CreateBubbles(key, value) {
       .attr("class", "bubble")
       .attr("transform", (d, i) => {
         const { x, y } = grid_coords(i);
-        return `translate(${x},${y})`;
+        return `translate(${x + 20},${y + 20})`;
       });
 
     gViz
@@ -268,8 +261,7 @@ async function CreateBubbles(key, value) {
       .attr("height", (d) => {
         let radius = sizeScale(maxValue / 4);
         return radius;
-      })
-      .attr("transform", "translate(-50%, -50%)");
+      });
 
     gViz
       .append("foreignObject")
@@ -303,8 +295,7 @@ async function CreateBubbles(key, value) {
       })
       .on("mouseout", function (event, d) {
         tooltip.style("opacity", 0);
-      })
-      .attr("transform", "translate(-50%, -50%)");
+      });
 
     let tooltip = d3
       .select("body")
@@ -331,8 +322,7 @@ async function CreateBubbles(key, value) {
         let radius = sizeScale(minValue / 4);
         return radius;
       })
-      .attr("border", "1px solid black")
-      .attr("transform", "translate(-50%, -50%)");
+      .attr("border", "1px solid black");
   } else {
     let maxValue = 0;
     let minValue = Infinity;
@@ -365,7 +355,6 @@ async function CreateBubbles(key, value) {
       .data(processedData)
       .transition()
       .duration(700)
-
       .attr("width", (d) => {
         let radius = sizeScale(minValue / 4);
         return radius;
@@ -374,8 +363,7 @@ async function CreateBubbles(key, value) {
       .attr("height", (d) => {
         let radius = sizeScale(minValue / 4);
         return radius;
-      })
-      .attr("transform", "translate(-50%, -50%)");
+      });
 
     svg
       .selectAll(".bubble foreignObject")
@@ -383,12 +371,14 @@ async function CreateBubbles(key, value) {
       .transition()
       .duration(700)
       .attr("width", (d, i) => {
+        // Check for NaN values and assign the minimum size if NaN
         const size = isNaN(sizeScale(d[key]))
           ? sizeScale.range()[0]
           : sizeScale(d[key] / 4);
         return size;
       })
       .attr("height", (d, i) => {
+        // Check for NaN values and assign the minimum size if NaN
         const size = isNaN(sizeScale(d[key]))
           ? sizeScale.range()[0]
           : sizeScale(d[key] / 4);
@@ -412,7 +402,6 @@ async function CreateBubbles(key, value) {
       .data(processedData)
       .transition()
       .duration(700)
-
       .attr("width", (d) => {
         let radius = sizeScale(maxValue / 4);
         return radius;
@@ -421,8 +410,7 @@ async function CreateBubbles(key, value) {
       .attr("height", (d) => {
         let radius = sizeScale(maxValue / 4);
         return radius;
-      })
-      .attr("transform", "translate(-50%, -50%)");
+      });
   }
 }
 
