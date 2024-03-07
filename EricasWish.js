@@ -6,23 +6,23 @@ async function fetching() {
 function basicLayout() {
     let wrapper = document.querySelector("#wrapper");
     wrapper.innerHTML = `
-
-    <div id="background">
-        <h1> Healthy lifestyle around the globe </h1>
-
-        <p>According to a study by YouGov, almost half of Brits stated improving fitness (47%), losing weight (44%), and improving diet (41%) were among their most important New Year’s resolutions for 2020. It’s no surprise that millions of people worldwide enter each New Year with the hope of taking better care of themselves, whether that’s signing up for the gym or eating healthier.</p>
-        <p> However, fitness and diet are not the only measurements of healthiness - although they do play a big part. Sometimes it’s about our surrounding environment, as well as lifestyle choices.</p>
-        <p> The team at Lenstore has analyzed 44 cities across the globe to uncover where it’s easier to lead a well-rounded, healthy lifestyle. From obesity levels to pollution rates, each city has been scored across 10 healthy living metrics.</p>
-        <p> By analyzing factors such as obesity levels, pollution rates, access to outdoor activities, and more, we aim to provide users with a comprehensive view of what it means to live healthily in different urban environments. This data-driven approach allows individuals to make more informed decisions about where they live and how they can improve their quality of life.  </p>
-        <p> The team at Lenstore is dedicated to promoting health and well-being, and we believe that by shedding light on these important metrics, we can empower individuals to make positive changes for themselves and their communities. </p>
-        <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
-        <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
-        <br>
-        <p id="finalQuote"> One question remains, do <b> you</b> live in the best city for healthy living? </p>
-        <br>
-
-    </div>
-   `;
+  
+      <div id="background">
+          <h1> Healthy lifestyle around the globe </h1>
+  
+          <p>According to a study by YouGov, almost half of Brits stated improving fitness (47%), losing weight (44%), and improving diet (41%) were among their most important New Year’s resolutions for 2020. It’s no surprise that millions of people worldwide enter each New Year with the hope of taking better care of themselves, whether that’s signing up for the gym or eating healthier.</p>
+          <p> However, fitness and diet are not the only measurements of healthiness - although they do play a big part. Sometimes it’s about our surrounding environment, as well as lifestyle choices.</p>
+          <p> The team at Lenstore has analyzed 44 cities across the globe to uncover where it’s easier to lead a well-rounded, healthy lifestyle. From obesity levels to pollution rates, each city has been scored across 10 healthy living metrics.</p>
+          <p> By analyzing factors such as obesity levels, pollution rates, access to outdoor activities, and more, we aim to provide users with a comprehensive view of what it means to live healthily in different urban environments. This data-driven approach allows individuals to make more informed decisions about where they live and how they can improve their quality of life.  </p>
+          <p> The team at Lenstore is dedicated to promoting health and well-being, and we believe that by shedding light on these important metrics, we can empower individuals to make positive changes for themselves and their communities. </p>
+          <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
+          <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
+          <br>
+          <p id="finalQuote"> One question remains, do <b> you</b> live in the best city for healthy living? </p>
+          <br>
+  
+      </div>
+     `;
 
     document.querySelector("footer").textContent =
         "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
@@ -88,9 +88,9 @@ async function filterDataViz(e, key) {
         divDom.classList.add("info");
         document.querySelector("#wrapper").append(divDom);
         divDom.innerHTML = `
-            <h2 class="chosenFilter"> ${text} </h2>
-            <h3 class="range"></h3>
-        `;
+              <h2 class="chosenFilter"> ${text} </h2>
+              <h3 class="range"></h3>
+          `;
     } else {
         document.querySelector(".chosenFilter").textContent = text;
     }
@@ -115,7 +115,7 @@ function createSvg() {
 }
 
 let wSvg = 1200;
-let hSvg = 1900;
+let hSvg = 1200;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
@@ -126,10 +126,7 @@ let margin = 1;
 let gViz;
 let view;
 
-let n_cols = 7;
-let w = Math.floor(wViz / n_cols + wPadding) + 10;
-
-let h = Math.floor(hViz / n_cols) + 20;
+let n_cols = 9;
 
 async function CreateBubbles(key, value) {
     const bigDataset = await fetching();
@@ -147,6 +144,12 @@ async function CreateBubbles(key, value) {
 
     let range = d3.select(".range");
 
+    // let w = Math.floor(wViz / n_cols + wPadding) + 10;
+    // let h = Math.floor(hViz / n_cols) + 20;
+
+    let w = 200;
+    let h = 100;
+
     // Update the text content with a transition effect
     range
         .transition()
@@ -155,7 +158,7 @@ async function CreateBubbles(key, value) {
             // Interpolate between the current text content and the new content
             const interpolate = d3.interpolate(
                 this.textContent,
-                `Min value: ${minValue} <br> Max value: ${maxValue}`
+                `Min value: ${minValue} Max value: ${maxValue}`
             );
 
             // Return a function that updates the text content gradually
@@ -171,8 +174,6 @@ async function CreateBubbles(key, value) {
         let x = h / 3 + xaxis;
         let y = w / 2 + yaxis;
 
-        // let x = (index % n_cols) * w;
-        // let y = Math.floor(index / n_cols) * h;
         return { x, y };
     }
 
@@ -189,33 +190,36 @@ async function CreateBubbles(key, value) {
         .domain([0, d3.max(processedData, (d) => d[key])])
         .range([60, 0.8 * w]);
 
-
-
     if (value) {
         // console.log("We are in the if");
 
-        var legendGroup = svg.append("g")
+        var legendGroup = svg
+            .append("g")
             .attr("class", "legendOrdinal")
             .attr("transform", `translate(${wPadding},20)`);
 
-
         // Create the legend color scale
-        var ordinal = d3.scaleOrdinal()
+        var ordinal = d3
+            .scaleOrdinal()
             .domain(["Nan, no data", "Existing data"])
             .range(["lightgray", "none"]);
 
         // Create the legend color scale
-        var legendOrdinal = d3.legendColor()
+        var legendOrdinal = d3
+            .legendColor()
             .shape("circle")
             .shapePadding(10)
-            .cellFilter(function (d) { return d.label !== "e" })
+            .cellFilter(function (d) {
+                return d.label !== "e";
+            })
             .scale(ordinal);
 
         legendGroup.call(legendOrdinal);
 
-        legendGroup.selectAll(".cell circle")
-            .style("stroke", "none") // Clear the stroke
-            .attr("r", 10) // Set the radius to the desired size
+        legendGroup
+            .selectAll(".cell circle")
+            .style("stroke", "none")
+            .attr("r", 10)
             .each(function (d) {
                 // Append an image pattern to each legend circle
                 d3.select(this.parentNode)
@@ -224,7 +228,9 @@ async function CreateBubbles(key, value) {
                     .attr("height", 20)
                     .attr("x", -10)
                     .attr("y", -10)
-                    .html(`<div class="flag-image" style="background-image: url(images/sweden-flag.jpg)"></div>`);
+                    .html(
+                        `<div class="flag-image" style="background-image: url(images/sweden-flag.jpg)"></div>`
+                    );
 
                 if (d !== "Existing data") {
                     d3.select(this.parentNode).classed("nan-value", true);
@@ -259,101 +265,57 @@ async function CreateBubbles(key, value) {
                 const size = isNaN(sizeScale(d[key]))
 
                     ? sizeScale.range()[0]
-                    : sizeScale(radius);
+                    : sizeScale(radius / 4);
                 console.log(size);
                 return size;
             })
             .attr("fill", "lightgray")
-            .attr("cx", maxValue / 2)
-            .attr("cy", maxValue / 2)
-
+            .attr("cx", maxValue / 4)
+            .attr("cy", maxValue / 4)
 
 
         gViz
             .append("foreignObject")
             .attr("width", (d, i) => {
-                // Check for NaN values and assign the minimum size if NaN
                 const size = isNaN(sizeScale(d[key]))
                     ? sizeScale.range()[0]
-                    : sizeScale(d[key]);
+                    : sizeScale(d[key] / 4);
                 return size;
             })
             .attr("height", (d, i) => {
-                // Check for NaN values and assign the minimum size if NaN
-                const size = isNaN(sizeScale(d[key]))
+                const size = isNaN(sizeScale(d[key]) / 4)
                     ? sizeScale.range()[0]
-                    : sizeScale(d[key]);
+                    : sizeScale(d[key] / 4);
                 return size;
             })
             .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
             .html(
                 (d) =>
-                    `
-                    <div class="flag-image" style = "background-image: url(${d.flag})" ></div >
-                `
+                    `<div class="flag-image" style="background-image: url(${d.flag})"></div>`
             )
-            // .on("click", (e, d) => {
-            //     // console.log(e.originalTarget.offsetParent);
-            //     zoom(e)
-            // })
             .on("mouseover", function (event, d) {
-                // Show tooltip on hover
                 tooltip.style("opacity", 0.9);
             })
             .on("mousemove", function divInfo(event, d) {
-                // Move tooltip to follow the mouse
                 let text = key.replace(/_/g, " ");
 
                 tooltip
-                    .html(`< b > ${d.City}</b >, ${text}: ${d[key]} `)
+                    .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
                     .style("left", event.pageX + 10 + "px")
                     .style("top", event.pageY - 28 + "px");
             })
             .on("mouseout", function (event, d) {
-                // Hide tooltip on mouseout
                 tooltip.style("opacity", 0);
-            })
-            .on("mouseenter", function (event, d) {
-                let foreign = d3.select(this);
-                foreign.transition().style("transform", "scale(1.3)");
-
-                let flagImage = d3.select(this);
-                flagImage
-                    .style("display", "flex")
-                    .style("justify-content", "center")
-                    .style("align-items", "center");
-            })
-            .on("mouseleave", function (event, d) {
-                let foreign = d3.select(this);
-                foreign.transition().style("transform", "scale(1)");
-                d3.select(this).select(".flag-image");
-            })
-            .on("click", function (event, d) {
-                let html = `< h2 > ${d.City}</h2 > `;
-
-                for (const category in d) {
-                    if (category !== "City" && category !== "flag") {
-                        const formattedCategory = category.replace(/_/g, " ");
-                        html += `< p > ${formattedCategory}: ${d[category]}</p > `;
-                    }
-                }
-
-                html += `< img src = "${d.flag}" alt = "Flag of ${d.City}" style = "max-width: 200px; max-height: 150px;" > `;
-
-                document.getElementById("city_div").innerHTML = html;
             });
 
-        // Create a tooltip
         let tooltip = d3
             .select("body")
             .append("div")
             .attr("class", "tooltip")
             .style("opacity", 0)
             .on("mouseover", function (event, d) {
-                // Show tooltip on hover
                 tooltip.style("opacity", 0.9);
             });
-
 
         gViz
             .append("circle")
@@ -364,25 +326,20 @@ async function CreateBubbles(key, value) {
                 const size = isNaN(sizeScale(d[key]))
 
                     ? sizeScale.range()[0]
-                    : sizeScale(radius);
+                    : sizeScale(radius / 4);
                 console.log(size);
                 return size;
             })
-            .attr("fill", "blue")
-            .attr("cx", minValue / 2)
-            .attr("cy", minValue / 2)
+            .attr("fill", "none")
+            .attr("cx", minValue / 4)
+            .attr("cy", minValue / 4)
             .style("border", "1px solid black")
 
     } else {
-        console.log("We are in the else");
-        // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
-
-        svg.selectAll("g").data(processedData).transition().duration(500);
 
         let tooltip = d3.select(".tooltip");
 
-
-        let legi = d3.selectAll(".cell circle")
+        let legi = d3.selectAll(".cell circle");
         console.log(legi);
 
         legi.each(function (d) {
@@ -395,25 +352,64 @@ async function CreateBubbles(key, value) {
             }
         });
 
+
+        svg
+            .selectAll("class", "min")
+            .data(processedData)
+            .transition()
+            .duration(700)
+            .attr("r", (d) => {
+                console.log(minValue);
+                let radius = minValue / 2;
+                const size = isNaN(sizeScale(d[key]))
+
+                    ? sizeScale.range()[0]
+                    : sizeScale(radius / 4);
+                console.log(size);
+                return size;
+            })
+
+
+
         svg
             .selectAll(".bubble foreignObject")
             .data(processedData)
             .transition()
-            .duration(500)
+            .duration(700)
             .attr("width", (d, i) => {
                 // Check for NaN values and assign the minimum size if NaN
                 const size = isNaN(sizeScale(d[key]))
                     ? sizeScale.range()[0]
-                    : sizeScale(d[key]);
+                    : sizeScale(d[key] / 4);
                 return size;
             })
             .attr("height", (d, i) => {
                 // Check for NaN values and assign the minimum size if NaN
                 const size = isNaN(sizeScale(d[key]))
                     ? sizeScale.range()[0]
-                    : sizeScale(d[key]);
+                    : sizeScale(d[key] / 4);
                 return size;
             });
+
+
+        svg
+            .selectAll("class", "max")
+            .data(processedData)
+            .transition()
+            .duration(700)
+            .attr("r", (d) => {
+                console.log(maxValue);
+                let radius = maxValue / 2;
+                const size = isNaN(sizeScale(d[key]))
+
+                    ? sizeScale.range()[0]
+                    : sizeScale(radius / 4);
+                console.log(size);
+                return size;
+            })
+
+
+
 
         d3.selectAll("foreignObject")
             .on("mousemove", function divInfo(event, d) {
@@ -421,11 +417,24 @@ async function CreateBubbles(key, value) {
                 let text = key.replace(/_/g, " ");
 
                 tooltip
-                    .html(`< b > ${d.City}</b >, ${text}: ${d[key]} `)
+                    .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
                     .style("left", event.pageX + 10 + "px")
                     .style("top", event.pageY - 28 + "px");
             })
             .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
+
+
+        legi =
+            d3.selectAll(".cell circle")
+                .each(function (d) {
+
+                    if (d !== "Existing data") {
+                        d3.select(this.parentNode).classed("nan-value", true);
+                    } else {
+                        d3.select(this.parentNode).classed("nan-value", false);
+                    }
+                });
+
     }
 }
 

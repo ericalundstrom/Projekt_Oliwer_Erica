@@ -1,5 +1,6 @@
 body {
     font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    background-color: ghostwhite;
 }
 
 #wrapper {
@@ -28,7 +29,7 @@ body {
 }
 
 .active {
-    background-color: #dfc063;
+    /* background-color: #694f00; */
 }
 
 .tooltip {
@@ -45,23 +46,26 @@ body {
 }
 
 .ButtonBox {
+
     display: flex;
     flex-wrap: wrap;
     /* margin-bottom: 50px; */
+
 }
 
 button {
     padding: 10px;
-    background-color: beige;
+    background-color: rgb(103, 103, 103);
     border-radius: 10px;
-    border: 1px solid brown;
     margin: 5px;
     width: 120px;
     height: 50px;
 }
 
 button:hover {
-    background-color: rgb(168, 168, 99);
+    background-color: rgb(59, 59, 59);
+    color: ghostwhite;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .flag-image {
@@ -123,19 +127,9 @@ footer {
 
 .nan-value {
     filter: grayscale(100%);
-    /* Apply grayscale effect for NaN values */
     opacity: 0.5;
     /* Reduce opacity for NaN values */
     /* Add any other styles to visually indicate disabled state */
 }
 
-.legendCells:nth-child(0) circle {
-    filter: grayscale(100%);
-    /* Apply grayscale effect for NaN values */
-    opacity: 0.5;
-}
-
-
-.legendCells:nth-child(1) circle {
-    fill: url("/images/africa-flag.jpg");
-}
+#city_div {}
