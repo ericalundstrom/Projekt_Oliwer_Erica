@@ -114,7 +114,7 @@ function createSvg() {
     .attr("width", wSvg);
 }
 
-let wSvg = 1200;
+let wSvg = 1500;
 let hSvg = 1200;
 
 let hViz = 0.9 * hSvg;
@@ -126,7 +126,7 @@ let margin = 1;
 let gViz;
 let view;
 
-let n_cols = 9;
+let n_cols = 8;
 
 async function CreateBubbles(key, value) {
   const bigDataset = await fetching();
@@ -144,24 +144,18 @@ async function CreateBubbles(key, value) {
 
   let range = d3.select(".range");
 
-  // let w = Math.floor(wViz / n_cols + wPadding) + 10;
-  // let h = Math.floor(hViz / n_cols) + 20;
-
   let w = 200;
   let h = 100;
 
-  // Update the text content with a transition effect
   range
     .transition()
-    .duration(300) // Adjust the duration as needed
+    .duration(300)
     .tween("text", function () {
-      // Interpolate between the current text content and the new content
       const interpolate = d3.interpolate(
         this.textContent,
         `Min value: ${minValue} Max value: ${maxValue}`
       );
 
-      // Return a function that updates the text content gradually
       return function (t) {
         this.innerHTML = interpolate(t);
       };
@@ -188,23 +182,19 @@ async function CreateBubbles(key, value) {
   let sizeScale = d3
     .scaleLinear()
     .domain([0, d3.max(processedData, (d) => d[key])])
-    .range([60, 0.8 * w]);
+    .range([40, 0.8 * w]);
 
   if (value) {
-    // console.log("We are in the if");
-
     var legendGroup = svg
       .append("g")
       .attr("class", "legendOrdinal")
       .attr("transform", `translate(${wPadding},20)`);
 
-    // Create the legend color scale
     var ordinal = d3
       .scaleOrdinal()
       .domain(["Nan, no data", "Existing data"])
       .range(["lightgray", "none"]);
 
-    // Create the legend color scale
     var legendOrdinal = d3
       .legendColor()
       .shape("circle")
@@ -300,7 +290,8 @@ async function CreateBubbles(key, value) {
     let tooltip = d3.select(".tooltip");
 
     let legi = d3.selectAll(".cell circle");
-    console.log(legi);
+
+    svg.selectAll("g").data(processedData).transition().duration(500);
 
     legi.each(function (d) {
       if (d == "Existing data") {
