@@ -238,10 +238,6 @@ async function CreateBubbles(key, value) {
       .attr("transform", (d, i) => {
         const { x, y } = grid_coords(i);
         return `translate(${x},${y})`;
-      })
-      .on("click", (event, d) => {
-        event.preventDefault();
-        zoom(event);
       });
 
     gViz
