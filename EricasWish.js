@@ -155,7 +155,7 @@ async function CreateBubbles(key, value) {
             // Interpolate between the current text content and the new content
             const interpolate = d3.interpolate(
                 this.textContent,
-                `Min value: <br> ${minValue}<br> <br>Max value: <br> ${maxValue}`
+                `Min value: ${minValue} <br> Max value: ${maxValue}`
             );
 
             // Return a function that updates the text content gradually
@@ -242,12 +242,32 @@ async function CreateBubbles(key, value) {
             .attr("class", "bubble")
             .attr("transform", (d, i) => {
                 const { x, y } = grid_coords(i);
+                console.log(x, y);
                 return `translate(${x},${y})`; // Use grid_coords for positioning
             })
             .on("click", (event, d) => {
                 event.preventDefault();
                 zoom(event);
             });
+
+        gViz
+            .append("circle")
+            .attr("class", "max")
+            .attr("r", (d) => {
+                console.log(maxValue);
+                let radius = maxValue / 2;
+                const size = isNaN(sizeScale(d[key]))
+
+                    ? sizeScale.range()[0]
+                    : sizeScale(radius);
+                console.log(size);
+                return size;
+            })
+            .attr("fill", "lightgray")
+            .attr("cx", maxValue / 2)
+            .attr("cy", maxValue / 2)
+
+
 
         gViz
             .append("foreignObject")
@@ -268,58 +288,14 @@ async function CreateBubbles(key, value) {
             .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
             .html(
                 (d) =>
-                    `   
-                    <div class="flag-image" style="background-image: url(${d.flag})"></div>
-                        <div id="info" style="opacity: 0">
-                            <p id="title"> ${d.City} </p>
-                            <div class="infodivs" id="Rank"> 
-                                <p class="key">Rank: </p> 
-                                <p id="value">${d.Rank} </p>
-                            </div>
-                            <div class="infodivs" id="Sunshine_hours"> 
-                                <p class="key"> Sunshine hours: </p> 
-                                <p id="value">${d.Sunshine_hours} </p>
-                            </div>
-                            <div class="infodivs" id="bottle_water_cost"> 
-                                <p class="key"> Bottle water cost: </p> 
-                                <p id="value">${d.bottle_water_cost} </p>
-                            </div>
-                            <div class="infodivs" id="Obesity"> 
-                                <p class="Obesity"> Obesity: </p> 
-                                <p id="value">${d.Obesity} </p>
-                            </div>
-                            <div class="infodivs" id="Life_expectancy"> 
-                                <p class="key"> Life expectancy: </p> 
-                                <p id="value">${d.Life_expectancy} </p>
-                            </div>
-                            <div  class="infodivs" id="Pollution"> 
-                                <p class="key"> Pollution: </p> 
-                                <p id="value">${d.Pollution} </p>
-                            </div>
-                            <div  class="infodivs" id="hours_worked"> 
-                                <p class="key"> Hours worked: </p> 
-                                <p id="value">${d.hours_worked} </p>
-                            </div>
-                            <div  class="infodivs"id="raHappinessnk"> 
-                                <p class="key"> Happiness: </p> 
-                                <p id="value">${d.Happiness} </p>
-                            </div>
-                            <div class="infodivs" id="Outdoor_activities"> 
-                                <p class="key"> Outdoor activities: </p> 
-                                <p id="value">${d.Outdoor_activities} </p>
-                            </div>
-                            <div class="infodivs" id="take_out_places"> 
-                                <p class="key"> Take out places: </p> 
-                                <p id="value">${d.take_out_places} </p>
-                            </div>
-                            <div class="infodivs" id="gym_cost"> 
-                                <p class="key"> Gym cost: </p> 
-                                <p id="value">${d.gym_cost} </p>
-                            </div>
-
-                        </div>
                     `
+                    <div class="flag-image" style = "background-image: url(${d.flag})" ></div >
+                `
             )
+            // .on("click", (e, d) => {
+            //     // console.log(e.originalTarget.offsetParent);
+            //     zoom(e)
+            // })
             .on("mouseover", function (event, d) {
                 // Show tooltip on hover
                 tooltip.style("opacity", 0.9);
@@ -329,7 +305,7 @@ async function CreateBubbles(key, value) {
                 let text = key.replace(/_/g, " ");
 
                 tooltip
-                    .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+                    .html(`< b > ${d.City}</b >, ${text}: ${d[key]} `)
                     .style("left", event.pageX + 10 + "px")
                     .style("top", event.pageY - 28 + "px");
             })
@@ -353,16 +329,16 @@ async function CreateBubbles(key, value) {
                 d3.select(this).select(".flag-image");
             })
             .on("click", function (event, d) {
-                let html = `<h2>${d.City}</h2>`;
+                let html = `< h2 > ${d.City}</h2 > `;
 
                 for (const category in d) {
                     if (category !== "City" && category !== "flag") {
                         const formattedCategory = category.replace(/_/g, " ");
-                        html += `<p>${formattedCategory}: ${d[category]}</p>`;
+                        html += `< p > ${formattedCategory}: ${d[category]}</p > `;
                     }
                 }
 
-                html += `<img src="${d.flag}" alt="Flag of ${d.City}" style="max-width: 200px; max-height: 150px;">`;
+                html += `< img src = "${d.flag}" alt = "Flag of ${d.City}" style = "max-width: 200px; max-height: 150px;" > `;
 
                 document.getElementById("city_div").innerHTML = html;
             });
@@ -378,105 +354,25 @@ async function CreateBubbles(key, value) {
                 tooltip.style("opacity", 0.9);
             });
 
-        // svg.on("click", zoom);
-        // svg.call(d3.zoom().on("click", zoom));
 
-        // Define the zoom behavior
-        let zoom = d3
-            .zoom()
-            .scaleExtent([0.5, 8]) // Adjust the scale extent as needed
-            .on("zoom", handleZoom);
+        gViz
+            .append("circle")
+            .attr("class", "min")
+            .attr("r", (d) => {
+                console.log(minValue);
+                let radius = minValue / 2;
+                const size = isNaN(sizeScale(d[key]))
 
-        // Initialize the zoom
-        let g = svg.append("g");
+                    ? sizeScale.range()[0]
+                    : sizeScale(radius);
+                console.log(size);
+                return size;
+            })
+            .attr("fill", "blue")
+            .attr("cx", minValue / 2)
+            .attr("cy", minValue / 2)
+            .style("border", "1px solid black")
 
-        // Apply the initial transformation
-        g.attr("transform", d3.zoomIdentity);
-
-        //   // // Determine if zoom in or zoom out
-        //   // if (event.deltaY < 0) {
-        //   //     // Zoom in
-        //   //     scale = 1.2; // Increase the scale
-        //   // } else {
-        //   //     // Zoom out
-        //   //     scale = 0.8; // Decrease the scale
-        //   // }
-
-        //   // // Apply the zoom effect to SVG elements
-        //   // svg.selectAll(".bubble")
-        //   //     .transition()
-        //   //     .duration(transitionDuration)
-        //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
-        //   let chosen = event.target.offsetParent.childNodes[3];
-        //   console.log(event.target.offsetParent.childNodes[3]);
-        //   // console.log(event.target.closest(".info"));
-
-
-        //     chosen.classList.toggle("chosen");
-
-        //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
-        // }
-
-        // console.log("We are in the else");
-        // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
-
-
-        // Function to handle zooming
-        function handleZoom(event) {
-            g.attr("transform", event.transform);
-        }
-
-        // Attach zoom behavior to the SVG element
-        svg.call(zoom);
-
-        // Function to handle zooming on click
-        function handleClick(event) {
-            console.log(event);
-            let scale = 2; // You can adjust the zoom scale here
-            let point = d3.pointer(event, svg.node()); // Get the mouse position relative to the SVG
-            let transform = d3.zoomIdentity
-                .translate(point[0], point[1])
-                .scale(scale)
-                .translate(-point[0], -point[1]);
-            svg.transition().duration(750).call(zoom.transform, transform);
-        }
-
-        // Attach click event listener to the SVG element
-        svg.on("click", handleClick);
-
-        // function zoom(event, d) {
-        //   // let radie = event.target.clientHeight;
-        //   // let x = event.clientX
-        //   // let y = event.clientY
-
-        //   // console.log(event.clientX);
-        //   // console.log(radie, y, x);
-
-        //   // let scale = 1;
-        //   // let transitionDuration = 500;
-
-        //   // // Determine if zoom in or zoom out
-        //   // if (event.deltaY < 0) {
-        //   //     // Zoom in
-        //   //     scale = 1.2; // Increase the scale
-        //   // } else {
-        //   //     // Zoom out
-        //   //     scale = 0.8; // Decrease the scale
-        //   // }
-
-        //   // // Apply the zoom effect to SVG elements
-        //   // svg.selectAll(".bubble")
-        //   //     .transition()
-        //   //     .duration(transitionDuration)
-        //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
-        //   let chosen = event.target.offsetParent.childNodes[3];
-        //   console.log(event.target.offsetParent.childNodes[3]);
-        //   // console.log(event.target.closest(".info"));
-
-        //     chosen.classList.toggle("chosen");
-
-        //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
-        // }
     } else {
         console.log("We are in the else");
         // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
@@ -525,7 +421,7 @@ async function CreateBubbles(key, value) {
                 let text = key.replace(/_/g, " ");
 
                 tooltip
-                    .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+                    .html(`< b > ${d.City}</b >, ${text}: ${d[key]} `)
                     .style("left", event.pageX + 10 + "px")
                     .style("top", event.pageY - 28 + "px");
             })

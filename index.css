@@ -47,7 +47,7 @@ body {
 .ButtonBox {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
 }
 
 button {
