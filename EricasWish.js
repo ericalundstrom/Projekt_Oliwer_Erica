@@ -115,7 +115,7 @@ function createSvg() {
 }
 
 let wSvg = 1200;
-let hSvg = 1200;
+let hSvg = 1900;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
@@ -127,7 +127,7 @@ let gViz;
 let view;
 
 let n_cols = 7;
-let w = Math.floor(wViz / n_cols + wPadding) + 40;
+let w = Math.floor(wViz / n_cols + wPadding) + 10;
 
 let h = Math.floor(hViz / n_cols) + 20;
 
@@ -168,7 +168,7 @@ async function CreateBubbles(key, value) {
         let xaxis = (index % n_cols) * w;
         let yaxis = Math.floor(index / n_cols) * h;
 
-        let x = h / 2 + xaxis;
+        let x = h / 3 + xaxis;
         let y = w / 2 + yaxis;
 
 
@@ -316,7 +316,7 @@ async function CreateBubbles(key, value) {
             })
             .on("mouseenter", function (event, d) {
                 let foreign = d3.select(this);
-                foreign.transition().style("transform", "scale(1.5)");
+                foreign.transition().style("transform", "scale(1.3)");
 
                 let flagImage = d3.select(this);
                 flagImage
