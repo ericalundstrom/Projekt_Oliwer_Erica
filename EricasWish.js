@@ -287,20 +287,6 @@ async function CreateBubbles(key, value) {
       .on("mouseout", function (event, d) {
         tooltip.style("opacity", 0);
       });
-    //   .on("click", function (event, d) {
-    //     let html = `<h2>${d.City}</h2>`;
-
-    //     for (const category in d) {
-    //       if (category !== "City" && category !== "flag") {
-    //         const formattedCategory = category.replace(/_/g, " ");
-    //         html += `<p>${formattedCategory}: ${d[category]}</p>`;
-    //       }
-    //     }
-
-    //     html += `<img src="${d.flag}" alt="Flag of ${d.City}" style="max-width: 200px; max-height: 150px;">`;
-
-    //     document.getElementById("city_div").innerHTML = html;
-    //   });
 
     let tooltip = d3
       .select("body")
