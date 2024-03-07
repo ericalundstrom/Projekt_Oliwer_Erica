@@ -29,7 +29,9 @@ body {
 }
 
 .active {
-    /* background-color: #694f00; */
+
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+
 }
 
 .tooltip {
@@ -56,16 +58,20 @@ body {
 button {
     padding: 10px;
     background-color: rgb(103, 103, 103);
+    border: 1px solid black;
     border-radius: 10px;
     margin: 5px;
     width: 120px;
     height: 50px;
 }
 
+
+
 button:hover {
-    background-color: rgb(59, 59, 59);
-    color: ghostwhite;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: #c0c0c0;
+    /* A darker shade on hover for contrast */
+
 }
 
 .flag-image {

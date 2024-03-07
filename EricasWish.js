@@ -144,24 +144,18 @@ async function CreateBubbles(key, value) {
 
     let range = d3.select(".range");
 
-    // let w = Math.floor(wViz / n_cols + wPadding) + 10;
-    // let h = Math.floor(hViz / n_cols) + 20;
-
     let w = 200;
     let h = 100;
 
-    // Update the text content with a transition effect
     range
         .transition()
-        .duration(300) // Adjust the duration as needed
+        .duration(300)
         .tween("text", function () {
-            // Interpolate between the current text content and the new content
             const interpolate = d3.interpolate(
                 this.textContent,
                 `Min value: ${minValue} Max value: ${maxValue}`
             );
 
-            // Return a function that updates the text content gradually
             return function (t) {
                 this.innerHTML = interpolate(t);
             };
@@ -188,23 +182,19 @@ async function CreateBubbles(key, value) {
     let sizeScale = d3
         .scaleLinear()
         .domain([0, d3.max(processedData, (d) => d[key])])
-        .range([60, 0.8 * w]);
+        .range([40, 0.8 * w]);
 
     if (value) {
-        // console.log("We are in the if");
-
         var legendGroup = svg
             .append("g")
             .attr("class", "legendOrdinal")
             .attr("transform", `translate(${wPadding},20)`);
 
-        // Create the legend color scale
         var ordinal = d3
             .scaleOrdinal()
             .domain(["Nan, no data", "Existing data"])
             .range(["lightgray", "none"]);
 
-        // Create the legend color scale
         var legendOrdinal = d3
             .legendColor()
             .shape("circle")
@@ -243,13 +233,11 @@ async function CreateBubbles(key, value) {
             .selectAll(".bubble")
             .data(processedData)
             .enter()
-            // .attr("translate", `transform(0, ${hPadding})`)
             .append("g")
             .attr("class", "bubble")
             .attr("transform", (d, i) => {
                 const { x, y } = grid_coords(i);
-                console.log(x, y);
-                return `translate(${x},${y})`; // Use grid_coords for positioning
+                return `translate(${x},${y})`;
             })
             .on("click", (event, d) => {
                 event.preventDefault();
@@ -272,7 +260,6 @@ async function CreateBubbles(key, value) {
             .attr("fill", "lightgray")
             .attr("cx", maxValue / 4)
             .attr("cy", maxValue / 4)
-
 
         gViz
             .append("foreignObject")
@@ -317,6 +304,7 @@ async function CreateBubbles(key, value) {
                 tooltip.style("opacity", 0.9);
             });
 
+
         gViz
             .append("circle")
             .attr("class", "min")
@@ -330,13 +318,12 @@ async function CreateBubbles(key, value) {
                 console.log(size);
                 return size;
             })
-            .attr("fill", "none")
+            .attr("fill", "blue")
             .attr("cx", minValue / 4)
             .attr("cy", minValue / 4)
             .style("border", "1px solid black")
 
     } else {
-
         let tooltip = d3.select(".tooltip");
 
         let legi = d3.selectAll(".cell circle");
@@ -369,8 +356,6 @@ async function CreateBubbles(key, value) {
                 return size;
             })
 
-
-
         svg
             .selectAll(".bubble foreignObject")
             .data(processedData)
@@ -391,6 +376,18 @@ async function CreateBubbles(key, value) {
                 return size;
             });
 
+        d3.selectAll("foreignObject")
+            .on("mousemove", function divInfo(event, d) {
+                // Move tooltip to follow the mouse
+                let text = key.replace(/_/g, " ");
+
+                tooltip
+                    .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+                    .style("left", event.pageX + 10 + "px")
+                    .style("top", event.pageY - 28 + "px");
+            })
+            .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
+
 
         svg
             .selectAll("class", "max")
@@ -407,21 +404,6 @@ async function CreateBubbles(key, value) {
                 console.log(size);
                 return size;
             })
-
-
-
-
-        d3.selectAll("foreignObject")
-            .on("mousemove", function divInfo(event, d) {
-                // Move tooltip to follow the mouse
-                let text = key.replace(/_/g, " ");
-
-                tooltip
-                    .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
-                    .style("left", event.pageX + 10 + "px")
-                    .style("top", event.pageY - 28 + "px");
-            })
-            .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
 
 
         legi =
