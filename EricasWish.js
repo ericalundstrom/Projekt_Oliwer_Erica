@@ -115,7 +115,7 @@ function createSvg() {
 }
 
 
-let wSvg = 1500;
+let wSvg = 1400;
 let hSvg = 1000;
 
 let hViz = 0.9 * hSvg;
@@ -186,7 +186,7 @@ async function CreateBubbles(key, value) {
         var legendGroup = svg
             .append("g")
             .attr("class", "legendOrdinal")
-            .attr("transform", `translate(${(hSvg / 2 + 70)},20)`);
+            .attr("transform", `translate(${(hSvg / 2 + 20)},20)`);
 
         var ordinal = d3
             .scaleOrdinal()
