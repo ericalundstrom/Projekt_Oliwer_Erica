@@ -98,6 +98,7 @@ async function filterDataViz(e, key) {
     document.querySelector(".chosenFilter").textContent = text;
   }
 
+  // Check if a different button is clicked, not the currently applied one
   if (key !== currentFilterKey) {
     currentFilterKey = key;
     if (!isSvgEmpty()) {
@@ -117,7 +118,7 @@ function createSvg() {
 }
 
 let wSvg = 1200;
-let hSvg = 1500;
+let hSvg = 1900;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
@@ -129,7 +130,7 @@ let gViz;
 let view;
 
 let n_cols = 7;
-let w = Math.floor(wViz / n_cols + wPadding) + 40;
+let w = Math.floor(wViz / n_cols + wPadding) + 10;
 
 let h = Math.floor(hViz / n_cols) + 20;
 
@@ -149,15 +150,18 @@ async function CreateBubbles(key, value) {
 
   let range = d3.select(".range");
 
+  // Update the text content with a transition effect
   range
     .transition()
-    .duration(300)
+    .duration(300) // Adjust the duration as needed
     .tween("text", function () {
+      // Interpolate between the current text content and the new content
       const interpolate = d3.interpolate(
         this.textContent,
         `Min value: <br> ${minValue}<br> <br>Max value: <br> ${maxValue}`
       );
 
+      // Return a function that updates the text content gradually
       return function (t) {
         this.innerHTML = interpolate(t);
       };
@@ -167,12 +171,8 @@ async function CreateBubbles(key, value) {
     let xaxis = (index % n_cols) * w;
     let yaxis = Math.floor(index / n_cols) * h;
 
-    // let yPad = (w / 2) + y
-    // let xPad = (h / 2) + x
-
-    let x = h / 2 + xaxis;
+    let x = h / 3 + xaxis;
     let y = w / 2 + yaxis;
-    // console.log(xPad, Pad);
 
     // let x = (index % n_cols) * w;
     // let y = Math.floor(index / n_cols) * h;
@@ -192,22 +192,22 @@ async function CreateBubbles(key, value) {
     .domain([0, d3.max(processedData, (d) => d[key])])
     .range([60, 0.8 * w]);
 
-  //   var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
+  // var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
 
-  //   svg
-  //     .append("g")
-  //     .attr("class", "legendSize")
-  //     .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
+  svg
+    .append("g")
+    .attr("class", "legendSize")
+    .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
 
-  //   var legendSize = d3
-  //     .legendSize()
-  //     .scale(linearSize)
-  //     .shape("circle")
-  //     .shapePadding(15)
-  //     .labelOffset(20)
-  //     .orient("horizontal");
+  var legendSize = d3
+    .legendSize()
+    .scale(linearSize)
+    .shape("circle")
+    .shapePadding(15)
+    .labelOffset(20)
+    .orient("horizontal");
 
-  //   svg.select(".legendSize").call(legendSize).transition();
+  svg.select(".legendSize").call(legendSize).transition();
 
   if (value) {
     console.log("We are in the if");
@@ -318,7 +318,7 @@ async function CreateBubbles(key, value) {
       })
       .on("mouseenter", function (event, d) {
         let foreign = d3.select(this);
-        foreign.transition().style("transform", "scale(1.5)");
+        foreign.transition().style("transform", "scale(1.3)");
 
         let flagImage = d3.select(this);
         flagImage
@@ -346,42 +346,76 @@ async function CreateBubbles(key, value) {
     // svg.on("click", zoom);
     // svg.call(d3.zoom().on("click", zoom));
 
-    function zoom(event, d) {
-      // let radie = event.target.clientHeight;
-      // let x = event.clientX
-      // let y = event.clientY
+    // Define the zoom behavior
+    let zoom = d3
+      .zoom()
+      .scaleExtent([0.5, 8]) // Adjust the scale extent as needed
+      .on("zoom", handleZoom);
 
-      // console.log(event.clientX);
-      // console.log(radie, y, x);
+    // Initialize the zoom
+    let g = svg.append("g");
 
-      // let scale = 1;
-      // let transitionDuration = 500;
+    // Apply the initial transformation
+    g.attr("transform", d3.zoomIdentity);
 
-      // // Determine if zoom in or zoom out
-      // if (event.deltaY < 0) {
-      //     // Zoom in
-      //     scale = 1.2; // Increase the scale
-      // } else {
-      //     // Zoom out
-      //     scale = 0.8; // Decrease the scale
-      // }
-
-      // // Apply the zoom effect to SVG elements
-      // svg.selectAll(".bubble")
-      //     .transition()
-      //     .duration(transitionDuration)
-      //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
-      let chosen = event.target.offsetParent.childNodes[3];
-      console.log(event.target.offsetParent.childNodes[3]);
-      // console.log(event.target.closest(".info"));
-
-      chosen.classList.toggle("chosen");
-
-      chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
+    // Function to handle zooming
+    function handleZoom(event) {
+      g.attr("transform", event.transform);
     }
+
+    // Attach zoom behavior to the SVG element
+    svg.call(zoom);
+
+    // Function to handle zooming on click
+    function handleClick(event) {
+      console.log(event);
+      let scale = 2; // You can adjust the zoom scale here
+      let point = d3.pointer(event, svg.node()); // Get the mouse position relative to the SVG
+      let transform = d3.zoomIdentity
+        .translate(point[0], point[1])
+        .scale(scale)
+        .translate(-point[0], -point[1]);
+      svg.transition().duration(750).call(zoom.transform, transform);
+    }
+
+    // Attach click event listener to the SVG element
+    svg.on("click", handleClick);
+
+    // function zoom(event, d) {
+    //   // let radie = event.target.clientHeight;
+    //   // let x = event.clientX
+    //   // let y = event.clientY
+
+    //   // console.log(event.clientX);
+    //   // console.log(radie, y, x);
+
+    //   // let scale = 1;
+    //   // let transitionDuration = 500;
+
+    //   // // Determine if zoom in or zoom out
+    //   // if (event.deltaY < 0) {
+    //   //     // Zoom in
+    //   //     scale = 1.2; // Increase the scale
+    //   // } else {
+    //   //     // Zoom out
+    //   //     scale = 0.8; // Decrease the scale
+    //   // }
+
+    //   // // Apply the zoom effect to SVG elements
+    //   // svg.selectAll(".bubble")
+    //   //     .transition()
+    //   //     .duration(transitionDuration)
+    //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
+    //   let chosen = event.target.offsetParent.childNodes[3];
+    //   console.log(event.target.offsetParent.childNodes[3]);
+    //   // console.log(event.target.closest(".info"));
+
+    //     chosen.classList.toggle("chosen");
+
+    //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
+    // }
   } else {
     console.log("We are in the else");
-
     // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
 
     svg.selectAll("g").data(processedData).transition().duration(500);
