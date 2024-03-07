@@ -194,20 +194,20 @@ async function CreateBubbles(key, value) {
 
   // var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
 
-  svg
-    .append("g")
-    .attr("class", "legendSize")
-    .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
+  //   svg
+  //     .append("g")
+  //     .attr("class", "legendSize")
+  //     .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
 
-  var legendSize = d3
-    .legendSize()
-    .scale(linearSize)
-    .shape("circle")
-    .shapePadding(15)
-    .labelOffset(20)
-    .orient("horizontal");
+  //   var legendSize = d3
+  //     .legendSize()
+  //     .scale(linearSize)
+  //     .shape("circle")
+  //     .shapePadding(15)
+  //     .labelOffset(20)
+  //     .orient("horizontal");
 
-  svg.select(".legendSize").call(legendSize).transition();
+  //   svg.select(".legendSize").call(legendSize).transition();
 
   if (value) {
     console.log("We are in the if");
