@@ -22,7 +22,7 @@ function basicLayout() {
         <br>
 
     </div>
-    `;
+   `;
 
     document.querySelector("footer").textContent =
         "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
@@ -66,7 +66,7 @@ async function CreateButtons() {
     });
 }
 
-let currentFilterKey; // Track the currently applied filter key
+let currentFilterKey;
 function isSvgEmpty() {
     let svg = document.querySelector("svg");
     if (!svg) {
@@ -171,7 +171,6 @@ async function CreateBubbles(key, value) {
         let x = h / 3 + xaxis;
         let y = w / 2 + yaxis;
 
-
         // let x = (index % n_cols) * w;
         // let y = Math.floor(index / n_cols) * h;
         return { x, y };
@@ -191,7 +190,10 @@ async function CreateBubbles(key, value) {
         .range([60, 0.8 * w]);
 
 
+
     if (value) {
+        // console.log("We are in the if");
+
         var legendGroup = svg.append("g")
             .attr("class", "legendOrdinal")
             .attr("transform", `translate(${wPadding},20)`);
@@ -231,13 +233,11 @@ async function CreateBubbles(key, value) {
                 }
             });
 
-
-        console.log("We are in the if");
-
         let gViz = svg
             .selectAll(".bubble")
             .data(processedData)
             .enter()
+            // .attr("translate", `transform(0, ${hPadding})`)
             .append("g")
             .attr("class", "bubble")
             .attr("transform", (d, i) => {
@@ -351,6 +351,20 @@ async function CreateBubbles(key, value) {
                 let foreign = d3.select(this);
                 foreign.transition().style("transform", "scale(1)");
                 d3.select(this).select(".flag-image");
+            })
+            .on("click", function (event, d) {
+                let html = `<h2>${d.City}</h2>`;
+
+                for (const category in d) {
+                    if (category !== "City" && category !== "flag") {
+                        const formattedCategory = category.replace(/_/g, " ");
+                        html += `<p>${formattedCategory}: ${d[category]}</p>`;
+                    }
+                }
+
+                html += `<img src="${d.flag}" alt="Flag of ${d.City}" style="max-width: 200px; max-height: 150px;">`;
+
+                document.getElementById("city_div").innerHTML = html;
             });
 
         // Create a tooltip
@@ -367,9 +381,9 @@ async function CreateBubbles(key, value) {
         // svg.on("click", zoom);
         // svg.call(d3.zoom().on("click", zoom));
 
-
         // Define the zoom behavior
-        let zoom = d3.zoom()
+        let zoom = d3
+            .zoom()
             .scaleExtent([0.5, 8]) // Adjust the scale extent as needed
             .on("zoom", handleZoom);
 
@@ -378,6 +392,34 @@ async function CreateBubbles(key, value) {
 
         // Apply the initial transformation
         g.attr("transform", d3.zoomIdentity);
+
+        //   // // Determine if zoom in or zoom out
+        //   // if (event.deltaY < 0) {
+        //   //     // Zoom in
+        //   //     scale = 1.2; // Increase the scale
+        //   // } else {
+        //   //     // Zoom out
+        //   //     scale = 0.8; // Decrease the scale
+        //   // }
+
+        //   // // Apply the zoom effect to SVG elements
+        //   // svg.selectAll(".bubble")
+        //   //     .transition()
+        //   //     .duration(transitionDuration)
+        //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
+        //   let chosen = event.target.offsetParent.childNodes[3];
+        //   console.log(event.target.offsetParent.childNodes[3]);
+        //   // console.log(event.target.closest(".info"));
+
+
+        //     chosen.classList.toggle("chosen");
+
+        //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
+        // }
+
+        // console.log("We are in the else");
+        // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
+
 
         // Function to handle zooming
         function handleZoom(event) {
@@ -392,13 +434,15 @@ async function CreateBubbles(key, value) {
             console.log(event);
             let scale = 2; // You can adjust the zoom scale here
             let point = d3.pointer(event, svg.node()); // Get the mouse position relative to the SVG
-            let transform = d3.zoomIdentity.translate(point[0], point[1]).scale(scale).translate(-point[0], -point[1]);
+            let transform = d3.zoomIdentity
+                .translate(point[0], point[1])
+                .scale(scale)
+                .translate(-point[0], -point[1]);
             svg.transition().duration(750).call(zoom.transform, transform);
         }
 
         // Attach click event listener to the SVG element
         svg.on("click", handleClick);
-
 
         // function zoom(event, d) {
         //   // let radie = event.target.clientHeight;
@@ -429,18 +473,18 @@ async function CreateBubbles(key, value) {
         //   console.log(event.target.offsetParent.childNodes[3]);
         //   // console.log(event.target.closest(".info"));
 
-
         //     chosen.classList.toggle("chosen");
 
         //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
         // }
     } else {
-        // console.log("We are in the else");
+        console.log("We are in the else");
         // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
 
         svg.selectAll("g").data(processedData).transition().duration(500);
 
         let tooltip = d3.select(".tooltip");
+
 
         let legi = d3.selectAll(".cell circle")
         console.log(legi);
