@@ -22,10 +22,7 @@ function basicLayout() {
         <br>
 
     </div>
-    <br>
-    <div id="city_div">
-        <p>HEJ</p>
-    </div>`;
+   `;
 
   document.querySelector("footer").textContent =
     "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
@@ -330,6 +327,20 @@ async function CreateBubbles(key, value) {
         let foreign = d3.select(this);
         foreign.transition().style("transform", "scale(1)");
         d3.select(this).select(".flag-image");
+      })
+      .on("click", function (event, d) {
+        let html = `<h2>${d.City}</h2>`;
+
+        for (const category in d) {
+          if (category !== "City" && category !== "flag") {
+            const formattedCategory = category.replace(/_/g, " ");
+            html += `<p>${formattedCategory}: ${d[category]}</p>`;
+          }
+        }
+
+        html += `<img src="${d.flag}" alt="Flag of ${d.City}" style="max-width: 200px; max-height: 150px;">`;
+
+        document.getElementById("city_div").innerHTML = html;
       });
 
     // Create a tooltip
