@@ -353,7 +353,8 @@ async function CreateBubbles(key, value) {
         let tooltip = d3.select(".tooltip");
 
         let legi = d3.selectAll(".cell circle");
-        // console.log(legi);
+
+        svg.selectAll("g").data(processedData).transition().duration(500);
 
         legi.each(function (d) {
             if (d == "Existing data") {
