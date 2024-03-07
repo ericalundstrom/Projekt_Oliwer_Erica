@@ -115,7 +115,7 @@ function createSvg() {
 }
 
 let wSvg = 1200;
-let hSvg = 1900;
+let hSvg = 1200;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
@@ -126,10 +126,7 @@ let margin = 1;
 let gViz;
 let view;
 
-let n_cols = 7;
-let w = Math.floor(wViz / n_cols + wPadding) + 10;
-
-let h = Math.floor(hViz / n_cols) + 20;
+let n_cols = 9;
 
 async function CreateBubbles(key, value) {
   const bigDataset = await fetching();
@@ -147,6 +144,12 @@ async function CreateBubbles(key, value) {
 
   let range = d3.select(".range");
 
+  // let w = Math.floor(wViz / n_cols + wPadding) + 10;
+  // let h = Math.floor(hViz / n_cols) + 20;
+
+  let w = 200;
+  let h = 100;
+
   // Update the text content with a transition effect
   range
     .transition()
@@ -155,7 +158,7 @@ async function CreateBubbles(key, value) {
       // Interpolate between the current text content and the new content
       const interpolate = d3.interpolate(
         this.textContent,
-        `Min value: <br> ${minValue}<br> <br>Max value: <br> ${maxValue}`
+        `Min value: ${minValue} Max value: ${maxValue}`
       );
 
       // Return a function that updates the text content gradually
@@ -171,8 +174,6 @@ async function CreateBubbles(key, value) {
     let x = h / 3 + xaxis;
     let y = w / 2 + yaxis;
 
-    // let x = (index % n_cols) * w;
-    // let y = Math.floor(index / n_cols) * h;
     return { x, y };
   }
 
@@ -217,8 +218,8 @@ async function CreateBubbles(key, value) {
 
     legendGroup
       .selectAll(".cell circle")
-      .style("stroke", "none") // Clear the stroke
-      .attr("r", 10) // Set the radius to the desired size
+      .style("stroke", "none")
+      .attr("r", 10)
       .each(function (d) {
         // Append an image pattern to each legend circle
         d3.select(this.parentNode)
@@ -242,12 +243,11 @@ async function CreateBubbles(key, value) {
       .selectAll(".bubble")
       .data(processedData)
       .enter()
-      // .attr("translate", `transform(0, ${hPadding})`)
       .append("g")
       .attr("class", "bubble")
       .attr("transform", (d, i) => {
         const { x, y } = grid_coords(i);
-        return `translate(${x},${y})`; // Use grid_coords for positioning
+        return `translate(${x},${y})`;
       })
       .on("click", (event, d) => {
         event.preventDefault();
@@ -257,80 +257,26 @@ async function CreateBubbles(key, value) {
     gViz
       .append("foreignObject")
       .attr("width", (d, i) => {
-        // Check for NaN values and assign the minimum size if NaN
         const size = isNaN(sizeScale(d[key]))
           ? sizeScale.range()[0]
-          : sizeScale(d[key]);
+          : sizeScale(d[key] / 4);
         return size;
       })
       .attr("height", (d, i) => {
-        // Check for NaN values and assign the minimum size if NaN
-        const size = isNaN(sizeScale(d[key]))
+        const size = isNaN(sizeScale(d[key]) / 4)
           ? sizeScale.range()[0]
-          : sizeScale(d[key]);
+          : sizeScale(d[key] / 4);
         return size;
       })
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
       .html(
         (d) =>
-          `   
-                    <div class="flag-image" style="background-image: url(${d.flag})"></div>
-                        <div id="info" style="opacity: 0">
-                            <p id="title"> ${d.City} </p>
-                            <div class="infodivs" id="Rank"> 
-                                <p class="key">Rank: </p> 
-                                <p id="value">${d.Rank} </p>
-                            </div>
-                            <div class="infodivs" id="Sunshine_hours"> 
-                                <p class="key"> Sunshine hours: </p> 
-                                <p id="value">${d.Sunshine_hours} </p>
-                            </div>
-                            <div class="infodivs" id="bottle_water_cost"> 
-                                <p class="key"> Bottle water cost: </p> 
-                                <p id="value">${d.bottle_water_cost} </p>
-                            </div>
-                            <div class="infodivs" id="Obesity"> 
-                                <p class="Obesity"> Obesity: </p> 
-                                <p id="value">${d.Obesity} </p>
-                            </div>
-                            <div class="infodivs" id="Life_expectancy"> 
-                                <p class="key"> Life expectancy: </p> 
-                                <p id="value">${d.Life_expectancy} </p>
-                            </div>
-                            <div  class="infodivs" id="Pollution"> 
-                                <p class="key"> Pollution: </p> 
-                                <p id="value">${d.Pollution} </p>
-                            </div>
-                            <div  class="infodivs" id="hours_worked"> 
-                                <p class="key"> Hours worked: </p> 
-                                <p id="value">${d.hours_worked} </p>
-                            </div>
-                            <div  class="infodivs"id="raHappinessnk"> 
-                                <p class="key"> Happiness: </p> 
-                                <p id="value">${d.Happiness} </p>
-                            </div>
-                            <div class="infodivs" id="Outdoor_activities"> 
-                                <p class="key"> Outdoor activities: </p> 
-                                <p id="value">${d.Outdoor_activities} </p>
-                            </div>
-                            <div class="infodivs" id="take_out_places"> 
-                                <p class="key"> Take out places: </p> 
-                                <p id="value">${d.take_out_places} </p>
-                            </div>
-                            <div class="infodivs" id="gym_cost"> 
-                                <p class="key"> Gym cost: </p> 
-                                <p id="value">${d.gym_cost} </p>
-                            </div>
-
-                        </div>
-                    `
+          `<div class="flag-image" style="background-image: url(${d.flag})"></div>`
       )
       .on("mouseover", function (event, d) {
-        // Show tooltip on hover
         tooltip.style("opacity", 0.9);
       })
       .on("mousemove", function divInfo(event, d) {
-        // Move tooltip to follow the mouse
         let text = key.replace(/_/g, " ");
 
         tooltip
@@ -339,153 +285,32 @@ async function CreateBubbles(key, value) {
           .style("top", event.pageY - 28 + "px");
       })
       .on("mouseout", function (event, d) {
-        // Hide tooltip on mouseout
         tooltip.style("opacity", 0);
-      })
-      .on("mouseenter", function (event, d) {
-        let foreign = d3.select(this);
-        foreign.transition().style("transform", "scale(1.3)");
-
-        let flagImage = d3.select(this);
-        flagImage
-          .style("display", "flex")
-          .style("justify-content", "center")
-          .style("align-items", "center");
-      })
-      .on("mouseleave", function (event, d) {
-        let foreign = d3.select(this);
-        foreign.transition().style("transform", "scale(1)");
-        d3.select(this).select(".flag-image");
-      })
-      .on("click", function (event, d) {
-        let html = `<h2>${d.City}</h2>`;
-
-        for (const category in d) {
-          if (category !== "City" && category !== "flag") {
-            const formattedCategory = category.replace(/_/g, " ");
-            html += `<p>${formattedCategory}: ${d[category]}</p>`;
-          }
-        }
-
-        html += `<img src="${d.flag}" alt="Flag of ${d.City}" style="max-width: 200px; max-height: 150px;">`;
-
-        document.getElementById("city_div").innerHTML = html;
       });
+    //   .on("click", function (event, d) {
+    //     let html = `<h2>${d.City}</h2>`;
 
-    // Create a tooltip
+    //     for (const category in d) {
+    //       if (category !== "City" && category !== "flag") {
+    //         const formattedCategory = category.replace(/_/g, " ");
+    //         html += `<p>${formattedCategory}: ${d[category]}</p>`;
+    //       }
+    //     }
+
+    //     html += `<img src="${d.flag}" alt="Flag of ${d.City}" style="max-width: 200px; max-height: 150px;">`;
+
+    //     document.getElementById("city_div").innerHTML = html;
+    //   });
+
     let tooltip = d3
       .select("body")
       .append("div")
       .attr("class", "tooltip")
       .style("opacity", 0)
       .on("mouseover", function (event, d) {
-        // Show tooltip on hover
         tooltip.style("opacity", 0.9);
       });
-
-    // svg.on("click", zoom);
-    // svg.call(d3.zoom().on("click", zoom));
-
-    // Define the zoom behavior
-    let zoom = d3
-      .zoom()
-      .scaleExtent([0.5, 8]) // Adjust the scale extent as needed
-      .on("zoom", handleZoom);
-
-    // Initialize the zoom
-    let g = svg.append("g");
-
-    // Apply the initial transformation
-    g.attr("transform", d3.zoomIdentity);
-
-    //   // // Determine if zoom in or zoom out
-    //   // if (event.deltaY < 0) {
-    //   //     // Zoom in
-    //   //     scale = 1.2; // Increase the scale
-    //   // } else {
-    //   //     // Zoom out
-    //   //     scale = 0.8; // Decrease the scale
-    //   // }
-
-    //   // // Apply the zoom effect to SVG elements
-    //   // svg.selectAll(".bubble")
-    //   //     .transition()
-    //   //     .duration(transitionDuration)
-    //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
-    //   let chosen = event.target.offsetParent.childNodes[3];
-    //   console.log(event.target.offsetParent.childNodes[3]);
-    //   // console.log(event.target.closest(".info"));
-
-    //     chosen.classList.toggle("chosen");
-
-    //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
-    // }
-
-    // console.log("We are in the else");
-    // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
-
-    // Function to handle zooming
-    function handleZoom(event) {
-      g.attr("transform", event.transform);
-    }
-
-    // Attach zoom behavior to the SVG element
-    svg.call(zoom);
-
-    // Function to handle zooming on click
-    function handleClick(event) {
-      console.log(event);
-      let scale = 2; // You can adjust the zoom scale here
-      let point = d3.pointer(event, svg.node()); // Get the mouse position relative to the SVG
-      let transform = d3.zoomIdentity
-        .translate(point[0], point[1])
-        .scale(scale)
-        .translate(-point[0], -point[1]);
-      svg.transition().duration(750).call(zoom.transform, transform);
-    }
-
-    // Attach click event listener to the SVG element
-    svg.on("click", handleClick);
-
-    // function zoom(event, d) {
-    //   // let radie = event.target.clientHeight;
-    //   // let x = event.clientX
-    //   // let y = event.clientY
-
-    //   // console.log(event.clientX);
-    //   // console.log(radie, y, x);
-
-    //   // let scale = 1;
-    //   // let transitionDuration = 500;
-
-    //   // // Determine if zoom in or zoom out
-    //   // if (event.deltaY < 0) {
-    //   //     // Zoom in
-    //   //     scale = 1.2; // Increase the scale
-    //   // } else {
-    //   //     // Zoom out
-    //   //     scale = 0.8; // Decrease the scale
-    //   // }
-
-    //   // // Apply the zoom effect to SVG elements
-    //   // svg.selectAll(".bubble")
-    //   //     .transition()
-    //   //     .duration(transitionDuration)
-    //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
-    //   let chosen = event.target.offsetParent.childNodes[3];
-    //   console.log(event.target.offsetParent.childNodes[3]);
-    //   // console.log(event.target.closest(".info"));
-
-    //     chosen.classList.toggle("chosen");
-
-    //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
-    // }
   } else {
-    console.log("We are in the else");
-    // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
-
-    svg.selectAll("g").data(processedData).transition().duration(500);
-
     let tooltip = d3.select(".tooltip");
 
     let legi = d3.selectAll(".cell circle");
@@ -505,19 +330,19 @@ async function CreateBubbles(key, value) {
       .selectAll(".bubble foreignObject")
       .data(processedData)
       .transition()
-      .duration(500)
+      .duration(700)
       .attr("width", (d, i) => {
         // Check for NaN values and assign the minimum size if NaN
         const size = isNaN(sizeScale(d[key]))
           ? sizeScale.range()[0]
-          : sizeScale(d[key]);
+          : sizeScale(d[key] / 4);
         return size;
       })
       .attr("height", (d, i) => {
         // Check for NaN values and assign the minimum size if NaN
         const size = isNaN(sizeScale(d[key]))
           ? sizeScale.range()[0]
-          : sizeScale(d[key]);
+          : sizeScale(d[key] / 4);
         return size;
       });
 
