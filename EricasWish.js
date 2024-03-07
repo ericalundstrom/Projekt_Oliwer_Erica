@@ -22,7 +22,10 @@ function basicLayout() {
         <br>
 
     </div>
-    `;
+    <br>
+    <div id="city_div">
+        <p>HEJ</p>
+    </div>`;
 
   document.querySelector("footer").textContent =
     "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
@@ -66,7 +69,7 @@ async function CreateButtons() {
   });
 }
 
-let currentFilterKey; // Track the currently applied filter key
+let currentFilterKey;
 function isSvgEmpty() {
   let svg = document.querySelector("svg");
   if (!svg) {
@@ -95,7 +98,6 @@ async function filterDataViz(e, key) {
     document.querySelector(".chosenFilter").textContent = text;
   }
 
-  // Check if a different button is clicked, not the currently applied one
   if (key !== currentFilterKey) {
     currentFilterKey = key;
     if (!isSvgEmpty()) {
@@ -147,18 +149,15 @@ async function CreateBubbles(key, value) {
 
   let range = d3.select(".range");
 
-  // Update the text content with a transition effect
   range
     .transition()
-    .duration(300) // Adjust the duration as needed
+    .duration(300)
     .tween("text", function () {
-      // Interpolate between the current text content and the new content
       const interpolate = d3.interpolate(
         this.textContent,
         `Min value: <br> ${minValue}<br> <br>Max value: <br> ${maxValue}`
       );
 
-      // Return a function that updates the text content gradually
       return function (t) {
         this.innerHTML = interpolate(t);
       };
@@ -193,22 +192,22 @@ async function CreateBubbles(key, value) {
     .domain([0, d3.max(processedData, (d) => d[key])])
     .range([60, 0.8 * w]);
 
-  var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
+  //   var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
 
-  svg
-    .append("g")
-    .attr("class", "legendSize")
-    .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
+  //   svg
+  //     .append("g")
+  //     .attr("class", "legendSize")
+  //     .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
 
-  var legendSize = d3
-    .legendSize()
-    .scale(linearSize)
-    .shape("circle")
-    .shapePadding(15)
-    .labelOffset(20)
-    .orient("horizontal");
+  //   var legendSize = d3
+  //     .legendSize()
+  //     .scale(linearSize)
+  //     .shape("circle")
+  //     .shapePadding(15)
+  //     .labelOffset(20)
+  //     .orient("horizontal");
 
-  svg.select(".legendSize").call(legendSize).transition();
+  //   svg.select(".legendSize").call(legendSize).transition();
 
   if (value) {
     console.log("We are in the if");
@@ -382,7 +381,8 @@ async function CreateBubbles(key, value) {
     }
   } else {
     console.log("We are in the else");
-    svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
+
+    // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
 
     svg.selectAll("g").data(processedData).transition().duration(500);
 
