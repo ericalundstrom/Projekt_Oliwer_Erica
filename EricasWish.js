@@ -3,7 +3,7 @@ async function fetching() {
     return data;
 }
 
-function basicLayout(params) {
+function basicLayout() {
     let wrapper = document.querySelector("#wrapper");
     wrapper.innerHTML = `
 
@@ -24,7 +24,8 @@ function basicLayout(params) {
     </div>
     `;
 
-    document.querySelector("footer").textContent = "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
+    document.querySelector("footer").textContent =
+        "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
     CreateButtons();
 }
 
@@ -53,7 +54,6 @@ async function CreateButtons() {
         ButtonDom.textContent = text;
         ButtonWrapper.append(ButtonDom);
         ButtonDom.addEventListener("click", (e) => {
-
             if (activeButton) {
                 activeButton.classList.remove("active");
             }
@@ -62,7 +62,6 @@ async function CreateButtons() {
             // Update activeButton to the current button
             activeButton = ButtonDom;
             filterDataViz(e, d);
-            console.log(d);
         });
     });
 }
@@ -78,7 +77,6 @@ function isSvgEmpty() {
 }
 
 async function filterDataViz(e, key) {
-
     let div = document.querySelector(".chosenFilter");
     let text = key.replace(/_/g, " ");
     if (text.charAt(0) !== text.charAt(0).toUpperCase()) {
@@ -86,7 +84,6 @@ async function filterDataViz(e, key) {
     }
 
     if (div === null) {
-
         let divDom = document.createElement("div");
         divDom.classList.add("info");
         document.querySelector("#wrapper").append(divDom);
@@ -109,7 +106,6 @@ async function filterDataViz(e, key) {
     }
 }
 
-
 function createSvg() {
     let svg = d3
         .select("#wrapper")
@@ -130,24 +126,18 @@ let margin = 1;
 let gViz;
 let view;
 
-
 let n_cols = 7;
 let w = Math.floor(wViz / n_cols + wPadding) + 40;
-console.log(w);
-let h = Math.floor(hViz / n_cols) - 20;
 
-
+let h = Math.floor(hViz / n_cols) + 20;
 
 async function CreateBubbles(key, value) {
-
     const bigDataset = await fetching();
     let svg = d3.select("svg");
 
-
     let maxValue = 0;
     let minValue = Infinity;
-    bigDataset.forEach(d => {
-
+    bigDataset.forEach((d) => {
         if (d[key] == "NA") {
             return;
         }
@@ -155,15 +145,18 @@ async function CreateBubbles(key, value) {
         minValue = Math.min(minValue, d[key]);
     });
 
-
     let range = d3.select(".range");
 
     // Update the text content with a transition effect
-    range.transition()
+    range
+        .transition()
         .duration(300) // Adjust the duration as needed
         .tween("text", function () {
             // Interpolate between the current text content and the new content
-            const interpolate = d3.interpolate(this.textContent, `Min value: <br> ${minValue}<br> <br>Max value: <br> ${maxValue}`);
+            const interpolate = d3.interpolate(
+                this.textContent,
+                `Min value: <br> ${minValue}<br> <br>Max value: <br> ${maxValue}`
+            );
 
             // Return a function that updates the text content gradually
             return function (t) {
@@ -171,17 +164,13 @@ async function CreateBubbles(key, value) {
             };
         });
 
-
     function grid_coords(index) {
         let xaxis = (index % n_cols) * w;
         let yaxis = Math.floor(index / n_cols) * h;
 
-        // let yPad = (w / 2) + y
-        // let xPad = (h / 2) + x
+        let x = h / 2 + xaxis;
+        let y = w / 2 + yaxis;
 
-        let x = (h / 2) + xaxis;
-        let y = (w / 2) + yaxis
-        // console.log(xPad, Pad);
 
         // let x = (index % n_cols) * w;
         // let y = Math.floor(index / n_cols) * h;
@@ -196,35 +185,30 @@ async function CreateBubbles(key, value) {
         };
     });
 
-
-    let sizeScale = d3.scaleLinear()
+    let sizeScale = d3
+        .scaleLinear()
         .domain([0, d3.max(processedData, (d) => d[key])])
         .range([60, 0.8 * w]);
 
+    var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
 
-    // var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
+    svg
+        .append("g")
+        .attr("class", "legendSize")
+        .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
 
-    // svg.append("g")
-    //     .attr("class", "legendSize")
-    //     .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
+    var legendSize = d3
+        .legendSize()
+        .scale(linearSize)
+        .shape("circle")
+        .shapePadding(15)
+        .labelOffset(20)
+        .orient("horizontal");
 
-    // var legendSize = d3.legendSize()
-    //     .scale(linearSize)
-    //     .shape('circle')
-    //     .shapePadding(15)
-    //     .labelOffset(20)
-    //     .orient('horizontal')
-
-    // svg.select(".legendSize")
-    //     .call(legendSize)
-    //     .transition();
-
-
-
-
+    svg.select(".legendSize").call(legendSize).transition();
 
     if (value) {
-
+        console.log("We are in the if");
 
         let gViz = svg
             .selectAll(".bubble")
@@ -238,23 +222,27 @@ async function CreateBubbles(key, value) {
                 return `translate(${x},${y})`; // Use grid_coords for positioning
             })
             .on("click", (event, d) => {
-                event.preventDefault()
-                zoom(event)
+                event.preventDefault();
+                zoom(event);
             });
 
         gViz
             .append("foreignObject")
             .attr("width", (d, i) => {
                 // Check for NaN values and assign the minimum size if NaN
-                const size = isNaN(sizeScale(d[key])) ? sizeScale.range()[0] : sizeScale(d[key]); return size;
+                const size = isNaN(sizeScale(d[key]))
+                    ? sizeScale.range()[0]
+                    : sizeScale(d[key]);
+                return size;
             })
             .attr("height", (d, i) => {
                 // Check for NaN values and assign the minimum size if NaN
-                const size = isNaN(sizeScale(d[key])) ? sizeScale.range()[0] : sizeScale(d[key]); return size;
+                const size = isNaN(sizeScale(d[key]))
+                    ? sizeScale.range()[0]
+                    : sizeScale(d[key]);
+                return size;
             })
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("transform", "translate(0,0)")
+            .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
             .html(
                 (d) =>
                     `   
@@ -335,14 +323,12 @@ async function CreateBubbles(key, value) {
                     .style("display", "flex")
                     .style("justify-content", "center")
                     .style("align-items", "center");
-                // .style("z-index", 1)
             })
             .on("mouseleave", function (event, d) {
                 let foreign = d3.select(this);
                 foreign.transition().style("transform", "scale(1)");
                 d3.select(this).select(".flag-image");
-            })
-            .attr("transform", "translate(0,0)"); // Add this line to ensure foreign object position
+            });
 
         // Create a tooltip
         let tooltip = d3
@@ -354,6 +340,9 @@ async function CreateBubbles(key, value) {
                 // Show tooltip on hover
                 tooltip.style("opacity", 0.9);
             });
+
+        // svg.on("click", zoom);
+        // svg.call(d3.zoom().on("click", zoom));
 
 
         // Define the zoom behavior
@@ -388,9 +377,43 @@ async function CreateBubbles(key, value) {
         svg.on("click", handleClick);
 
 
+        // function zoom(event, d) {
+        //   // let radie = event.target.clientHeight;
+        //   // let x = event.clientX
+        //   // let y = event.clientY
 
+        //   // console.log(event.clientX);
+        //   // console.log(radie, y, x);
+
+        //   // let scale = 1;
+        //   // let transitionDuration = 500;
+
+        //   // // Determine if zoom in or zoom out
+        //   // if (event.deltaY < 0) {
+        //   //     // Zoom in
+        //   //     scale = 1.2; // Increase the scale
+        //   // } else {
+        //   //     // Zoom out
+        //   //     scale = 0.8; // Decrease the scale
+        //   // }
+
+        //   // // Apply the zoom effect to SVG elements
+        //   // svg.selectAll(".bubble")
+        //   //     .transition()
+        //   //     .duration(transitionDuration)
+        //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
+        //   let chosen = event.target.offsetParent.childNodes[3];
+        //   console.log(event.target.offsetParent.childNodes[3]);
+        //   // console.log(event.target.closest(".info"));
+
+
+        //     chosen.classList.toggle("chosen");
+
+        //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
+        // }
     } else {
-
+        console.log("We are in the else");
+        svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
 
         svg.selectAll("g").data(processedData).transition().duration(500);
 
@@ -401,11 +424,22 @@ async function CreateBubbles(key, value) {
             .data(processedData)
             .transition()
             .duration(500)
-            .attr("width", d => sizeScale(d[key] / 4))
-            .attr("height", d => sizeScale(d[key] / 4))
-        console.log(key)
+            .attr("width", (d, i) => {
+                // Check for NaN values and assign the minimum size if NaN
+                const size = isNaN(sizeScale(d[key]))
+                    ? sizeScale.range()[0]
+                    : sizeScale(d[key]);
+                return size;
+            })
+            .attr("height", (d, i) => {
+                // Check for NaN values and assign the minimum size if NaN
+                const size = isNaN(sizeScale(d[key]))
+                    ? sizeScale.range()[0]
+                    : sizeScale(d[key]);
+                return size;
+            });
 
-        let fore = d3.selectAll("foreignObject")
+        d3.selectAll("foreignObject")
             .on("mousemove", function divInfo(event, d) {
                 // Move tooltip to follow the mouse
                 let text = key.replace(/_/g, " ");
@@ -415,10 +449,8 @@ async function CreateBubbles(key, value) {
                     .style("left", event.pageX + 10 + "px")
                     .style("top", event.pageY - 28 + "px");
             })
-
-
+            .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
     }
 }
 
-
-basicLayout()
+basicLayout();
