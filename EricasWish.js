@@ -119,7 +119,7 @@ function createSvg() {
 }
 
 let wSvg = 1200;
-let hSvg = 1500;
+let hSvg = 1200;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
@@ -202,22 +202,22 @@ async function CreateBubbles(key, value) {
         .range([60, 0.8 * w]);
 
 
-    var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
+    // var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
 
-    svg.append("g")
-        .attr("class", "legendSize")
-        .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
+    // svg.append("g")
+    //     .attr("class", "legendSize")
+    //     .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
 
-    var legendSize = d3.legendSize()
-        .scale(linearSize)
-        .shape('circle')
-        .shapePadding(15)
-        .labelOffset(20)
-        .orient('horizontal')
+    // var legendSize = d3.legendSize()
+    //     .scale(linearSize)
+    //     .shape('circle')
+    //     .shapePadding(15)
+    //     .labelOffset(20)
+    //     .orient('horizontal')
 
-    svg.select(".legendSize")
-        .call(legendSize)
-        .transition();
+    // svg.select(".legendSize")
+    //     .call(legendSize)
+    //     .transition();
 
 
 
@@ -356,44 +356,37 @@ async function CreateBubbles(key, value) {
             });
 
 
-        // svg.on("click", zoom);
-        // svg.call(d3.zoom().on("click", zoom));
+        // Define the zoom behavior
+        let zoom = d3.zoom()
+            .scaleExtent([0.5, 8]) // Adjust the scale extent as needed
+            .on("zoom", handleZoom);
 
-        function zoom(event, d) {
+        // Initialize the zoom
+        let g = svg.append("g");
 
-            // let radie = event.target.clientHeight;
-            // let x = event.clientX
-            // let y = event.clientY
+        // Apply the initial transformation
+        g.attr("transform", d3.zoomIdentity);
 
-            // console.log(event.clientX);
-            // console.log(radie, y, x);
-
-            // let scale = 1;
-            // let transitionDuration = 500;
-
-            // // Determine if zoom in or zoom out
-            // if (event.deltaY < 0) {
-            //     // Zoom in
-            //     scale = 1.2; // Increase the scale
-            // } else {
-            //     // Zoom out
-            //     scale = 0.8; // Decrease the scale
-            // }
-
-            // // Apply the zoom effect to SVG elements
-            // svg.selectAll(".bubble")
-            //     .transition()
-            //     .duration(transitionDuration)
-            //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
-            let chosen = event.target.offsetParent.childNodes[3];
-            console.log(event.target.offsetParent.childNodes[3]);
-            // console.log(event.target.closest(".info"));
-
-            chosen.classList.toggle("chosen");
-
-            chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
-
+        // Function to handle zooming
+        function handleZoom(event) {
+            g.attr("transform", event.transform);
         }
+
+        // Attach zoom behavior to the SVG element
+        svg.call(zoom);
+
+        // Function to handle zooming on click
+        function handleClick(event) {
+            console.log(event);
+            let scale = 2; // You can adjust the zoom scale here
+            let point = d3.pointer(event, svg.node()); // Get the mouse position relative to the SVG
+            let transform = d3.zoomIdentity.translate(point[0], point[1]).scale(scale).translate(-point[0], -point[1]);
+            svg.transition().duration(750).call(zoom.transform, transform);
+        }
+
+        // Attach click event listener to the SVG element
+        svg.on("click", handleClick);
+
 
 
     } else {
