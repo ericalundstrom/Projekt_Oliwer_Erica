@@ -1,11 +1,11 @@
 async function fetching() {
-    const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
-    return data;
+  const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
+  return data;
 }
 
 function basicLayout() {
-    let wrapper = document.querySelector("#wrapper");
-    wrapper.innerHTML = `
+  let wrapper = document.querySelector("#wrapper");
+  wrapper.innerHTML = `
 
     <div id="background">
         <h1> Healthy lifestyle around the globe </h1>
@@ -24,94 +24,94 @@ function basicLayout() {
     </div>
    `;
 
-    document.querySelector("footer").textContent =
-        "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
-    CreateButtons();
+  document.querySelector("footer").textContent =
+    "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
+  CreateButtons();
 }
 
 async function CreateButtons() {
-    let keys = [];
-    let bigDataset = await fetching();
+  let keys = [];
+  let bigDataset = await fetching();
 
-    let firstData = bigDataset[0];
+  let firstData = bigDataset[0];
 
-    for (const key in firstData) {
-        if (key === "City" || key === "flag" || key === "Rank") {
-        } else {
-            keys.push(key);
-        }
+  for (const key in firstData) {
+    if (key === "City" || key === "flag" || key === "Rank") {
+    } else {
+      keys.push(key);
     }
+  }
 
-    let activeButton = null;
+  let activeButton = null;
 
-    let ButtonWrapper = document.createElement("div");
-    ButtonWrapper.classList.add("ButtonBox");
-    document.querySelector("#wrapper").append(ButtonWrapper);
-    keys.forEach((d) => {
-        let ButtonDom = document.createElement("button");
-        ButtonDom.classList.add("button");
-        let text = d.replace(/_/g, " ");
-        ButtonDom.textContent = text;
-        ButtonWrapper.append(ButtonDom);
-        ButtonDom.addEventListener("click", (e) => {
-            if (activeButton) {
-                activeButton.classList.remove("active");
-            }
-            // Add active class to the clicked button
-            ButtonDom.classList.add("active");
-            // Update activeButton to the current button
-            activeButton = ButtonDom;
-            filterDataViz(e, d);
-        });
+  let ButtonWrapper = document.createElement("div");
+  ButtonWrapper.classList.add("ButtonBox");
+  document.querySelector("#wrapper").append(ButtonWrapper);
+  keys.forEach((d) => {
+    let ButtonDom = document.createElement("button");
+    ButtonDom.classList.add("button");
+    let text = d.replace(/_/g, " ");
+    ButtonDom.textContent = text;
+    ButtonWrapper.append(ButtonDom);
+    ButtonDom.addEventListener("click", (e) => {
+      if (activeButton) {
+        activeButton.classList.remove("active");
+      }
+      // Add active class to the clicked button
+      ButtonDom.classList.add("active");
+      // Update activeButton to the current button
+      activeButton = ButtonDom;
+      filterDataViz(e, d);
     });
+  });
 }
 
 let currentFilterKey;
 function isSvgEmpty() {
-    let svg = document.querySelector("svg");
-    if (!svg) {
-        createSvg();
-        return true;
-    }
-    return false;
+  let svg = document.querySelector("svg");
+  if (!svg) {
+    createSvg();
+    return true;
+  }
+  return false;
 }
 
 async function filterDataViz(e, key) {
-    let div = document.querySelector(".chosenFilter");
-    let text = key.replace(/_/g, " ");
-    if (text.charAt(0) !== text.charAt(0).toUpperCase()) {
-        text = text.charAt(0).toUpperCase() + text.slice(1);
-    }
+  let div = document.querySelector(".chosenFilter");
+  let text = key.replace(/_/g, " ");
+  if (text.charAt(0) !== text.charAt(0).toUpperCase()) {
+    text = text.charAt(0).toUpperCase() + text.slice(1);
+  }
 
-    if (div === null) {
-        let divDom = document.createElement("div");
-        divDom.classList.add("info");
-        document.querySelector("#wrapper").append(divDom);
-        divDom.innerHTML = `
+  if (div === null) {
+    let divDom = document.createElement("div");
+    divDom.classList.add("info");
+    document.querySelector("#wrapper").append(divDom);
+    divDom.innerHTML = `
             <h2 class="chosenFilter"> ${text} </h2>
             <h3 class="range"></h3>
         `;
-    } else {
-        document.querySelector(".chosenFilter").textContent = text;
-    }
+  } else {
+    document.querySelector(".chosenFilter").textContent = text;
+  }
 
-    // Check if a different button is clicked, not the currently applied one
-    if (key !== currentFilterKey) {
-        currentFilterKey = key;
-        if (!isSvgEmpty()) {
-            CreateBubbles(key, false);
-        } else {
-            CreateBubbles(key, true);
-        }
+  // Check if a different button is clicked, not the currently applied one
+  if (key !== currentFilterKey) {
+    currentFilterKey = key;
+    if (!isSvgEmpty()) {
+      CreateBubbles(key, false);
+    } else {
+      CreateBubbles(key, true);
     }
+  }
 }
 
 function createSvg() {
-    let svg = d3
-        .select("#wrapper")
-        .append("svg")
-        .attr("height", hSvg)
-        .attr("width", wSvg);
+  let svg = d3
+    .select("#wrapper")
+    .append("svg")
+    .attr("height", hSvg)
+    .attr("width", wSvg);
 }
 
 let wSvg = 1200;
@@ -132,143 +132,148 @@ let w = Math.floor(wViz / n_cols + wPadding) + 10;
 let h = Math.floor(hViz / n_cols) + 20;
 
 async function CreateBubbles(key, value) {
-    const bigDataset = await fetching();
-    let svg = d3.select("svg");
+  const bigDataset = await fetching();
+  let svg = d3.select("svg");
 
-    let maxValue = 0;
-    let minValue = Infinity;
-    bigDataset.forEach((d) => {
-        if (d[key] == "NA") {
-            return;
-        }
-        maxValue = Math.max(maxValue, d[key]);
-        minValue = Math.min(minValue, d[key]);
-    });
-
-    let range = d3.select(".range");
-
-    // Update the text content with a transition effect
-    range
-        .transition()
-        .duration(300) // Adjust the duration as needed
-        .tween("text", function () {
-            // Interpolate between the current text content and the new content
-            const interpolate = d3.interpolate(
-                this.textContent,
-                `Min value: <br> ${minValue}<br> <br>Max value: <br> ${maxValue}`
-            );
-
-            // Return a function that updates the text content gradually
-            return function (t) {
-                this.innerHTML = interpolate(t);
-            };
-        });
-
-    function grid_coords(index) {
-        let xaxis = (index % n_cols) * w;
-        let yaxis = Math.floor(index / n_cols) * h;
-
-        let x = h / 3 + xaxis;
-        let y = w / 2 + yaxis;
-
-        // let x = (index % n_cols) * w;
-        // let y = Math.floor(index / n_cols) * h;
-        return { x, y };
+  let maxValue = 0;
+  let minValue = Infinity;
+  bigDataset.forEach((d) => {
+    if (d[key] == "NA") {
+      return;
     }
+    maxValue = Math.max(maxValue, d[key]);
+    minValue = Math.min(minValue, d[key]);
+  });
 
-    const processedData = bigDataset.map((d) => {
-        const value = parseFloat(d[key]);
-        return {
-            ...d,
-            [key]: isNaN(value) ? "NaN" : value, // Replace NaN with 0 or any default value
-        };
+  let range = d3.select(".range");
+
+  // Update the text content with a transition effect
+  range
+    .transition()
+    .duration(300) // Adjust the duration as needed
+    .tween("text", function () {
+      // Interpolate between the current text content and the new content
+      const interpolate = d3.interpolate(
+        this.textContent,
+        `Min value: <br> ${minValue}<br> <br>Max value: <br> ${maxValue}`
+      );
+
+      // Return a function that updates the text content gradually
+      return function (t) {
+        this.innerHTML = interpolate(t);
+      };
     });
 
-    let sizeScale = d3
-        .scaleLinear()
-        .domain([0, d3.max(processedData, (d) => d[key])])
-        .range([60, 0.8 * w]);
+  function grid_coords(index) {
+    let xaxis = (index % n_cols) * w;
+    let yaxis = Math.floor(index / n_cols) * h;
 
+    let x = h / 3 + xaxis;
+    let y = w / 2 + yaxis;
 
+    // let x = (index % n_cols) * w;
+    // let y = Math.floor(index / n_cols) * h;
+    return { x, y };
+  }
 
-    if (value) {
-        // console.log("We are in the if");
+  const processedData = bigDataset.map((d) => {
+    const value = parseFloat(d[key]);
+    return {
+      ...d,
+      [key]: isNaN(value) ? "NaN" : value, // Replace NaN with 0 or any default value
+    };
+  });
 
-        var legendGroup = svg.append("g")
-            .attr("class", "legendOrdinal")
-            .attr("transform", `translate(${wPadding},20)`);
+  let sizeScale = d3
+    .scaleLinear()
+    .domain([0, d3.max(processedData, (d) => d[key])])
+    .range([60, 0.8 * w]);
 
+  if (value) {
+    // console.log("We are in the if");
 
-        // Create the legend color scale
-        var ordinal = d3.scaleOrdinal()
-            .domain(["Nan, no data", "Existing data"])
-            .range(["lightgray", "none"]);
+    var legendGroup = svg
+      .append("g")
+      .attr("class", "legendOrdinal")
+      .attr("transform", `translate(${wPadding},20)`);
 
-        // Create the legend color scale
-        var legendOrdinal = d3.legendColor()
-            .shape("circle")
-            .shapePadding(10)
-            .cellFilter(function (d) { return d.label !== "e" })
-            .scale(ordinal);
+    // Create the legend color scale
+    var ordinal = d3
+      .scaleOrdinal()
+      .domain(["Nan, no data", "Existing data"])
+      .range(["lightgray", "none"]);
 
-        legendGroup.call(legendOrdinal);
+    // Create the legend color scale
+    var legendOrdinal = d3
+      .legendColor()
+      .shape("circle")
+      .shapePadding(10)
+      .cellFilter(function (d) {
+        return d.label !== "e";
+      })
+      .scale(ordinal);
 
-        legendGroup.selectAll(".cell circle")
-            .style("stroke", "none") // Clear the stroke
-            .attr("r", 10) // Set the radius to the desired size
-            .each(function (d) {
-                // Append an image pattern to each legend circle
-                d3.select(this.parentNode)
-                    .append("foreignObject")
-                    .attr("width", 20)
-                    .attr("height", 20)
-                    .attr("x", -10)
-                    .attr("y", -10)
-                    .html(`<div class="flag-image" style="background-image: url(images/sweden-flag.jpg)"></div>`);
+    legendGroup.call(legendOrdinal);
 
-                if (d !== "Existing data") {
-                    d3.select(this.parentNode).classed("nan-value", true);
-                } else {
-                    d3.select(this.parentNode).classed("data", true);
-                }
-            });
+    legendGroup
+      .selectAll(".cell circle")
+      .style("stroke", "none") // Clear the stroke
+      .attr("r", 10) // Set the radius to the desired size
+      .each(function (d) {
+        // Append an image pattern to each legend circle
+        d3.select(this.parentNode)
+          .append("foreignObject")
+          .attr("width", 20)
+          .attr("height", 20)
+          .attr("x", -10)
+          .attr("y", -10)
+          .html(
+            `<div class="flag-image" style="background-image: url(images/sweden-flag.jpg)"></div>`
+          );
 
-        let gViz = svg
-            .selectAll(".bubble")
-            .data(processedData)
-            .enter()
-            // .attr("translate", `transform(0, ${hPadding})`)
-            .append("g")
-            .attr("class", "bubble")
-            .attr("transform", (d, i) => {
-                const { x, y } = grid_coords(i);
-                return `translate(${x},${y})`; // Use grid_coords for positioning
-            })
-            .on("click", (event, d) => {
-                event.preventDefault();
-                zoom(event);
-            });
+        if (d !== "Existing data") {
+          d3.select(this.parentNode).classed("nan-value", true);
+        } else {
+          d3.select(this.parentNode).classed("data", true);
+        }
+      });
 
-        gViz
-            .append("foreignObject")
-            .attr("width", (d, i) => {
-                // Check for NaN values and assign the minimum size if NaN
-                const size = isNaN(sizeScale(d[key]))
-                    ? sizeScale.range()[0]
-                    : sizeScale(d[key]);
-                return size;
-            })
-            .attr("height", (d, i) => {
-                // Check for NaN values and assign the minimum size if NaN
-                const size = isNaN(sizeScale(d[key]))
-                    ? sizeScale.range()[0]
-                    : sizeScale(d[key]);
-                return size;
-            })
-            .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
-            .html(
-                (d) =>
-                    `   
+    let gViz = svg
+      .selectAll(".bubble")
+      .data(processedData)
+      .enter()
+      // .attr("translate", `transform(0, ${hPadding})`)
+      .append("g")
+      .attr("class", "bubble")
+      .attr("transform", (d, i) => {
+        const { x, y } = grid_coords(i);
+        return `translate(${x},${y})`; // Use grid_coords for positioning
+      })
+      .on("click", (event, d) => {
+        event.preventDefault();
+        zoom(event);
+      });
+
+    gViz
+      .append("foreignObject")
+      .attr("width", (d, i) => {
+        // Check for NaN values and assign the minimum size if NaN
+        const size = isNaN(sizeScale(d[key]))
+          ? sizeScale.range()[0]
+          : sizeScale(d[key]);
+        return size;
+      })
+      .attr("height", (d, i) => {
+        // Check for NaN values and assign the minimum size if NaN
+        const size = isNaN(sizeScale(d[key]))
+          ? sizeScale.range()[0]
+          : sizeScale(d[key]);
+        return size;
+      })
+      .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
+      .html(
+        (d) =>
+          `   
                     <div class="flag-image" style="background-image: url(${d.flag})"></div>
                         <div id="info" style="opacity: 0">
                             <p id="title"> ${d.City} </p>
@@ -319,218 +324,215 @@ async function CreateBubbles(key, value) {
 
                         </div>
                     `
-            )
-            .on("mouseover", function (event, d) {
-                // Show tooltip on hover
-                tooltip.style("opacity", 0.9);
-            })
-            .on("mousemove", function divInfo(event, d) {
-                // Move tooltip to follow the mouse
-                let text = key.replace(/_/g, " ");
+      )
+      .on("mouseover", function (event, d) {
+        // Show tooltip on hover
+        tooltip.style("opacity", 0.9);
+      })
+      .on("mousemove", function divInfo(event, d) {
+        // Move tooltip to follow the mouse
+        let text = key.replace(/_/g, " ");
 
-                tooltip
-                    .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
-                    .style("left", event.pageX + 10 + "px")
-                    .style("top", event.pageY - 28 + "px");
-            })
-            .on("mouseout", function (event, d) {
-                // Hide tooltip on mouseout
-                tooltip.style("opacity", 0);
-            })
-            .on("mouseenter", function (event, d) {
-                let foreign = d3.select(this);
-                foreign.transition().style("transform", "scale(1.3)");
+        tooltip
+          .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px");
+      })
+      .on("mouseout", function (event, d) {
+        // Hide tooltip on mouseout
+        tooltip.style("opacity", 0);
+      })
+      .on("mouseenter", function (event, d) {
+        let foreign = d3.select(this);
+        foreign.transition().style("transform", "scale(1.3)");
 
-                let flagImage = d3.select(this);
-                flagImage
-                    .style("display", "flex")
-                    .style("justify-content", "center")
-                    .style("align-items", "center");
-            })
-            .on("mouseleave", function (event, d) {
-                let foreign = d3.select(this);
-                foreign.transition().style("transform", "scale(1)");
-                d3.select(this).select(".flag-image");
-            })
-            .on("click", function (event, d) {
-                let html = `<h2>${d.City}</h2>`;
+        let flagImage = d3.select(this);
+        flagImage
+          .style("display", "flex")
+          .style("justify-content", "center")
+          .style("align-items", "center");
+      })
+      .on("mouseleave", function (event, d) {
+        let foreign = d3.select(this);
+        foreign.transition().style("transform", "scale(1)");
+        d3.select(this).select(".flag-image");
+      })
+      .on("click", function (event, d) {
+        let html = `<h2>${d.City}</h2>`;
 
-                for (const category in d) {
-                    if (category !== "City" && category !== "flag") {
-                        const formattedCategory = category.replace(/_/g, " ");
-                        html += `<p>${formattedCategory}: ${d[category]}</p>`;
-                    }
-                }
-
-                html += `<img src="${d.flag}" alt="Flag of ${d.City}" style="max-width: 200px; max-height: 150px;">`;
-
-                document.getElementById("city_div").innerHTML = html;
-            });
-
-        // Create a tooltip
-        let tooltip = d3
-            .select("body")
-            .append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0)
-            .on("mouseover", function (event, d) {
-                // Show tooltip on hover
-                tooltip.style("opacity", 0.9);
-            });
-
-        // svg.on("click", zoom);
-        // svg.call(d3.zoom().on("click", zoom));
-
-        // Define the zoom behavior
-        let zoom = d3
-            .zoom()
-            .scaleExtent([0.5, 8]) // Adjust the scale extent as needed
-            .on("zoom", handleZoom);
-
-        // Initialize the zoom
-        let g = svg.append("g");
-
-        // Apply the initial transformation
-        g.attr("transform", d3.zoomIdentity);
-
-        //   // // Determine if zoom in or zoom out
-        //   // if (event.deltaY < 0) {
-        //   //     // Zoom in
-        //   //     scale = 1.2; // Increase the scale
-        //   // } else {
-        //   //     // Zoom out
-        //   //     scale = 0.8; // Decrease the scale
-        //   // }
-
-        //   // // Apply the zoom effect to SVG elements
-        //   // svg.selectAll(".bubble")
-        //   //     .transition()
-        //   //     .duration(transitionDuration)
-        //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
-        //   let chosen = event.target.offsetParent.childNodes[3];
-        //   console.log(event.target.offsetParent.childNodes[3]);
-        //   // console.log(event.target.closest(".info"));
-
-
-        //     chosen.classList.toggle("chosen");
-
-        //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
-        // }
-
-        // console.log("We are in the else");
-        // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
-
-
-        // Function to handle zooming
-        function handleZoom(event) {
-            g.attr("transform", event.transform);
+        for (const category in d) {
+          if (category !== "City" && category !== "flag") {
+            const formattedCategory = category.replace(/_/g, " ");
+            html += `<p>${formattedCategory}: ${d[category]}</p>`;
+          }
         }
 
-        // Attach zoom behavior to the SVG element
-        svg.call(zoom);
+        html += `<img src="${d.flag}" alt="Flag of ${d.City}" style="max-width: 200px; max-height: 150px;">`;
 
-        // Function to handle zooming on click
-        function handleClick(event) {
-            console.log(event);
-            let scale = 2; // You can adjust the zoom scale here
-            let point = d3.pointer(event, svg.node()); // Get the mouse position relative to the SVG
-            let transform = d3.zoomIdentity
-                .translate(point[0], point[1])
-                .scale(scale)
-                .translate(-point[0], -point[1]);
-            svg.transition().duration(750).call(zoom.transform, transform);
-        }
+        document.getElementById("city_div").innerHTML = html;
+      });
 
-        // Attach click event listener to the SVG element
-        svg.on("click", handleClick);
+    // Create a tooltip
+    let tooltip = d3
+      .select("body")
+      .append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0)
+      .on("mouseover", function (event, d) {
+        // Show tooltip on hover
+        tooltip.style("opacity", 0.9);
+      });
 
-        // function zoom(event, d) {
-        //   // let radie = event.target.clientHeight;
-        //   // let x = event.clientX
-        //   // let y = event.clientY
+    // svg.on("click", zoom);
+    // svg.call(d3.zoom().on("click", zoom));
 
-        //   // console.log(event.clientX);
-        //   // console.log(radie, y, x);
+    // Define the zoom behavior
+    let zoom = d3
+      .zoom()
+      .scaleExtent([0.5, 8]) // Adjust the scale extent as needed
+      .on("zoom", handleZoom);
 
-        //   // let scale = 1;
-        //   // let transitionDuration = 500;
+    // Initialize the zoom
+    let g = svg.append("g");
 
-        //   // // Determine if zoom in or zoom out
-        //   // if (event.deltaY < 0) {
-        //   //     // Zoom in
-        //   //     scale = 1.2; // Increase the scale
-        //   // } else {
-        //   //     // Zoom out
-        //   //     scale = 0.8; // Decrease the scale
-        //   // }
+    // Apply the initial transformation
+    g.attr("transform", d3.zoomIdentity);
 
-        //   // // Apply the zoom effect to SVG elements
-        //   // svg.selectAll(".bubble")
-        //   //     .transition()
-        //   //     .duration(transitionDuration)
-        //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
-        //   let chosen = event.target.offsetParent.childNodes[3];
-        //   console.log(event.target.offsetParent.childNodes[3]);
-        //   // console.log(event.target.closest(".info"));
+    //   // // Determine if zoom in or zoom out
+    //   // if (event.deltaY < 0) {
+    //   //     // Zoom in
+    //   //     scale = 1.2; // Increase the scale
+    //   // } else {
+    //   //     // Zoom out
+    //   //     scale = 0.8; // Decrease the scale
+    //   // }
 
-        //     chosen.classList.toggle("chosen");
+    //   // // Apply the zoom effect to SVG elements
+    //   // svg.selectAll(".bubble")
+    //   //     .transition()
+    //   //     .duration(transitionDuration)
+    //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
+    //   let chosen = event.target.offsetParent.childNodes[3];
+    //   console.log(event.target.offsetParent.childNodes[3]);
+    //   // console.log(event.target.closest(".info"));
 
-        //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
-        // }
-    } else {
-        console.log("We are in the else");
-        // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
+    //     chosen.classList.toggle("chosen");
 
-        svg.selectAll("g").data(processedData).transition().duration(500);
+    //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
+    // }
 
-        let tooltip = d3.select(".tooltip");
+    // console.log("We are in the else");
+    // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
 
-
-        let legi = d3.selectAll(".cell circle")
-        console.log(legi);
-
-        legi.each(function (d) {
-            if (d == "Existing data") {
-                let foreignObject = d3.select(this.parentNode).select("foreignObject");
-                foreignObject.classed("nan-value", false);
-            } else {
-                let foreignObject = d3.select(this.parentNode).select("foreignObject");
-                foreignObject.classed("nan-value", false);
-            }
-        });
-
-        svg
-            .selectAll(".bubble foreignObject")
-            .data(processedData)
-            .transition()
-            .duration(500)
-            .attr("width", (d, i) => {
-                // Check for NaN values and assign the minimum size if NaN
-                const size = isNaN(sizeScale(d[key]))
-                    ? sizeScale.range()[0]
-                    : sizeScale(d[key]);
-                return size;
-            })
-            .attr("height", (d, i) => {
-                // Check for NaN values and assign the minimum size if NaN
-                const size = isNaN(sizeScale(d[key]))
-                    ? sizeScale.range()[0]
-                    : sizeScale(d[key]);
-                return size;
-            });
-
-        d3.selectAll("foreignObject")
-            .on("mousemove", function divInfo(event, d) {
-                // Move tooltip to follow the mouse
-                let text = key.replace(/_/g, " ");
-
-                tooltip
-                    .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
-                    .style("left", event.pageX + 10 + "px")
-                    .style("top", event.pageY - 28 + "px");
-            })
-            .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
+    // Function to handle zooming
+    function handleZoom(event) {
+      g.attr("transform", event.transform);
     }
+
+    // Attach zoom behavior to the SVG element
+    svg.call(zoom);
+
+    // Function to handle zooming on click
+    function handleClick(event) {
+      console.log(event);
+      let scale = 2; // You can adjust the zoom scale here
+      let point = d3.pointer(event, svg.node()); // Get the mouse position relative to the SVG
+      let transform = d3.zoomIdentity
+        .translate(point[0], point[1])
+        .scale(scale)
+        .translate(-point[0], -point[1]);
+      svg.transition().duration(750).call(zoom.transform, transform);
+    }
+
+    // Attach click event listener to the SVG element
+    svg.on("click", handleClick);
+
+    // function zoom(event, d) {
+    //   // let radie = event.target.clientHeight;
+    //   // let x = event.clientX
+    //   // let y = event.clientY
+
+    //   // console.log(event.clientX);
+    //   // console.log(radie, y, x);
+
+    //   // let scale = 1;
+    //   // let transitionDuration = 500;
+
+    //   // // Determine if zoom in or zoom out
+    //   // if (event.deltaY < 0) {
+    //   //     // Zoom in
+    //   //     scale = 1.2; // Increase the scale
+    //   // } else {
+    //   //     // Zoom out
+    //   //     scale = 0.8; // Decrease the scale
+    //   // }
+
+    //   // // Apply the zoom effect to SVG elements
+    //   // svg.selectAll(".bubble")
+    //   //     .transition()
+    //   //     .duration(transitionDuration)
+    //   //     .attr("transform", `translate(${x},${y}) scale(${scale})`);
+    //   let chosen = event.target.offsetParent.childNodes[3];
+    //   console.log(event.target.offsetParent.childNodes[3]);
+    //   // console.log(event.target.closest(".info"));
+
+    //     chosen.classList.toggle("chosen");
+
+    //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
+    // }
+  } else {
+    console.log("We are in the else");
+    // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
+
+    svg.selectAll("g").data(processedData).transition().duration(500);
+
+    let tooltip = d3.select(".tooltip");
+
+    let legi = d3.selectAll(".cell circle");
+    console.log(legi);
+
+    legi.each(function (d) {
+      if (d == "Existing data") {
+        let foreignObject = d3.select(this.parentNode).select("foreignObject");
+        foreignObject.classed("nan-value", false);
+      } else {
+        let foreignObject = d3.select(this.parentNode).select("foreignObject");
+        foreignObject.classed("nan-value", false);
+      }
+    });
+
+    svg
+      .selectAll(".bubble foreignObject")
+      .data(processedData)
+      .transition()
+      .duration(500)
+      .attr("width", (d, i) => {
+        // Check for NaN values and assign the minimum size if NaN
+        const size = isNaN(sizeScale(d[key]))
+          ? sizeScale.range()[0]
+          : sizeScale(d[key]);
+        return size;
+      })
+      .attr("height", (d, i) => {
+        // Check for NaN values and assign the minimum size if NaN
+        const size = isNaN(sizeScale(d[key]))
+          ? sizeScale.range()[0]
+          : sizeScale(d[key]);
+        return size;
+      });
+
+    d3.selectAll("foreignObject")
+      .on("mousemove", function divInfo(event, d) {
+        // Move tooltip to follow the mouse
+        let text = key.replace(/_/g, " ");
+
+        tooltip
+          .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px");
+      })
+      .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
+  }
 }
 
 basicLayout();
