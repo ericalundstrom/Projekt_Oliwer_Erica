@@ -114,21 +114,20 @@ function createSvg() {
         .attr("width", wSvg);
 }
 
-let wSvg = 1200;
-let hSvg = 900;
+
+let wSvg = 1500;
+let hSvg = 1000;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
-let wPadding = (wSvg - wViz) / 2;
-let hPadding = (hSvg - hViz) / 2;
 let margin = 1;
+let n_cols = 7;
+let w = 200;
+let h = 100;
 
-let gViz;
-let view;
-
-let n_cols = 8;
 
 async function CreateBubbles(key, value) {
+
     const bigDataset = await fetching();
     let svg = d3.select("svg");
 
@@ -143,9 +142,6 @@ async function CreateBubbles(key, value) {
     });
 
     let range = d3.select(".range");
-
-    let w = 200;
-    let h = 100;
 
     range
         .transition()
@@ -185,10 +181,12 @@ async function CreateBubbles(key, value) {
         .range([40, 0.8 * w]);
 
     if (value) {
+
+
         var legendGroup = svg
             .append("g")
             .attr("class", "legendOrdinal")
-            .attr("transform", `translate(${(hSvg / 2 - 30)},20)`);
+            .attr("transform", `translate(${(hSvg / 2 + 70)},20)`);
 
         var ordinal = d3
             .scaleOrdinal()
@@ -254,10 +252,6 @@ async function CreateBubbles(key, value) {
                 const { x, y } = grid_coords(i);
                 return `translate(${x + 20},${y + 20})`;
             })
-            .on("click", (event, d) => {
-                event.preventDefault();
-                zoom(event);
-            });
 
         gViz
             .append("rect")
@@ -372,12 +366,6 @@ async function CreateBubbles(key, value) {
             .data(processedData)
             .transition()
             .duration(700)
-            // .attr("r", (d) => {
-            //     let radius = sizeScale(minValue / 4)
-            //     return radius / 2
-            // })
-            // .attr("cx", minValue / 4)
-            // .attr("cy", minValue / 4)
             .attr("width", (d) => {
                 let radius = sizeScale(minValue / 4)
                 return radius
@@ -427,12 +415,6 @@ async function CreateBubbles(key, value) {
             .data(processedData)
             .transition()
             .duration(700)
-            // .attr("r", (d) => {
-            //     let radius = sizeScale(maxValue / 4)
-            //     return radius / 2
-            // })
-            // .attr("cx", maxValue / 4)
-            // .attr("cy", maxValue / 4)
             .attr("width", (d) => {
                 let radius = sizeScale(maxValue / 4)
                 return radius
@@ -442,18 +424,6 @@ async function CreateBubbles(key, value) {
                 let radius = sizeScale(maxValue / 4)
                 return radius
             })
-
-
-        // legi =
-        //     d3.selectAll(".cell circle")
-        //         .each(function (d) {
-
-        //             if (d !== "Existing data") {
-        //                 d3.select(this.parentNode).classed("nan-value", true);
-        //             } else {
-        //                 d3.select(this.parentNode).classed("nan-value", false);
-        //             }
-        //         });
 
     }
 }
