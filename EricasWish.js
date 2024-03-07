@@ -190,31 +190,54 @@ async function CreateBubbles(key, value) {
         .domain([0, d3.max(processedData, (d) => d[key])])
         .range([60, 0.8 * w]);
 
-    var linearSize = d3.scaleLinear().domain([0, maxValue]).range([10, 30]);
-
-    svg
-        .append("g")
-        .attr("class", "legendSize")
-        .attr("transform", `translate(${(wViz - wPadding) / 2}, 20)`);
-
-    var legendSize = d3
-        .legendSize()
-        .scale(linearSize)
-        .shape("circle")
-        .shapePadding(15)
-        .labelOffset(20)
-        .orient("horizontal");
-
-    svg.select(".legendSize").call(legendSize).transition();
 
     if (value) {
+        var legendGroup = svg.append("g")
+            .attr("class", "legendOrdinal")
+            .attr("transform", `translate(${wPadding},20)`);
+
+
+        // Create the legend color scale
+        var ordinal = d3.scaleOrdinal()
+            .domain(["Nan, no data", "Existing data"])
+            .range(["lightgray", "none"]);
+
+        // Create the legend color scale
+        var legendOrdinal = d3.legendColor()
+            .shape("circle")
+            .shapePadding(10)
+            .cellFilter(function (d) { return d.label !== "e" })
+            .scale(ordinal);
+
+        legendGroup.call(legendOrdinal);
+
+        legendGroup.selectAll(".cell circle")
+            .style("stroke", "none") // Clear the stroke
+            .attr("r", 10) // Set the radius to the desired size
+            .each(function (d) {
+                // Append an image pattern to each legend circle
+                d3.select(this.parentNode)
+                    .append("foreignObject")
+                    .attr("width", 20)
+                    .attr("height", 20)
+                    .attr("x", -10)
+                    .attr("y", -10)
+                    .html(`<div class="flag-image" style="background-image: url(images/sweden-flag.jpg)"></div>`);
+
+                if (d !== "Existing data") {
+                    d3.select(this.parentNode).classed("nan-value", true);
+                } else {
+                    d3.select(this.parentNode).classed("data", true);
+                }
+            });
+
+
         console.log("We are in the if");
 
         let gViz = svg
             .selectAll(".bubble")
             .data(processedData)
             .enter()
-            // .attr("translate", `transform(0, ${hPadding})`)
             .append("g")
             .attr("class", "bubble")
             .attr("transform", (d, i) => {
@@ -412,15 +435,28 @@ async function CreateBubbles(key, value) {
         //     chosen.style.opacity = chosen.classList.contains("chosen") ? "1" : "0";
         // }
     } else {
-        console.log("We are in the else");
-        svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
+        // console.log("We are in the else");
+        // svg.select(".legendSize").call(legendSize.scale(linearSize)).transition();
 
         svg.selectAll("g").data(processedData).transition().duration(500);
 
         let tooltip = d3.select(".tooltip");
 
+        let legi = d3.selectAll(".cell circle")
+        console.log(legi);
+
+        legi.each(function (d) {
+            if (d == "Existing data") {
+                let foreignObject = d3.select(this.parentNode).select("foreignObject");
+                foreignObject.classed("nan-value", false);
+            } else {
+                let foreignObject = d3.select(this.parentNode).select("foreignObject");
+                foreignObject.classed("nan-value", false);
+            }
+        });
+
         svg
-            .selectAll("foreignObject")
+            .selectAll(".bubble foreignObject")
             .data(processedData)
             .transition()
             .duration(500)
