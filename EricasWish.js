@@ -390,12 +390,10 @@ async function CreateBubbles(key, value) {
         // Move tooltip to follow the mouse
         let text = key.replace(/_/g, " ");
 
-        tooltip
-          .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
-          .style("left", event.pageX + 10 + "px")
-          .style("top", event.pageY - 28 + "px");
-      })
-      .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
+        var legendGroup = svg
+            .append("g")
+            .attr("class", "legendOrdinal")
+            .attr("transform", `translate(${(hSvg / 2 + 20)},20)`);
 
     svg
       .selectAll(".maxScale")
