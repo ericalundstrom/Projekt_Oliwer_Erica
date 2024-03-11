@@ -11,7 +11,7 @@ function basicLayout() {
     <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals. </p>
     <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
     <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
-    <p id="finalQuote"> One question remains, do <b> you</b> live in the best city for healthy living? </p>
+    <p id="finalQuote"> One question remains, do <b> you </b> live in the best city for healthy living? </p>
     <br>
     <div id="line"></div>
   </div>
@@ -143,7 +143,7 @@ async function CreateBubbles(key, value) {
     // let x = h / 3 + xaxis;
     // let y = w / 2 + yaxis + 20;
     let x = (index % n_cols) * w + 60;
-    let y = Math.floor(index / n_cols) * h + 10;
+    let y = Math.floor(index / n_cols) * h;
 
     return { x, y };
   }
