@@ -318,16 +318,16 @@ async function CreateBubbles(key, value) {
           tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
         }
         if (key === "Sunshine_hours") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} hours `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `)
         }
         if (key === "Life_expectancy") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} years  `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years  `)
         }
         if (key === "Pollution") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} index score `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score `)
         }
         if (key === "Hours_worked") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} hours `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `)
         }
 
         console.log(key)
@@ -585,16 +585,16 @@ async function CreateBubbles(key, value) {
           tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
         }
         if (key === "Sunshine_hours") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} hours `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `)
         }
         if (key === "Life_expectancy") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} years  `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years  `)
         }
         if (key === "Pollution") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} index score `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score `)
         }
         if (key === "Hours_worked") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} hours `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `)
         }
 
 
