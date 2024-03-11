@@ -11,7 +11,7 @@ function basicLayout() {
     <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals. </p>
     <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
     <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
-    <p id="finalQuote"> One question remains, do <b> you</b> live in the best city for healthy living? </p>
+    <p id="finalQuote"> One question remains, do <b> you </b> live in the best city for healthy living? </p>
     <br>
     <div id="line"></div>
   </div>
@@ -143,7 +143,7 @@ async function CreateBubbles(key, value) {
     // let x = h / 3 + xaxis;
     // let y = w / 2 + yaxis + 20;
     let x = (index % n_cols) * w + 60;
-    let y = Math.floor(index / n_cols) * h + 10;
+    let y = Math.floor(index / n_cols) * h;
 
     return { x, y };
   }
@@ -166,7 +166,7 @@ async function CreateBubbles(key, value) {
     .transition()
     .duration(300)
     .tween("text", function () {
-      console.log(key);
+      // console.log(key);
 
       // switch ([key]) {
       //   case "Gym_cost":
@@ -465,15 +465,17 @@ async function CreateBubbles(key, value) {
     let tooltip = d3.select(".tooltip");
 
     let legi = d3.selectAll(".cell circle");
-
+    console.log(legi);
     svg.selectAll("g").data(processedData).transition().duration(500);
 
     legi.each(function (d) {
+      console.log(d3.select(this.parentNode).select("foreignObject"));
+      console.log(d3.select(this.parentNode));
+      console.log(d);
       if (d !== "Existing data") {
         let foreignObject = d3.select(this.parentNode).select("foreignObject");
         foreignObject.classed("nan-value", false);
       } else {
-        console.log(d3.select(this.parentNode).select("foreignObject"));
         let foreignObject = d3.select(this.parentNode).select("foreignObject");
         foreignObject.classed("nan-value", false);
       }
@@ -491,8 +493,6 @@ async function CreateBubbles(key, value) {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
         : sizeScale(minValue / 4);
-
-      // console.log("deltaMin result:", result);
 
       return result;
     };
@@ -542,7 +542,7 @@ async function CreateBubbles(key, value) {
       .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaWidth(d) / 2)
       .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaHeight(d) / 2);
 
-    d3.selectAll("foreignObject")
+    d3.selectAll(".bubble foreignObject")
       .on("mousemove", function divInfo(event, d) {
         // Move tooltip to follow the mouse
         let text = key.replace(/_/g, " ");
