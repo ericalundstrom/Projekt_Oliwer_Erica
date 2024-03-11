@@ -39,7 +39,6 @@ let n_cols = 7;
 let w = 200;
 let h = 100;
 
-
 async function CreateButtons() {
   let keys = [];
   let bigDataset = await fetching();
@@ -52,7 +51,6 @@ async function CreateButtons() {
       keys.push(key);
     }
   }
-
 
   let activeButton = null;
 
@@ -75,8 +73,7 @@ async function CreateButtons() {
       activeButton = ButtonDom;
       filterDataViz(e, d);
     });
-
-  })
+  });
 }
 
 let currentFilterKey;
@@ -127,10 +124,7 @@ function createSvg() {
     .attr("width", wSvg);
 }
 
-
-
 async function CreateBubbles(key, value) {
-
   const bigDataset = await fetching();
   let svg = d3.select("svg");
 
@@ -184,12 +178,10 @@ async function CreateBubbles(key, value) {
     .range([40, 0.8 * w]);
 
   if (value) {
-
-
     var legendGroup = svg
       .append("g")
       .attr("class", "legendOrdinal")
-      .attr("transform", `translate(${(hSvg / 2 + 20)},20)`);
+      .attr("transform", `translate(${hSvg / 2 + 20},20)`);
 
     var ordinal = d3
       .scaleOrdinal()
@@ -225,7 +217,7 @@ async function CreateBubbles(key, value) {
           );
 
         if (d !== "Existing data") {
-          d3.select(this.parentNode).classed("nan-value", true)
+          d3.select(this.parentNode).classed("nan-value", true);
           // console.log(d3.select(this.parentNode).select("flag-image"));
         } else {
           d3.select(this.parentNode).classed("data", true);
@@ -235,13 +227,13 @@ async function CreateBubbles(key, value) {
           d3.select(this)
             .style("stroke", "black") // Set the color of the border
             .style("stroke-width", "1px")
-            .attr("fill", "white")
-          d3.select(this.parentNode).select("foreignObject").remove()
+            .attr("fill", "white");
+          d3.select(this.parentNode).select("foreignObject").remove();
         }
 
         if (d === "Max Value") {
           d3.select(this).style("fill", "lightgray");
-          d3.select(this.parentNode).select("foreignObject").remove()
+          d3.select(this.parentNode).select("foreignObject").remove();
         }
       });
 
@@ -254,22 +246,21 @@ async function CreateBubbles(key, value) {
       .attr("transform", (d, i) => {
         const { x, y } = grid_coords(i);
         return `translate(${x + 20},${y + 20})`;
-      })
+      });
 
     gViz
       .append("rect")
       .attr("class", "maxScale")
       .attr("rx", 50) // Set horizontal radius for rounded corners
       .attr("ry", 50)
-      .style("fill", "lightgray")
       .attr("width", (d) => {
-        let radius = sizeScale(maxValue / 4)
-        return radius
+        let radius = sizeScale(maxValue / 4);
+        return radius;
       })
       .attr("height", (d) => {
-        let radius = sizeScale(maxValue / 4)
-        return radius
-      })
+        let radius = sizeScale(maxValue / 4);
+        return radius;
+      });
 
     gViz
       .append("foreignObject")
@@ -314,7 +305,6 @@ async function CreateBubbles(key, value) {
         tooltip.style("opacity", 0.9);
       });
 
-
     gViz
       .append("rect")
       .attr("class", "minScale")
@@ -324,18 +314,15 @@ async function CreateBubbles(key, value) {
       .attr("ry", 50)
       .style("fill", "none")
       .attr("width", (d) => {
-        let radius = sizeScale(minValue / 4)
-        return radius
+        let radius = sizeScale(minValue / 4);
+        return radius;
       })
       .attr("height", (d) => {
-        let radius = sizeScale(minValue / 4)
-        return radius
+        let radius = sizeScale(minValue / 4);
+        return radius;
       })
-      .attr("border", "1px solid black")
-
+      .attr("border", "1px solid black");
   } else {
-
-
     let maxValue = 0;
     let minValue = Infinity;
     bigDataset.forEach((d) => {
@@ -345,7 +332,6 @@ async function CreateBubbles(key, value) {
       maxValue = Math.max(maxValue, d[key]);
       minValue = Math.min(minValue, d[key]);
     });
-
 
     let tooltip = d3.select(".tooltip");
 
@@ -363,21 +349,20 @@ async function CreateBubbles(key, value) {
       }
     });
 
-
     svg
       .selectAll(".minScale")
       .data(processedData)
       .transition()
       .duration(700)
       .attr("width", (d) => {
-        let radius = sizeScale(minValue / 4)
-        return radius
+        let radius = sizeScale(minValue / 4);
+        return radius;
       })
       // .attr("cy", 0)
       .attr("height", (d) => {
-        let radius = sizeScale(minValue / 4)
-        return radius
-      })
+        let radius = sizeScale(minValue / 4);
+        return radius;
+      });
 
     svg
       .selectAll(".bubble foreignObject")
@@ -411,26 +396,21 @@ async function CreateBubbles(key, value) {
       })
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
 
-
-
     svg
       .selectAll(".maxScale")
       .data(processedData)
       .transition()
       .duration(700)
       .attr("width", (d) => {
-        let radius = sizeScale(maxValue / 4)
-        return radius
+        let radius = sizeScale(maxValue / 4);
+        return radius;
       })
       // .attr("cy", 0)
       .attr("height", (d) => {
-        let radius = sizeScale(maxValue / 4)
-        return radius
-      })
-
+        let radius = sizeScale(maxValue / 4);
+        return radius;
+      });
   }
 }
 
 basicLayout();
-
-

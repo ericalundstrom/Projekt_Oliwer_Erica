@@ -363,11 +363,11 @@ async function CreateBubbles(key, value) {
       })
       .attr("x", function (d, i) {
         const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaWidth(d) / 1.9;
+        return x + w / 2 - deltaWidth(d) / 2;
       })
       .attr("y", function (d, i) {
         const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaHeight(d) / 1.9;
+        return y + h / 2 - deltaHeight(d) / 2;
       });
 
     let tooltip = d3
@@ -536,8 +536,8 @@ async function CreateBubbles(key, value) {
       .duration(700)
       .attr("width", deltaWidth)
       .attr("height", deltaHeight)
-      .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaWidth(d) / 1.9)
-      .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaHeight(d) / 1.9);
+      .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaWidth(d) / 2)
+      .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaHeight(d) / 2);
 
     d3.selectAll("foreignObject")
       .on("mousemove", function divInfo(event, d) {
