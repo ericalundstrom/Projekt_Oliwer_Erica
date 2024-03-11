@@ -9,9 +9,9 @@ function basicLayout() {
   <div class="text" id="info">
     <h1> Healthy lifestyle around the globe </h1>
     <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals. </p>
-    <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
-    <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
-    <p id="finalQuote"> One question remains, do <b> you </b> live in the best city for healthy living? </p>
+    <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to dive deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
+    <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. </p>
+    <p id="finalQuote"> One question remains, do you live in the best city for healthy living? </p>
     <br>
     <div id="line"></div>
   </div>
@@ -29,7 +29,9 @@ function basicLayout() {
 
     <br>
     <h2> The learning curve </h2>
-    <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals.</p>
+    <p> In our first visualization, we needed to investigate the use of d3.hierarchy and d3.pack to position the data within a connected circle. Subsequently, in our second visualization, we tackled the task of arranging the data in a grid, marking a significant departure from the approach in the first visualization. However, by addressing both methods of data placement, we gained valuable insights.
+        Determining the most effective way to visualize our data posed a substantial challenge. While our inspiration led us to choose circles early on, adapting these circles to suit our specific data proved to be a challenging task that we successfully navigated throughout the process.
+    </p>
 
   </div>
   `;
@@ -208,10 +210,14 @@ async function CreateBubbles(key, value) {
         minValue = `${minValue} hours`;
         maxValue = `${maxValue} hours`;
       }
+      if (key === "Happiness") {
+        minValue = `${minValue} level score`;
+        maxValue = `${maxValue} level score`;
+      }
 
       const interpolate = d3.interpolate(
         this.textContent,
-        `Min value: ${minValue} Max value: ${maxValue}`
+        `Min value: ${minValue}, Max value: ${maxValue}`
       );
 
       return function (t) {
@@ -288,7 +294,8 @@ async function CreateBubbles(key, value) {
       .attr("y", function (d, i) {
         const { x, y } = grid_coords(i);
         return y + h / 2 - deltaMax(d) / 2;
-      });
+      })
+
     gViz
       .append("foreignObject")
       .attr("width", deltaWidth)
@@ -330,8 +337,10 @@ async function CreateBubbles(key, value) {
         if (key === "Hours_worked") {
           tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
         }
+        if (key === "Happiness") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score `);
+        }
 
-        console.log(key);
         // switch ([key]) {
         //   case "Gym_cost":
         //     tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
@@ -373,10 +382,10 @@ async function CreateBubbles(key, value) {
       });
 
     let tooltip = d3
-      .select("body")
+      .select("#Viz")
       .append("div")
       .attr("class", "tooltip")
-      .style("opacity", 0)
+      .style("display", "none")
       .on("mouseover", function (event, d) {
         tooltip.style("opacity", 0.9);
       });
@@ -465,13 +474,9 @@ async function CreateBubbles(key, value) {
     let tooltip = d3.select(".tooltip");
 
     let legi = d3.selectAll(".cell circle");
-    console.log(legi);
     svg.selectAll("g").data(processedData).transition().duration(500);
 
     legi.each(function (d) {
-      console.log(d3.select(this.parentNode).select("foreignObject"));
-      console.log(d3.select(this.parentNode));
-      console.log(d);
       if (d !== "Existing data") {
         let foreignObject = d3.select(this.parentNode).select("foreignObject");
         foreignObject.classed("nan-value", false);
@@ -590,6 +595,9 @@ async function CreateBubbles(key, value) {
         }
         if (key === "Hours_worked") {
           tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
+        }
+        if (key === "Happiness") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score `);
         }
       })
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
