@@ -67,6 +67,7 @@ async function CreateButtons() {
       if (activeButton) {
         activeButton.classList.remove("active");
       }
+
       // Add active class to the clicked button
       ButtonDom.classList.add("active");
       // Update activeButton to the current button
@@ -135,7 +136,6 @@ let w = 100;
 let h = 60;
 
 async function CreateBubbles(key, value) {
-
   function grid_coords(index) {
     // let xaxis = (index % n_cols) * w;
     // let yaxis = Math.floor(index / n_cols) * h;
@@ -143,7 +143,7 @@ async function CreateBubbles(key, value) {
     // let x = h / 3 + xaxis;
     // let y = w / 2 + yaxis + 20;
     let x = (index % n_cols) * w + 60;
-    let y = Math.floor(index / n_cols) * h + 10
+    let y = Math.floor(index / n_cols) * h + 10;
 
     return { x, y };
   }
@@ -209,7 +209,6 @@ async function CreateBubbles(key, value) {
         maxValue = `${maxValue} hours`;
       }
 
-
       const interpolate = d3.interpolate(
         this.textContent,
         `Min value: ${minValue} Max value: ${maxValue}`
@@ -220,7 +219,7 @@ async function CreateBubbles(key, value) {
       };
     });
 
-  const processedData = bigDataset.map((d) => {
+  let processedData = bigDataset.map((d) => {
     const value = parseFloat(d[key]);
     return {
       ...d,
@@ -233,7 +232,6 @@ async function CreateBubbles(key, value) {
       .scaleLinear()
       .domain([0, d3.max(processedData, (d) => +d[key])]) // Convert values to numbers using +d
       .range([40, 0.8 * w]);
-
 
     let gViz = svg
       .attr("x", 0)
@@ -281,7 +279,6 @@ async function CreateBubbles(key, value) {
       .attr("class", "maxScale")
       .attr("rx", 50) // Set horizontal radius for rounded corners
       .attr("ry", 50)
-      .style("fill", "lightgray")
       .attr("width", deltaMax)
       .attr("height", deltaMax)
       .attr("x", function (d, i) {
@@ -312,27 +309,29 @@ async function CreateBubbles(key, value) {
           .style("top", event.pageY - 28 + "px");
 
         if (key === "Gym_cost" || key === "Bottle_water_cost") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`);
         } else {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`);
         }
         if (key === "Obesity") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
+          tooltip.html(
+            `<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `
+          );
         }
         if (key === "Sunshine_hours") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
         }
         if (key === "Life_expectancy") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years  `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years  `);
         }
         if (key === "Pollution") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score `);
         }
         if (key === "Hours_worked") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
         }
 
-        console.log(key)
+        console.log(key);
         // switch ([key]) {
         //   case "Gym_cost":
         //     tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
@@ -360,7 +359,6 @@ async function CreateBubbles(key, value) {
         //     maxValue = `${maxValue * 100} hours`;
         //     break;
         // }
-
       })
       .on("mouseout", function (event, d) {
         tooltip.style("opacity", 0);
@@ -403,7 +401,6 @@ async function CreateBubbles(key, value) {
       })
       .attr("border", "1px solid black");
 
-
     let legendGroup = svg
       .append("g")
       .attr("class", "legendOrdinal")
@@ -412,7 +409,7 @@ async function CreateBubbles(key, value) {
     let ordinal = d3
       .scaleOrdinal()
       .domain(["Nan, no data", "Existing data", "Max Value", "Min Value"])
-      .range(["lightgray", "none"]);
+      .range(["none"]);
 
     let legendOrdinal = d3
       .legendColor()
@@ -442,26 +439,24 @@ async function CreateBubbles(key, value) {
             `<div class="flag-image" style="background-image: url(images/sweden-flag.jpg)"></div>`
           );
 
-        if (d !== "Existing data") {
+        if (d === "Nan, no data") {
           d3.select(this.parentNode).classed("nan-value", true);
-
           d3.select(this.parentNode).classed("data", true);
         }
 
         if (d === "Min Value") {
           d3.select(this)
-            .style("stroke", "black") // Set the color of the border
-            .style("stroke-width", "1px")
-            .attr("fill", "white");
+            .style("stroke", "black")
+            .style("fill", "rgba(255, 255, 255, 0.182)");
+
           d3.select(this.parentNode).select("foreignObject").remove();
         }
 
         if (d === "Max Value") {
-          d3.select(this).style("fill", "lightgray");
+          d3.select(this).style("stroke", "#3700ff").style("fill", "#3700ff2d");
           d3.select(this.parentNode).select("foreignObject").remove();
         }
       });
-
   } else {
     let sizeScale = d3
       .scaleLinear()
@@ -484,14 +479,10 @@ async function CreateBubbles(key, value) {
       }
     });
 
-    const categoryScale = d3.scaleLinear().range([40, 0.8 * w]);
-
     let deltaMax = (d) => {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
         : sizeScale(maxValue / 4);
-
-      // console.log("deltaMin result:", result);
 
       return result;
     };
@@ -574,33 +565,32 @@ async function CreateBubbles(key, value) {
         //     .style("top", event.pageY - 28 + "px")
         // }
 
-
         tooltip
           .style("left", event.pageX + 10 + "px")
           .style("top", event.pageY - 28 + "px");
 
         if (key === "Gym_cost" || key === "Bottle_water_cost") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`);
         } else {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`);
         }
         if (key === "Obesity") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
+          tooltip.html(
+            `<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `
+          );
         }
         if (key === "Sunshine_hours") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
         }
         if (key === "Life_expectancy") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years  `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years  `);
         }
         if (key === "Pollution") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score `);
         }
         if (key === "Hours_worked") {
-          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `)
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
         }
-
-
       })
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
   }
