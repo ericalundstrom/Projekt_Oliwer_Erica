@@ -96,7 +96,7 @@ async function filterDataViz(e, key) {
 
   if (div === null) {
     let divDom = document.createElement("div");
-    divDom.classList.add("info");
+    divDom.classList.add("info_filter");
     document.querySelector("#Viz").append(divDom);
     divDom.innerHTML = `
                 <h2 class="chosenFilter"> ${text} </h2>
