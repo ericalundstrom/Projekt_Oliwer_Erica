@@ -57,6 +57,7 @@ async function CreateButtons() {
       if (activeButton) {
         activeButton.classList.remove("active");
       }
+
       // Add active class to the clicked button
       ButtonDom.classList.add("active");
       // Update activeButton to the current button
@@ -114,8 +115,8 @@ function createSvg() {
     .attr("width", wSvg);
 }
 
-let wSvg = 1600;
-let hSvg = 1200;
+let wSvg = 1500;
+let hSvg = 1000;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
@@ -162,7 +163,7 @@ async function CreateBubbles(key, value) {
       };
     });
 
-  const processedData = bigDataset.map((d) => {
+  let processedData = bigDataset.map((d) => {
     const value = parseFloat(d[key]);
     return {
       ...d,
@@ -170,12 +171,12 @@ async function CreateBubbles(key, value) {
     };
   });
 
-  let sizeScale = d3
-    .scaleLinear()
-    .domain([0, d3.max(processedData, (d) => d[key])])
-    .range([40, 0.8 * w]);
-
   if (value) {
+    let sizeScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(processedData, (d) => +d[key])]) // Convert values to numbers using +d
+      .range([40, 0.8 * w]);
+
     var legendGroup = svg
       .append("g")
       .attr("class", "legendOrdinal")
@@ -184,7 +185,7 @@ async function CreateBubbles(key, value) {
     var ordinal = d3
       .scaleOrdinal()
       .domain(["Nan, no data", "Existing data", "Max Value", "Min Value"])
-      .range(["lightgray", "none"]);
+      .range(["none"]);
 
     var legendOrdinal = d3
       .legendColor()
@@ -214,22 +215,21 @@ async function CreateBubbles(key, value) {
             `<div class="flag-image" style="background-image: url(images/sweden-flag.jpg)"></div>`
           );
 
-        if (d !== "Existing data") {
+        if (d === "Nan, no data") {
           d3.select(this.parentNode).classed("nan-value", true);
-
           d3.select(this.parentNode).classed("data", true);
         }
 
         if (d === "Min Value") {
           d3.select(this)
-            .style("stroke", "black") // Set the color of the border
-            .style("stroke-width", "1px")
-            .attr("fill", "white");
+            .style("stroke", "black")
+            .style("fill", "rgba(255, 255, 255, 0.182)");
+
           d3.select(this.parentNode).select("foreignObject").remove();
         }
 
         if (d === "Max Value") {
-          d3.select(this).style("fill", "lightgray");
+          d3.select(this).style("stroke", "#3700ff").style("fill", "#3700ff2d");
           d3.select(this.parentNode).select("foreignObject").remove();
         }
       });
@@ -262,12 +262,11 @@ async function CreateBubbles(key, value) {
         : sizeScale(d[key] / 4);
     };
     let deltaMax = (d) => {
-      const maxDataValue = parseFloat(d[key]);
-      const maxValueScale = isNaN(maxDataValue)
+      const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(maxDataValue / 4);
+        : sizeScale(maxValue / 4);
 
-      return maxValueScale;
+      return result;
     };
 
     let deltaMin = (d) => {
@@ -279,9 +278,8 @@ async function CreateBubbles(key, value) {
     gViz
       .append("rect")
       .attr("class", "maxScale")
-      .attr("rx", 50) // Set horizontal radius for rounded corners
+      .attr("rx", 50)
       .attr("ry", 50)
-      .style("fill", "lightgray")
       .attr("width", deltaMax)
       .attr("height", deltaMax)
       .attr("x", function (d, i) {
@@ -336,11 +334,8 @@ async function CreateBubbles(key, value) {
     gViz
       .append("rect")
       .attr("class", "minScale")
-      .style("stroke", "black") // Set the color of the border
-      .style("stroke-width", "1px")
-      .attr("rx", 50) // Set horizontal radius for rounded corners
+      .attr("rx", 50)
       .attr("ry", 50)
-      .style("fill", "none")
       .attr("width", deltaMin)
       .attr("height", deltaMin)
       .attr("x", function (d, i) {
@@ -351,18 +346,30 @@ async function CreateBubbles(key, value) {
         const { x, y } = grid_coords(i);
         return y + h / 2 - deltaMin(d) / 2;
       })
-      .attr("border", "1px solid black");
+      .attr("border", "1px solid black")
+      .on("mouseover", function (event, d) {
+        tooltip.style("opacity", 0.9);
+      })
+      .on("mousemove", function divInfo(event, d) {
+        let text = key.replace(/_/g, " ");
+
+        tooltip
+          .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px");
+      })
+      .on("mouseout", function (event, d) {
+        tooltip.style("opacity", 0);
+      });
   } else {
+    let sizeScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(processedData, (d) => +d[key])])
+      .range([40, 0.8 * w]);
+
     let tooltip = d3.select(".tooltip");
 
     let legi = d3.selectAll(".cell circle");
-
-    sizeScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(processedData, (d) => d[key])])
-      .range([40, 0.8 * w]);
-
-    console.log("Updated sizeScale domain:", sizeScale.domain());
 
     svg.selectAll("g").data(processedData).transition().duration(500);
 
@@ -376,14 +383,10 @@ async function CreateBubbles(key, value) {
       }
     });
 
-    console.log("maxValue:", maxValue, "minValue:", minValue);
-
     let deltaMax = (d) => {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
         : sizeScale(maxValue / 4);
-
-      console.log("deltaMax result:", result);
 
       return result;
     };
@@ -393,7 +396,7 @@ async function CreateBubbles(key, value) {
         ? sizeScale.range()[0]
         : sizeScale(minValue / 4);
 
-      console.log("deltaMin result:", result);
+      // console.log("deltaMin result:", result);
 
       return result;
     };
