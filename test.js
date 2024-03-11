@@ -9,9 +9,11 @@ function basicLayout() {
   <div class="text" id="info">
     <h1> Healthy lifestyle around the globe </h1>
     <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals. </p>
-    <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to dive deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
-    <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. </p>
-    <p id="finalQuote"> One question remains, do you live in the best city for healthy living? </p>
+
+    <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
+    <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
+    <p id="finalQuote"> One question remains, do  you live in the best city for healthy living? </p>
+
     <br>
     <div id="line"></div>
   </div>
@@ -70,9 +72,8 @@ async function CreateButtons() {
         activeButton.classList.remove("active");
       }
 
-      // Add active class to the clicked button
       ButtonDom.classList.add("active");
-      // Update activeButton to the current button
+
       activeButton = ButtonDom;
       filterDataViz(e, d);
     });
@@ -108,7 +109,6 @@ async function filterDataViz(e, key) {
     document.querySelector(".chosenFilter").textContent = text;
   }
 
-  // Check if a different button is clicked, not the currently applied one
   if (key !== currentFilterKey) {
     currentFilterKey = key;
     if (!isSvgEmpty()) {
@@ -139,11 +139,6 @@ let h = 60;
 
 async function CreateBubbles(key, value) {
   function grid_coords(index) {
-    // let xaxis = (index % n_cols) * w;
-    // let yaxis = Math.floor(index / n_cols) * h;
-
-    // let x = h / 3 + xaxis;
-    // let y = w / 2 + yaxis + 20;
     let x = (index % n_cols) * w + 60;
     let y = Math.floor(index / n_cols) * h;
 
@@ -168,23 +163,6 @@ async function CreateBubbles(key, value) {
     .transition()
     .duration(300)
     .tween("text", function () {
-      // console.log(key);
-
-      // switch ([key]) {
-      //   case "Gym_cost":
-
-      //    { minValue = `${minValue}£`;
-      //     maxValue = `${maxValue}£`;}
-
-      //   case "Bottle_water_cost":
-      //     minValue = `${minValue}£`;
-      //     maxValue = `${maxValue}£`;
-
-      //   case "Obesity":
-      //     minValue = `${minValue * 100}£`;
-      //     maxValue = `${maxValue * 100}£`;
-      // }
-
       if (key === "Gym_cost" || key === "Bottle_water_cost") {
         minValue = `${minValue}£`;
         maxValue = `${maxValue}£`;
@@ -236,7 +214,7 @@ async function CreateBubbles(key, value) {
   if (value) {
     let sizeScale = d3
       .scaleLinear()
-      .domain([0, d3.max(processedData, (d) => +d[key])]) // Convert values to numbers using +d
+      .domain([0, d3.max(processedData, (d) => d[key])])
       .range([40, 0.8 * w]);
 
     let gViz = svg
@@ -283,7 +261,7 @@ async function CreateBubbles(key, value) {
     gViz
       .append("rect")
       .attr("class", "maxScale")
-      .attr("rx", 50) // Set horizontal radius for rounded corners
+      .attr("rx", 50)
       .attr("ry", 50)
       .attr("width", deltaMax)
       .attr("height", deltaMax)
@@ -294,7 +272,9 @@ async function CreateBubbles(key, value) {
       .attr("y", function (d, i) {
         const { x, y } = grid_coords(i);
         return y + h / 2 - deltaMax(d) / 2;
-      })
+
+      });
+
 
     gViz
       .append("foreignObject")
@@ -340,6 +320,9 @@ async function CreateBubbles(key, value) {
         if (key === "Happiness") {
           tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score `);
         }
+
+
+        // console.log(key);
 
         // switch ([key]) {
         //   case "Gym_cost":
@@ -393,9 +376,9 @@ async function CreateBubbles(key, value) {
     gViz
       .append("rect")
       .attr("class", "minScale")
-      .style("stroke", "black") // Set the color of the border
+      .style("stroke", "black")
       .style("stroke-width", "1px")
-      .attr("rx", 50) // Set horizontal radius for rounded corners
+      .attr("rx", 50)
       .attr("ry", 50)
       .style("fill", "none")
       .attr("width", deltaMin)
@@ -437,7 +420,6 @@ async function CreateBubbles(key, value) {
       .style("stroke", "none")
       .attr("r", 10)
       .each(function (d) {
-        // Append an image pattern to each legend circle
         d3.select(this.parentNode)
           .append("foreignObject")
           .attr("width", 20)
@@ -469,11 +451,12 @@ async function CreateBubbles(key, value) {
   } else {
     let sizeScale = d3
       .scaleLinear()
-      .domain([0, d3.max(processedData, (d) => +d[key])]) // Convert values to numbers using +d
+      .domain([0, d3.max(processedData, (d) => d[key])])
       .range([40, 0.8 * w]);
     let tooltip = d3.select(".tooltip");
 
     let legi = d3.selectAll(".cell circle");
+
     svg.selectAll("g").data(processedData).transition().duration(500);
 
     legi.each(function (d) {
@@ -524,7 +507,6 @@ async function CreateBubbles(key, value) {
       .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaMax(d) / 2)
       .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaMax(d) / 2);
 
-    // Update minScale elements
     svg
       .selectAll(".minScale")
       .data(processedData)
@@ -535,7 +517,6 @@ async function CreateBubbles(key, value) {
       .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaMin(d) / 2)
       .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaMin(d) / 2);
 
-    // Update bubble foreignObject elements
     svg
       .selectAll(".bubble foreignObject")
       .data(processedData)
