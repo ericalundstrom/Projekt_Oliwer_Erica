@@ -167,6 +167,7 @@ async function CreateBubbles(key, value) {
     .duration(300)
     .tween("text", function () {
       console.log(key);
+
       // switch ([key]) {
       //   case "Gym_cost":
 
@@ -181,6 +182,7 @@ async function CreateBubbles(key, value) {
       //     minValue = `${minValue * 100}£`;
       //     maxValue = `${maxValue * 100}£`;
       // }
+
       if (key === "Gym_cost" || key === "Bottle_water_cost") {
         minValue = `${minValue}£`;
         maxValue = `${maxValue}£`;
@@ -472,10 +474,11 @@ async function CreateBubbles(key, value) {
     svg.selectAll("g").data(processedData).transition().duration(500);
 
     legi.each(function (d) {
-      if (d == "Existing data") {
+      if (d !== "Existing data") {
         let foreignObject = d3.select(this.parentNode).select("foreignObject");
         foreignObject.classed("nan-value", false);
       } else {
+        console.log(d3.select(this.parentNode).select("foreignObject"));
         let foreignObject = d3.select(this.parentNode).select("foreignObject");
         foreignObject.classed("nan-value", false);
       }
