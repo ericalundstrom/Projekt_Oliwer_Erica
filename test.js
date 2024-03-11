@@ -166,7 +166,7 @@ async function CreateBubbles(key, value) {
     .transition()
     .duration(300)
     .tween("text", function () {
-      console.log(key);
+      // console.log(key);
 
       // switch ([key]) {
       //   case "Gym_cost":
@@ -465,15 +465,17 @@ async function CreateBubbles(key, value) {
     let tooltip = d3.select(".tooltip");
 
     let legi = d3.selectAll(".cell circle");
-
+    console.log(legi);
     svg.selectAll("g").data(processedData).transition().duration(500);
 
     legi.each(function (d) {
+      console.log(d3.select(this.parentNode).select("foreignObject"));
+      console.log(d3.select(this.parentNode));
+      console.log(d);
       if (d !== "Existing data") {
         let foreignObject = d3.select(this.parentNode).select("foreignObject");
         foreignObject.classed("nan-value", false);
       } else {
-        console.log(d3.select(this.parentNode).select("foreignObject"));
         let foreignObject = d3.select(this.parentNode).select("foreignObject");
         foreignObject.classed("nan-value", false);
       }
@@ -491,8 +493,6 @@ async function CreateBubbles(key, value) {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
         : sizeScale(minValue / 4);
-
-      // console.log("deltaMin result:", result);
 
       return result;
     };
@@ -542,7 +542,7 @@ async function CreateBubbles(key, value) {
       .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaWidth(d) / 2)
       .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaHeight(d) / 2);
 
-    d3.selectAll("foreignObject")
+    d3.selectAll(".bubble foreignObject")
       .on("mousemove", function divInfo(event, d) {
         // Move tooltip to follow the mouse
         let text = key.replace(/_/g, " ");
