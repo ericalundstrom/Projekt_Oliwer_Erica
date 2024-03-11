@@ -7,7 +7,7 @@ function basicLayout() {
   let wrapper = document.querySelector("#wrapper");
   wrapper.innerHTML = `
   
-      <div id="background">
+      <div class="background">
           <h1> Healthy lifestyle around the globe </h1>
   
           <p>According to a study by YouGov, almost half of Brits stated improving fitness (47%), losing weight (44%), and improving diet (41%) were among their most important New Year’s resolutions for 2020. It’s no surprise that millions of people worldwide enter each New Year with the hope of taking better care of themselves, whether that’s signing up for the gym or eating healthier.</p>

@@ -6,23 +6,33 @@ async function fetching() {
 function basicLayout() {
   let wrapper = document.querySelector("#wrapper");
   wrapper.innerHTML = `
+  <div class="text" id="info">
+    <h1> Healthy lifestyle around the globe </h1>
+    <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals. </p>
+    <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
+    <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
+    <p id="finalQuote"> One question remains, do <b> you</b> live in the best city for healthy living? </p>
+    <br>
+    <div id="line"></div>
+  </div>
+  <div id="Viz"></div>
+  <div id="Bottomline"></div>
+  <div class="text" id="moreInfo">
+    <h2> Working with the data </h2>
+    <p>Our initial step involved converting our data from CSV to JSON format. Leveraging a CSV converter within VSCode, we seamlessly transitioned our data into JSON. With this task accomplished, we commenced our data analysis and visualization endeavors.To achieve the desired visualization, we introduced a new key into our database called 'flag,' containing the corresponding country flags. Our objective was to craft an interactive visualization that not only presents data but also engages our audience. </p>
+    <p>Some of the keys were found to have NaN values, yet it was imperative to visualize them to facilitate a comprehensive understanding of the distinctions among cities. To accomplish this, we assigned NaN a placeholder value. We opted for a default value of 40, representing the minimum value within the range. Additionally, to signify the absence of data for these keys, we employed a gray opacity for the corresponding circles. These visualizations serve to transparently communicate the lack of available data while maintaining their significance in facilitating city-to-city comparisons for the user. </p>
     
-        <div id="background">
-            <h1> Healthy lifestyle around the globe </h1>
-    
-            <p>According to a study by YouGov, almost half of Brits stated improving fitness (47%), losing weight (44%), and improving diet (41%) were among their most important New Year’s resolutions for 2020. It’s no surprise that millions of people worldwide enter each New Year with the hope of taking better care of themselves, whether that’s signing up for the gym or eating healthier.</p>
-            <p> However, fitness and diet are not the only measurements of healthiness - although they do play a big part. Sometimes it’s about our surrounding environment, as well as lifestyle choices.</p>
-            <p> The team at Lenstore has analyzed 44 cities across the globe to uncover where it’s easier to lead a well-rounded, healthy lifestyle. From obesity levels to pollution rates, each city has been scored across 10 healthy living metrics.</p>
-            <p> By analyzing factors such as obesity levels, pollution rates, access to outdoor activities, and more, we aim to provide users with a comprehensive view of what it means to live healthily in different urban environments. This data-driven approach allows individuals to make more informed decisions about where they live and how they can improve their quality of life.  </p>
-            <p> The team at Lenstore is dedicated to promoting health and well-being, and we believe that by shedding light on these important metrics, we can empower individuals to make positive changes for themselves and their communities. </p>
-            <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
-            <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
-            <br>
-            <p id="finalQuote"> One question remains, do <b> you</b> live in the best city for healthy living? </p>
-            <br>
-    
-        </div>
-       `;
+    <br>
+
+    <h2> The quality of the data </h2>
+    <p>We first stumbled upon this data when we were looking on Kaggle.com. This website has thousands and thousands of databases from all over the world. We think that our database is trustworthy because the research and data is gathered from several big companies, such as World Wappiness, Our World In Data, and Tripadvisor. The data was gathered from a total of ten metrics. Each of these metrics were awarded a weighted score and these were combined to give each city a total score out of 100. This score was then used to rank the 44 cities to determine which were best for healthy living. </p>
+
+    <br>
+    <h2> The learning curve </h2>
+    <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals.</p>
+
+  </div>
+  `;
 
   document.querySelector("footer").textContent =
     "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
@@ -46,7 +56,7 @@ async function CreateButtons() {
 
   let ButtonWrapper = document.createElement("div");
   ButtonWrapper.classList.add("ButtonBox");
-  document.querySelector("#wrapper").append(ButtonWrapper);
+  document.querySelector("#Viz").append(ButtonWrapper);
   keys.forEach((d) => {
     let ButtonDom = document.createElement("button");
     ButtonDom.classList.add("button");
@@ -86,7 +96,7 @@ async function filterDataViz(e, key) {
   if (div === null) {
     let divDom = document.createElement("div");
     divDom.classList.add("info");
-    document.querySelector("#wrapper").append(divDom);
+    document.querySelector("#Viz").append(divDom);
     divDom.innerHTML = `
                 <h2 class="chosenFilter"> ${text} </h2>
                 <h3 class="range"></h3>
@@ -108,28 +118,32 @@ async function filterDataViz(e, key) {
 
 function createSvg() {
   let svg = d3
-    .select("#wrapper")
+    .select("#Viz")
     .append("svg")
     .attr("height", hSvg)
     .attr("width", wSvg);
 }
 
 let wSvg = 1600;
-let hSvg = 1200;
+let hSvg = 1000;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
 let margin = 1;
-async function CreateBubbles(key, value) {
-  let n_cols = 6;
-  let w = 150;
-  let h = 50;
-  function grid_coords(index) {
-    let xaxis = (index % n_cols) * w;
-    let yaxis = Math.floor(index / n_cols) * h;
+let n_cols = 7;
+let w = 100;
+let h = 60;
 
-    let x = h / 3 + xaxis;
-    let y = w / 2 + yaxis;
+async function CreateBubbles(key, value) {
+
+  function grid_coords(index) {
+    // let xaxis = (index % n_cols) * w;
+    // let yaxis = Math.floor(index / n_cols) * h;
+
+    // let x = h / 3 + xaxis;
+    // let y = w / 2 + yaxis + 20;
+    let x = (index % n_cols) * w + 60;
+    let y = Math.floor(index / n_cols) * h + 10
 
     return { x, y };
   }
@@ -152,6 +166,48 @@ async function CreateBubbles(key, value) {
     .transition()
     .duration(300)
     .tween("text", function () {
+      console.log(key);
+      // switch ([key]) {
+      //   case "Gym_cost":
+
+      //    { minValue = `${minValue}£`;
+      //     maxValue = `${maxValue}£`;}
+
+      //   case "Bottle_water_cost":
+      //     minValue = `${minValue}£`;
+      //     maxValue = `${maxValue}£`;
+
+      //   case "Obesity":
+      //     minValue = `${minValue * 100}£`;
+      //     maxValue = `${maxValue * 100}£`;
+      // }
+      if (key === "Gym_cost" || key === "Bottle_water_cost") {
+        minValue = `${minValue}£`;
+        maxValue = `${maxValue}£`;
+      }
+      if (key === "Obesity") {
+        minValue = `${minValue * 100}%`;
+        maxValue = `${maxValue * 100}%`;
+      }
+
+      if (key === "Sunshine_hours") {
+        minValue = `${minValue} hours`;
+        maxValue = `${maxValue} hours`;
+      }
+      if (key === "Life_expectancy") {
+        minValue = `${minValue} years`;
+        maxValue = `${maxValue} years`;
+      }
+      if (key === "Pollution") {
+        minValue = `${minValue} index`;
+        maxValue = `${maxValue}index`;
+      }
+      if (key === "Hours_worked") {
+        minValue = `${minValue} hours`;
+        maxValue = `${maxValue} hours`;
+      }
+
+
       const interpolate = d3.interpolate(
         this.textContent,
         `Min value: ${minValue} Max value: ${maxValue}`
@@ -170,23 +226,193 @@ async function CreateBubbles(key, value) {
     };
   });
 
-  let sizeScale = d3
-    .scaleLinear()
-    .domain([0, d3.max(processedData, (d) => d[key])])
-    .range([40, 0.8 * w]);
-
   if (value) {
-    var legendGroup = svg
+    let sizeScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(processedData, (d) => +d[key])]) // Convert values to numbers using +d
+      .range([40, 0.8 * w]);
+
+
+    let gViz = svg
+      .attr("x", 0)
+      .attr("y", 0)
+      .selectAll(".bubble")
+      .data(processedData)
+      .enter()
+      .append("g")
+      .attr("class", "bubble")
+      .attr("transform", (d, i) => {
+        const { x, y } = grid_coords(i);
+        const deltaSize = isNaN(sizeScale(d[key]))
+          ? sizeScale.range()[0]
+          : sizeScale(d[key] / 4);
+        return `translate(${x + w / 2 - deltaSize / 2},${y})`;
+      });
+
+    let deltaWidth = (d) => {
+      return isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(d[key] / 4);
+    };
+
+    let deltaHeight = (d) => {
+      return isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(d[key] / 4);
+    };
+    let deltaMax = (d) => {
+      const result = isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(maxValue / 4);
+
+      return result;
+    };
+
+    let deltaMin = (d) => {
+      return isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(minValue / 4);
+    };
+
+    gViz
+      .append("rect")
+      .attr("class", "maxScale")
+      .attr("rx", 50) // Set horizontal radius for rounded corners
+      .attr("ry", 50)
+      .style("fill", "lightgray")
+      .attr("width", deltaMax)
+      .attr("height", deltaMax)
+      .attr("x", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return x + w / 2 - deltaMax(d) / 2;
+      })
+      .attr("y", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return y + h / 2 - deltaMax(d) / 2;
+      });
+    gViz
+      .append("foreignObject")
+      .attr("width", deltaWidth)
+      .attr("height", deltaHeight)
+      .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
+      .html(
+        (d) =>
+          `<div class="flag-image" style="background-image: url(${d.flag})"></div>`
+      )
+      .on("mouseover", function (event, d) {
+        tooltip.style("opacity", 0.9);
+      })
+      .on("mousemove", function divInfo(event, d) {
+        let text = key.replace(/_/g, " ");
+
+        tooltip
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px");
+
+        if (key === "Gym_cost" || key === "Bottle_water_cost") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
+        } else {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+        }
+        if (key === "Obesity") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
+        }
+        if (key === "Sunshine_hours") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} hours `)
+        }
+        if (key === "Life_expectancy") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} years  `)
+        }
+        if (key === "Pollution") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} index score `)
+        }
+        if (key === "Hours_worked") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} hours `)
+        }
+
+        console.log(key)
+        // switch ([key]) {
+        //   case "Gym_cost":
+        //     tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
+        //     break;
+
+        //   case "Obesity":
+        //     console.log(key);
+        //     tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
+        //     break;
+
+        //   case "Sunshine_hours":
+        //     minValue = `${minValue * 100} hours`;
+        //     maxValue = `${maxValue * 100} hours`;
+        //     break;
+        //   case "Life_expectancy":
+        //     minValue = `${minValue * 100} years`;
+        //     maxValue = `${maxValue * 100} years`;
+        //     break;
+        //   case "Pollution":
+        //     minValue = `${minValue * 100} index score`;
+        //     maxValue = `${maxValue * 100}index score`;
+        //     break;
+        //   case "Hours_worked":
+        //     minValue = `${minValue * 100} hours`;
+        //     maxValue = `${maxValue * 100} hours`;
+        //     break;
+        // }
+
+      })
+      .on("mouseout", function (event, d) {
+        tooltip.style("opacity", 0);
+      })
+      .attr("x", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return x + w / 2 - deltaWidth(d) / 1.9;
+      })
+      .attr("y", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return y + h / 2 - deltaHeight(d) / 1.9;
+      });
+
+    let tooltip = d3
+      .select("body")
+      .append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0)
+      .on("mouseover", function (event, d) {
+        tooltip.style("opacity", 0.9);
+      });
+
+    gViz
+      .append("rect")
+      .attr("class", "minScale")
+      .style("stroke", "black") // Set the color of the border
+      .style("stroke-width", "1px")
+      .attr("rx", 50) // Set horizontal radius for rounded corners
+      .attr("ry", 50)
+      .style("fill", "none")
+      .attr("width", deltaMin)
+      .attr("height", deltaMin)
+      .attr("x", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return x + w / 2 - deltaMin(d) / 2;
+      })
+      .attr("y", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return y + h / 2 - deltaMin(d) / 2;
+      })
+      .attr("border", "1px solid black");
+
+
+    let legendGroup = svg
       .append("g")
       .attr("class", "legendOrdinal")
-      .attr("transform", `translate(${hSvg / 2 + 20},20)`);
+      .attr("transform", `translate(${wSvg / 3 + 90},${hViz - 40})`);
 
-    var ordinal = d3
+    let ordinal = d3
       .scaleOrdinal()
       .domain(["Nan, no data", "Existing data", "Max Value", "Min Value"])
       .range(["lightgray", "none"]);
 
-    var legendOrdinal = d3
+    let legendOrdinal = d3
       .legendColor()
       .shape("circle")
       .orient("horizontal")
@@ -234,135 +460,14 @@ async function CreateBubbles(key, value) {
         }
       });
 
-    let gViz = svg
-      .selectAll(".bubble")
-      .data(processedData)
-      .enter()
-      .append("g")
-      .attr("class", "bubble")
-      .attr("transform", (d, i) => {
-        const { x, y } = grid_coords(i);
-        const deltaSize = isNaN(sizeScale(d[key]))
-          ? sizeScale.range()[0]
-          : sizeScale(d[key] / 4);
-        return `translate(${x + w / 2 - deltaSize / 2},${
-          y + h / 2 - deltaSize / 2
-        })`;
-      });
-
-    let deltaWidth = (d) => {
-      return isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
-    };
-
-    let deltaHeight = (d) => {
-      return isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
-    };
-    let deltaMax = (d) => {
-      const maxDataValue = parseFloat(d[key]);
-      const maxValueScale = isNaN(maxDataValue)
-        ? sizeScale.range()[0]
-        : sizeScale(maxDataValue / 4);
-
-      return maxValueScale;
-    };
-
-    let deltaMin = (d) => {
-      return isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(minValue / 4);
-    };
-
-    gViz
-      .append("rect")
-      .attr("class", "maxScale")
-      .attr("rx", 50) // Set horizontal radius for rounded corners
-      .attr("ry", 50)
-      .style("fill", "lightgray")
-      .attr("width", deltaMax)
-      .attr("height", deltaMax)
-      .attr("x", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaMax(d) / 2;
-      })
-      .attr("y", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaMax(d) / 2;
-      });
-    gViz
-      .append("foreignObject")
-      .attr("width", deltaWidth)
-      .attr("height", deltaHeight)
-      .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
-      .html(
-        (d) =>
-          `<div class="flag-image" style="background-image: url(${d.flag})"></div>`
-      )
-      .on("mouseover", function (event, d) {
-        tooltip.style("opacity", 0.9);
-      })
-      .on("mousemove", function divInfo(event, d) {
-        let text = key.replace(/_/g, " ");
-
-        tooltip
-          .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
-          .style("left", event.pageX + 10 + "px")
-          .style("top", event.pageY - 28 + "px");
-      })
-      .on("mouseout", function (event, d) {
-        tooltip.style("opacity", 0);
-      })
-      .attr("x", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaWidth(d) / 2;
-      })
-      .attr("y", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaHeight(d) / 2;
-      });
-
-    let tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0)
-      .on("mouseover", function (event, d) {
-        tooltip.style("opacity", 0.9);
-      });
-
-    gViz
-      .append("rect")
-      .attr("class", "minScale")
-      .style("stroke", "black") // Set the color of the border
-      .style("stroke-width", "1px")
-      .attr("rx", 50) // Set horizontal radius for rounded corners
-      .attr("ry", 50)
-      .style("fill", "none")
-      .attr("width", deltaMin)
-      .attr("height", deltaMin)
-      .attr("x", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaMin(d) / 2;
-      })
-      .attr("y", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaMin(d) / 2;
-      })
-      .attr("border", "1px solid black");
   } else {
+    let sizeScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(processedData, (d) => +d[key])]) // Convert values to numbers using +d
+      .range([40, 0.8 * w]);
     let tooltip = d3.select(".tooltip");
 
     let legi = d3.selectAll(".cell circle");
-
-    sizeScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(processedData, (d) => d[key])])
-      .range([40, 0.8 * w]);
-
-    console.log("Updated sizeScale domain:", sizeScale.domain());
 
     svg.selectAll("g").data(processedData).transition().duration(500);
 
@@ -376,14 +481,14 @@ async function CreateBubbles(key, value) {
       }
     });
 
-    console.log("maxValue:", maxValue, "minValue:", minValue);
+    const categoryScale = d3.scaleLinear().range([40, 0.8 * w]);
 
     let deltaMax = (d) => {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
         : sizeScale(maxValue / 4);
 
-      console.log("deltaMax result:", result);
+      // console.log("deltaMin result:", result);
 
       return result;
     };
@@ -393,7 +498,7 @@ async function CreateBubbles(key, value) {
         ? sizeScale.range()[0]
         : sizeScale(minValue / 4);
 
-      console.log("deltaMin result:", result);
+      // console.log("deltaMin result:", result);
 
       return result;
     };
@@ -440,18 +545,59 @@ async function CreateBubbles(key, value) {
       .duration(700)
       .attr("width", deltaWidth)
       .attr("height", deltaHeight)
-      .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaWidth(d) / 2)
-      .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaHeight(d) / 2);
+      .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaWidth(d) / 1.9)
+      .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaHeight(d) / 1.9);
 
     d3.selectAll("foreignObject")
       .on("mousemove", function divInfo(event, d) {
         // Move tooltip to follow the mouse
         let text = key.replace(/_/g, " ");
+        // if (key === "Gym_cost" || key === "Bottle_water_cost") {
+        //   tooltip
+        //     .html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
+        //     .style("left", event.pageX + 10 + "px")
+        //     .style("top", event.pageY - 28 + "px");
+
+        // } else {
+        //   tooltip
+        //     .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+        //     .style("left", event.pageX + 10 + "px")
+        //     .style("top", event.pageY - 28 + "px");
+        // }
+        // if (key === "Obesity") {
+        //   tooltip
+        //     .html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
+        //     .style("left", event.pageX + 10 + "px")
+        //     .style("top", event.pageY - 28 + "px")
+        // }
+
 
         tooltip
-          .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
           .style("left", event.pageX + 10 + "px")
           .style("top", event.pageY - 28 + "px");
+
+        if (key === "Gym_cost" || key === "Bottle_water_cost") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
+        } else {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
+        }
+        if (key === "Obesity") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
+        }
+        if (key === "Sunshine_hours") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} hours `)
+        }
+        if (key === "Life_expectancy") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} years  `)
+        }
+        if (key === "Pollution") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} index score `)
+        }
+        if (key === "Hours_worked") {
+          tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)} hours `)
+        }
+
+
       })
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
   }
