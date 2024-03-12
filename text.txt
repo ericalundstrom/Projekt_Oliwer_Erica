@@ -1,0 +1,36 @@
+ // .on("click", (e) => {
+    //   let clickedElement = d3.select(e.target.offsetParent);
+    //   let isSelected = clickedElement.classed("selected");
+
+    //   var viewBox = svg.attr("viewBox"); // Corrected
+    //   console.log(viewBox);
+
+
+    //   if (!isSelected) {
+    //     clickedElement.classed("selected", true);
+    //     let radius = e.target.offsetParent.attributes[0].nodeValue / 2;
+
+    //     let y = e.clientY;
+    //     let x = e.clientX;
+
+    //     console.log(y, x, radius);
+
+    //     let viewBoxX = x - radius;
+    //     let viewBoxY = y - radius;
+    //     let viewBoxWidth = 4 * radius;
+    //     let viewBoxHeight = 4 * radius;
+    //     console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+    //     console.log(e);
+
+    //     // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+    //     svg.transition()
+    //       .duration(2000)
+    //       .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+    //   } else {
+    //     clickedElement.classed("selected", false);
+
+    //     svg.transition()
+    //       .duration(2000)
+    //       .attr("viewBox", `0 0 1600 600`);
+    //   }
+    // });

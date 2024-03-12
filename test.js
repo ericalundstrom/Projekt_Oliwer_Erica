@@ -10,9 +10,8 @@ function basicLayout() {
     <h1> Healthy lifestyle around the globe </h1>
     <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals. </p>
 
-    <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
-    <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
-    <p id="finalQuote"> One question remains, do  you live in the best city for healthy living? </p>
+    <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to dive deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
+    <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. </p>
 
     <br>
     <div id="line"></div>
@@ -124,22 +123,24 @@ function createSvg() {
     .select("#Viz")
     .append("svg")
     .attr("height", hSvg)
-    .attr("width", wSvg);
+    .attr("width", wSvg)
+    .attr("viewBox", `0 0 ${wSvg} ${hSvg}`);
 }
 
-let wSvg = 1600;
+let wSvg = 1400;
 let hSvg = 1000;
 
 let hViz = 0.9 * hSvg;
-let wViz = 0.9 * wSvg;
-let margin = 1;
-let n_cols = 7;
-let w = 100;
-let h = 60;
+let wViz = wSvg * 0.9;
+let n_cols = 10;
+let w = wViz / n_cols;
+let gap = 5;
+// let h = 60;
+let h = w
 
 async function CreateBubbles(key, value) {
   function grid_coords(index) {
-    let x = (index % n_cols) * w + 60;
+    let x = (index % n_cols) * w + gap;
     let y = Math.floor(index / n_cols) * h;
 
     return { x, y };
@@ -207,7 +208,7 @@ async function CreateBubbles(key, value) {
     const value = parseFloat(d[key]);
     return {
       ...d,
-      [key]: isNaN(value) ? NaN : value, // Replace NaN with 0 or any default value
+      [key]: isNaN(value) ? NaN : value
     };
   });
 
@@ -215,7 +216,7 @@ async function CreateBubbles(key, value) {
     let sizeScale = d3
       .scaleLinear()
       .domain([0, d3.max(processedData, (d) => d[key])])
-      .range([40, 0.8 * w]);
+      .range([0, w - gap]);
 
     let gViz = svg
       .attr("x", 0)
@@ -231,23 +232,62 @@ async function CreateBubbles(key, value) {
           ? sizeScale.range()[0]
           : sizeScale(d[key] / 4);
         return `translate(${x + w / 2 - deltaSize / 2},${y})`;
-      });
+      })
+
+    // .on("click", (e) => {
+    //   let clickedElement = d3.select(e.target.offsetParent);
+    //   let isSelected = clickedElement.classed("selected");
+
+    //   var viewBox = svg.attr("viewBox"); // Corrected
+    //   console.log(viewBox);
+
+
+    //   if (!isSelected) {
+    //     clickedElement.classed("selected", true);
+    //     let radius = e.target.offsetParent.attributes[0].nodeValue / 2;
+
+    //     let y = e.clientY;
+    //     let x = e.clientX;
+
+    //     console.log(y, x, radius);
+
+    //     let viewBoxX = x - radius;
+    //     let viewBoxY = y - radius;
+    //     let viewBoxWidth = 4 * radius;
+    //     let viewBoxHeight = 4 * radius;
+    //     console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+    //     console.log(e);
+
+    //     // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+    //     svg.transition()
+    //       .duration(2000)
+    //       .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+    //   } else {
+    //     clickedElement.classed("selected", false);
+
+    //     svg.transition()
+    //       .duration(2000)
+    //       .attr("viewBox", `0 0 1600 600`);
+    //   }
+    // });
+
+
 
     let deltaWidth = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
+        : sizeScale(d[key]);
     };
 
     let deltaHeight = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
+        : sizeScale(d[key]);
     };
     let deltaMax = (d) => {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(maxValue / 4);
+        : sizeScale(maxValue);
 
       return result;
     };
@@ -255,7 +295,7 @@ async function CreateBubbles(key, value) {
     let deltaMin = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(minValue / 4);
+        : sizeScale(minValue);
     };
 
     gViz
@@ -265,13 +305,16 @@ async function CreateBubbles(key, value) {
       .attr("ry", 50)
       .attr("width", deltaMax)
       .attr("height", deltaMax)
+      .attr("x", (d) => {
+        console.log(d);
+      })
       .attr("x", function (d, i) {
         const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaMax(d) / 2;
+        return x + w / 2 - sizeScale(d) / 2;
       })
       .attr("y", function (d, i) {
         const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaMax(d) / 2;
+        return y + h / 2 - sizeScale(d) / 2;
 
       });
 
@@ -321,9 +364,6 @@ async function CreateBubbles(key, value) {
           tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score `);
         }
 
-
-        // console.log(key);
-
         // switch ([key]) {
         //   case "Gym_cost":
         //     tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
@@ -357,18 +397,18 @@ async function CreateBubbles(key, value) {
       })
       .attr("x", function (d, i) {
         const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaWidth(d) / 2;
+        return x + w / 2 - sizeScale(d) / 2;
       })
       .attr("y", function (d, i) {
         const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaHeight(d) / 2;
+        return y + h / 2 - sizeScale(d) / 2;
       });
 
     let tooltip = d3
       .select("#Viz")
       .append("div")
       .attr("class", "tooltip")
-      .style("display", "none")
+      .style("opacity", "0")
       .on("mouseover", function (event, d) {
         tooltip.style("opacity", 0.9);
       });
@@ -385,18 +425,18 @@ async function CreateBubbles(key, value) {
       .attr("height", deltaMin)
       .attr("x", function (d, i) {
         const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaMin(d) / 2;
+        return x + w / 2 - sizeScale(d) / 2;
       })
       .attr("y", function (d, i) {
         const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaMin(d) / 2;
+        return y + h / 2 - sizeScale(d) / 2;
       })
       .attr("border", "1px solid black");
 
     let legendGroup = svg
       .append("g")
       .attr("class", "legendOrdinal")
-      .attr("transform", `translate(${wSvg / 3 + 90},${hViz - 40})`);
+      .attr("transform", `translate(${wSvg / 3 + 90},${hViz + 25})`);
 
     let ordinal = d3
       .scaleOrdinal()
@@ -472,7 +512,7 @@ async function CreateBubbles(key, value) {
     let deltaMax = (d) => {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(maxValue / 4);
+        : sizeScale(maxValue);
 
       return result;
     };
@@ -480,7 +520,7 @@ async function CreateBubbles(key, value) {
     let deltaMin = (d) => {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(minValue / 4);
+        : sizeScale(minValue);
 
       return result;
     };
@@ -488,13 +528,13 @@ async function CreateBubbles(key, value) {
     let deltaWidth = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
+        : sizeScale(d[key]);
     };
 
     let deltaHeight = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
+        : sizeScale(d[key]);
     };
 
     svg
