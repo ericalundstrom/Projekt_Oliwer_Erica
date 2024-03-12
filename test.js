@@ -127,20 +127,20 @@ function createSvg() {
     .attr("width", wSvg);
 }
 
-let wSvg = 1500;
+let wSvg = 1400;
 let hSvg = 1000;
 
 let hViz = 0.9 * hSvg;
-let wViz = 0.9 * wSvg;
-let margin = 1;
-let n_cols = 7;
-let w = 95;
-let h = 55;
+let wViz = 0.5 * wSvg;
+let gap = 5;
+let n_cols = 10;
+let w = wViz / n_cols;
+let h = w;
 
 async function CreateBubbles(key, value) {
   function grid_coords(index) {
-    let x = (index % n_cols) * w + 60;
-    let y = Math.floor(index / n_cols) * h;
+    let x = (index % n_cols) * w + gap;
+    let y = Math.floor(index / n_cols) * h + 10;
 
     return { x, y };
   }
@@ -215,7 +215,7 @@ async function CreateBubbles(key, value) {
     let sizeScale = d3
       .scaleLinear()
       .domain([0, d3.max(processedData, (d) => d[key])])
-      .range([40, 0.8 * w]);
+      .range([0, w - gap]);
 
     let gViz = svg
       .attr("x", 0)
@@ -236,18 +236,18 @@ async function CreateBubbles(key, value) {
     let deltaWidth = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
+        : sizeScale(d[key]);
     };
 
     let deltaHeight = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
+        : sizeScale(d[key]);
     };
     let deltaMax = (d) => {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(maxValue / 4);
+        : sizeScale(maxValue);
 
       return result;
     };
@@ -255,7 +255,7 @@ async function CreateBubbles(key, value) {
     let deltaMin = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(minValue / 4);
+        : sizeScale(minValue);
     };
 
     gViz
@@ -365,7 +365,7 @@ async function CreateBubbles(key, value) {
       .select("#Viz")
       .append("div")
       .attr("class", "tooltip")
-      .style("display", "none")
+      .style("opacity", "0")
       .on("mouseover", function (event, d) {
         tooltip.style("opacity", 0.9);
       });
@@ -445,10 +445,11 @@ async function CreateBubbles(key, value) {
         }
       });
   } else {
+    console.log(w);
     let sizeScale = d3
       .scaleLinear()
       .domain([0, d3.max(processedData, (d) => d[key])])
-      .range([40, 0.8 * w]);
+      .range([0, w + gap]);
     let tooltip = d3.select(".tooltip");
 
     let legi = d3.selectAll(".cell circle");
@@ -468,7 +469,7 @@ async function CreateBubbles(key, value) {
     let deltaMax = (d) => {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(maxValue / 4);
+        : sizeScale(maxValue);
 
       return result;
     };
@@ -476,7 +477,7 @@ async function CreateBubbles(key, value) {
     let deltaMin = (d) => {
       const result = isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(minValue / 4);
+        : sizeScale(minValue);
 
       return result;
     };
@@ -484,13 +485,13 @@ async function CreateBubbles(key, value) {
     let deltaWidth = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
+        : sizeScale(d[key]);
     };
 
     let deltaHeight = (d) => {
       return isNaN(sizeScale(d[key]))
         ? sizeScale.range()[0]
-        : sizeScale(d[key] / 4);
+        : sizeScale(d[key]);
     };
 
     svg
