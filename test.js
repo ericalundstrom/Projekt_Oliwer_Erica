@@ -128,7 +128,7 @@ function createSvg() {
 }
 
 let wSvg = 1400;
-let hSvg = 1000;
+let hSvg = 600;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.5 * wSvg;
@@ -336,6 +336,106 @@ async function CreateBubbles(key, value) {
         //     break;
         // }
       })
+      .on("click", (e) => {
+        let clickedElement = d3.select(e.target.offsetParent);
+        let isSelected = clickedElement.classed("selected");
+
+
+        if (!isSelected) {
+          svg.transition()
+
+
+          clickedElement.classed("selected", true);
+          let radius = parseInt(e.target.offsetParent.attributes[0].nodeValue);
+          console.log(radius);
+          let y = e.clientY;
+          let x = e.clientX;
+
+
+          if (radius < 15 && radius > 0) {
+            radius = radius * 3;
+
+            let viewBoxX = x - (radius * 4) + 120;
+            let viewBoxY = y - (radius * 4);
+            let viewBoxWidth = 3 * radius;
+            let viewBoxHeight = 3 * radius;
+            console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+            console.log(e);
+
+            // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+            svg.transition()
+              .duration(2000)
+              .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+          }
+          if (radius < 25 && radius > 15) {
+            radius = radius * 3;
+
+            let viewBoxX = x - (radius * 4) + 120;
+            let viewBoxY = y - (radius * 4);
+            let viewBoxWidth = 3 * radius;
+            let viewBoxHeight = 3 * radius;
+            console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+            console.log(e);
+
+            // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+            svg.transition()
+              .duration(2000)
+              .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+          } else {
+
+            console.log(y, x, radius);
+
+            let viewBoxX = x - (radius * 4) + 150;
+            let viewBoxY = y - (radius * 4);
+            let viewBoxWidth = 3 * radius;
+            let viewBoxHeight = 3 * radius;
+            console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+            console.log(e);
+
+            // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+            svg.transition()
+              .duration(2000)
+              .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+          }
+          if (radius > 25 && radius < 30) {
+            radius = radius * 3;
+
+            let viewBoxX = x - (radius * 4) + 60;
+            let viewBoxY = y - (radius * 4) - 60;
+            let viewBoxWidth = 3 * radius;
+            let viewBoxHeight = 3 * radius;
+            console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+            console.log(e);
+
+            // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+            svg.transition()
+              .duration(2000)
+              .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+          }
+          if (radius > 30 && radius < 35) {
+            radius = radius * 3;
+
+            let viewBoxX = x - (radius * 4) + 60;
+            let viewBoxY = y - (radius * 4) - 20;
+            let viewBoxWidth = 3 * radius;
+            let viewBoxHeight = 3 * radius;
+            console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+            console.log(e);
+
+            // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+            svg.transition()
+              .duration(2000)
+              .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+          }
+
+        } else {
+          clickedElement.classed("selected", false);
+
+          svg.transition()
+            .duration(2000)
+            .attr("viewBox", `0 0 1400 600`);
+        }
+      })
       .on("mouseout", function (event, d) {
         tooltip.style("opacity", 0);
       })
@@ -380,7 +480,7 @@ async function CreateBubbles(key, value) {
     let legendGroup = svg
       .append("g")
       .attr("class", "legendOrdinal")
-      .attr("transform", `translate(${wSvg / 3 + 90},${hViz - 40})`);
+      .attr("transform", `translate(${wSvg / 3 + 50},${hViz})`);
 
     let ordinal = d3
       .scaleOrdinal()
