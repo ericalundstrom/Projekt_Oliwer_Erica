@@ -165,21 +165,6 @@
     "flag": "images/australia-flag.jpg"
   },
   {
-    "City": "Beijing",
-    "Rank": "12",
-    "Sunshine_hours": "2671",
-    "Bottle_water_cost": "0.26",
-    "Obesity": "0.06",
-    "Life_expectancy": "75.4",
-    "Pollution": "85.43",
-    "Hours_worked": "NA",
-    "Happiness": "5.12",
-    "Outdoor_activities": "223",
-    "Take_out_places": "261",
-    "Gym_cost": "38.62",
-    "flag": "images/china-flag.jpg"
-  },
-  {
     "City": "Bangkok",
     "Rank": "13",
     "Sunshine_hours": "2624",
@@ -390,21 +375,6 @@
     "flag": "images/india-flag.jpg"
   },
   {
-    "City": "Boston",
-    "Rank": "27",
-    "Sunshine_hours": "2634",
-    "Bottle_water_cost": "1.39",
-    "Obesity": "0.36",
-    "Life_expectancy": "78.8",
-    "Pollution": "27.03",
-    "Hours_worked": "1779",
-    "Happiness": "6.94",
-    "Outdoor_activities": "88",
-    "Take_out_places": "588",
-    "Gym_cost": "46.27",
-    "flag": "images/usa-flag.jpg"
-  },
-  {
     "City": "Dublin",
     "Rank": "28",
     "Sunshine_hours": "1453",
@@ -433,21 +403,6 @@
     "Take_out_places": "5802",
     "Gym_cost": "70.82",
     "flag": "images/japan-flag.jpg"
-  },
-  {
-    "City": "Chicago",
-    "Rank": "30",
-    "Sunshine_hours": "2508",
-    "Bottle_water_cost": "1.2",
-    "Obesity": "0.36",
-    "Life_expectancy": "78.8",
-    "Pollution": "43.33",
-    "Hours_worked": "1779",
-    "Happiness": "6.94",
-    "Outdoor_activities": "171",
-    "Take_out_places": "1320",
-    "Gym_cost": "41.14",
-    "flag": "images/usa-flag.jpg"
   },
   {
     "City": "Hong Kong",
@@ -598,21 +553,6 @@
     "Take_out_places": "2396",
     "Gym_cost": "53.49",
     "flag": "images/italy-flag.jpg"
-  },
-  {
-    "City": "Washington",
-    "Rank": "41",
-    "Sunshine_hours": "2528",
-    "Bottle_water_cost": "1.45",
-    "Obesity": "0.36",
-    "Life_expectancy": "78.8",
-    "Pollution": "39.18",
-    "Hours_worked": "1779",
-    "Happiness": "6.94",
-    "Outdoor_activities": "83",
-    "Take_out_places": "744",
-    "Gym_cost": "65.99",
-    "flag": "images/usa-flag.jpg"
   },
   {
     "City": "New York",
