@@ -136,6 +136,7 @@ let gap = 5;
 let n_cols = 10;
 let w = wViz / n_cols;
 let h = w;
+let constantSize = 10;
 
 async function CreateBubbles(key, value) {
   function grid_coords(index) {
@@ -218,8 +219,6 @@ async function CreateBubbles(key, value) {
       .range([0, w - gap]);
 
     let gViz = svg
-      .attr("x", 0)
-      .attr("y", 0)
       .selectAll(".bubble")
       .data(processedData)
       .enter()
@@ -227,35 +226,23 @@ async function CreateBubbles(key, value) {
       .attr("class", "bubble")
       .attr("transform", (d, i) => {
         const { x, y } = grid_coords(i);
-        const deltaSize = isNaN(sizeScale(d[key]))
-          ? sizeScale.range()[0]
-          : sizeScale(d[key] / 4);
+        const deltaSize = isNaN(d[key]) ? constantSize : sizeScale(d[key] / 4);
         return `translate(${x + w / 2 - deltaSize / 2},${y})`;
       });
 
     let deltaWidth = (d) => {
-      return isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(d[key]);
+      return isNaN(d[key]) ? constantSize : sizeScale(d[key]);
     };
 
     let deltaHeight = (d) => {
-      return isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(d[key]);
+      return isNaN(d[key]) ? constantSize : sizeScale(d[key]);
     };
     let deltaMax = (d) => {
-      const result = isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(maxValue);
-
-      return result;
+      return isNaN(d[key]) ? constantSize : sizeScale(maxValue);
     };
 
     let deltaMin = (d) => {
-      return isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(minValue);
+      return isNaN(d[key]) ? constantSize : sizeScale(minValue);
     };
 
     gViz
@@ -359,7 +346,8 @@ async function CreateBubbles(key, value) {
       .attr("y", function (d, i) {
         const { x, y } = grid_coords(i);
         return y + h / 2 - deltaHeight(d) / 2;
-      });
+      })
+      .transition();
 
     let tooltip = d3
       .select("#Viz")
@@ -445,7 +433,6 @@ async function CreateBubbles(key, value) {
         }
       });
   } else {
-    console.log(w);
     let sizeScale = d3
       .scaleLinear()
       .domain([0, d3.max(processedData, (d) => d[key])])
@@ -467,31 +454,19 @@ async function CreateBubbles(key, value) {
     });
 
     let deltaMax = (d) => {
-      const result = isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(maxValue);
-
-      return result;
+      return isNaN(d[key]) ? constantSize : sizeScale(maxValue);
     };
 
     let deltaMin = (d) => {
-      const result = isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(minValue);
-
-      return result;
+      return isNaN(d[key]) ? constantSize : sizeScale(minValue);
     };
 
     let deltaWidth = (d) => {
-      return isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(d[key]);
+      return isNaN(d[key]) ? constantSize : sizeScale(d[key]);
     };
 
     let deltaHeight = (d) => {
-      return isNaN(sizeScale(d[key]))
-        ? sizeScale.range()[0]
-        : sizeScale(d[key]);
+      return isNaN(d[key]) ? constantSize : sizeScale(d[key]);
     };
 
     svg
