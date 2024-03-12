@@ -127,15 +127,15 @@ function createSvg() {
     .attr("width", wSvg);
 }
 
-let wSvg = 1600;
+let wSvg = 1500;
 let hSvg = 1000;
 
 let hViz = 0.9 * hSvg;
 let wViz = 0.9 * wSvg;
 let margin = 1;
 let n_cols = 7;
-let w = 100;
-let h = 60;
+let w = 95;
+let h = 55;
 
 async function CreateBubbles(key, value) {
   function grid_coords(index) {
@@ -207,7 +207,7 @@ async function CreateBubbles(key, value) {
     const value = parseFloat(d[key]);
     return {
       ...d,
-      [key]: isNaN(value) ? NaN : value, // Replace NaN with 0 or any default value
+      [key]: isNaN(value) ? NaN : value,
     };
   });
 
@@ -272,9 +272,7 @@ async function CreateBubbles(key, value) {
       .attr("y", function (d, i) {
         const { x, y } = grid_coords(i);
         return y + h / 2 - deltaMax(d) / 2;
-
       });
-
 
     gViz
       .append("foreignObject")
@@ -320,7 +318,6 @@ async function CreateBubbles(key, value) {
         if (key === "Happiness") {
           tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score `);
         }
-
 
         // console.log(key);
 
@@ -390,8 +387,7 @@ async function CreateBubbles(key, value) {
       .attr("y", function (d, i) {
         const { x, y } = grid_coords(i);
         return y + h / 2 - deltaMin(d) / 2;
-      })
-      .attr("border", "1px solid black");
+      });
 
     let legendGroup = svg
       .append("g")
