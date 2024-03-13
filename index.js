@@ -21,8 +21,8 @@ function basicLayout() {
   <div id="Bottomline"></div>
   <div class="text" id="moreInfo">
     <h2> Att arbeta med datan </h2>
-    <p> Vårt första steg innebar att konvertera vår data från CSV till JSON-format. Genom att utnyttja en CSV-omvandlare inom VSCode övergick vi smidigt vår data till JSON. Med denna uppgift genomförd påbörjade vi våra dataanalys- och visualiseringssträvanden. För att uppnå den önskade visualiseringen införde vi en ny nyckel i vår databas som heter 'flagga', som innehåller motsvarande landsflaggor. Vårt mål var att skapa en interaktiv visualisering som inte bara presenterar data utan också engagerar vår publik.</p>
-    <p> Vissa av nycklarna visade sig ha NaN-värden, ändå var det viktigt att visualisera dem för att underlätta en omfattande förståelse av skillnaderna mellan städerna. För att åstadkomma detta tilldelade vi NaN ett platshållarvärde. Vi valde ett standardvärde på 10. Dessutom, för att signalera frånvaron av data för dessa nycklar, använde vi en grå opacitet för de motsvarande cirklarna. Dessa visualiseringar syftar till att tydligt kommunicera bristen på tillgängliga data samtidigt som de behåller sin betydelse för att underlätta jämförelser mellan städer för användaren.</p>
+    <p> Vårt första steg innebar att konvertera vår data från CSV till JSON-format. Genom att utnyttja en CSV-omvandlare inom VSCode övergick vi smidigt vår data till JSON. Med denna uppgift genomförd påbörjade vi våra dataanalys- och visualiseringssträvanden. För att uppnå den önskade visualiseringen införde vi en ny nyckel i vår databas som heter 'flag', som innehåller motsvarande landsflaggor. Vårt mål var att skapa en interaktiv visualisering som inte bara presenterar data utan också engagerar vår publik.</p>
+    <p> Vissa av nycklarna visade sig ha NaN-värden, men vi tyckte att det var viktigt att visualisera dem för att underlätta en omfattande förståelse av skillnaderna mellan städerna. För att åstadkomma detta tilldelade vi NaN ett platshållarvärde. Vi valde ett standardvärde på 10. Dessutom, för att signalera frånvaron av data för dessa nycklar, använde vi en grå opacitet för de motsvarande cirklarna. Dessa visualiseringar syftar till att tydligt kommunicera bristen på tillgängliga data samtidigt som de behåller sin betydelse för att underlätta jämförelser mellan städer för användaren.</p>
     
     <br>
 
@@ -68,7 +68,7 @@ async function CreateButtons() {
     let text = d.replace(/_/g, " ");
     ButtonDom.textContent = text;
     ButtonWrapper.append(ButtonDom);
-    ButtonDom.addEventListener("click", (e) => {
+    ButtonDom.addEventListener("click", () => {
       if (activeButton) {
         activeButton.classList.remove("active");
       }
@@ -76,12 +76,12 @@ async function CreateButtons() {
       ButtonDom.classList.add("active");
 
       activeButton = ButtonDom;
-      filterDataViz(e, d);
+      filterDataViz(d);
     });
   });
 }
 
-let currentFilterKey;
+
 function isSvgEmpty() {
   let svg = document.querySelector("svg");
   if (!svg) {
@@ -91,12 +91,9 @@ function isSvgEmpty() {
   return false;
 }
 
-async function filterDataViz(e, key) {
+async function filterDataViz(key) {
   let div = document.querySelector(".chosenFilter");
   let text = key.replace(/_/g, " ");
-  if (text.charAt(0) !== text.charAt(0).toUpperCase()) {
-    text = text.charAt(0).toUpperCase() + text.slice(1);
-  }
 
   if (div === null) {
     let divDom = document.createElement("div");
@@ -110,14 +107,12 @@ async function filterDataViz(e, key) {
     document.querySelector(".chosenFilter").textContent = text;
   }
 
-  if (key !== currentFilterKey) {
-    currentFilterKey = key;
-    if (!isSvgEmpty()) {
-      CreateBubbles(key, false);
-    } else {
-      CreateBubbles(key, true);
-    }
+  if (!isSvgEmpty()) {
+    CreateBubbles(key, false);
+  } else {
+    CreateBubbles(key, true);
   }
+
 }
 
 function createSvg() {
@@ -140,6 +135,7 @@ let h = w;
 let constantSize = 10;
 
 async function CreateBubbles(key, value) {
+
   function grid_coords(index) {
     let x = (index % n_cols) * w + gap;
     let y = Math.floor(index / n_cols) * h + 10;
@@ -163,7 +159,6 @@ async function CreateBubbles(key, value) {
 
   range
     .transition()
-    .duration(300)
     .tween("text", function () {
       switch (key) {
         case "Gym_cost":
@@ -269,6 +264,14 @@ async function CreateBubbles(key, value) {
       .attr("width", deltaWidth)
       .attr("height", deltaHeight)
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
+      .attr("x", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return x + w / 2 - deltaWidth(d) / 2;
+      })
+      .attr("y", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return y + h / 2 - deltaHeight(d) / 2;
+      })
       .html(
         (d) =>
           `<div class="flag-image" style="background-image: url(${d.flag})"></div>`
@@ -315,7 +318,7 @@ async function CreateBubbles(key, value) {
       .on("click", (e) => {
         let clickedElement = d3.select(e.target.offsetParent);
         let isSelected = clickedElement.classed("selected");
-        let radius = parseInt(e.target.offsetParent.attributes[0].nodeValue);
+        let WidthHeight = parseInt(e.target.offsetParent.attributes[0].nodeValue);
         let viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight;
 
         if (!isSelected) {
@@ -325,55 +328,55 @@ async function CreateBubbles(key, value) {
           let x = e.clientX;
 
           switch (true) {
-            case (radius < 10 && radius > 0):
+            case (WidthHeight < 10 && WidthHeight > 0):
               viewBoxX = x - (w * 2);
               viewBoxY = y - (w * 3) - 80;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius < 15 && radius > 10):
+            case (WidthHeight < 15 && WidthHeight > 10):
               viewBoxX = x - (w * 4) + 120;
               viewBoxY = y - (w * 4);
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius < 25 && radius > 15):
+            case (WidthHeight < 25 && WidthHeight > 15):
               viewBoxX = x - (w * 4) + 120;
               viewBoxY = y - (w * 4);
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 25 && radius < 30):
+            case (WidthHeight > 25 && WidthHeight < 30):
               viewBoxX = x - (w * 4) + 60;
               viewBoxY = y - (w * 4) - 20;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 30 && radius < 35):
+            case (WidthHeight > 30 && WidthHeight < 35):
               viewBoxX = x - (w * 2.5) + 20;
               viewBoxY = y - (w * 3) - 60;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 35 && radius < 45):
+            case (WidthHeight > 35 && WidthHeight < 45):
               viewBoxX = x - (w * 2) + 20;
               viewBoxY = y - (w * 2) - 50;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 45 && radius < 35):
+            case (WidthHeight > 45 && WidthHeight < 35):
               viewBoxX = x - (w * 2) + 20;
               viewBoxY = y - (w * 2) - 20;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 55 && radius < 45):
+            case (WidthHeight > 55 && WidthHeight < 45):
               viewBoxX = x - (w * 2) + 20;
               viewBoxY = y - (w * 2) - 60;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 55):
+            case (WidthHeight > 55):
               viewBoxX = x - (w * 4) + 150;
               viewBoxY = y - (w * 4);
               viewBoxWidth = 3 * w;
@@ -400,15 +403,6 @@ async function CreateBubbles(key, value) {
       .on("mouseout", function (event, d) {
         tooltip.style("opacity", 0);
       })
-      .attr("x", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaWidth(d) / 2;
-      })
-      .attr("y", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaHeight(d) / 2;
-      })
-      .transition();
 
     let tooltip = d3
       .select("#Viz")
@@ -422,8 +416,6 @@ async function CreateBubbles(key, value) {
     gViz
       .append("rect")
       .attr("class", "minScale")
-      .style("stroke", "black")
-      .style("stroke-width", "1px")
       .attr("rx", 50)
       .attr("ry", 50)
       .style("fill", "none")
@@ -453,9 +445,6 @@ async function CreateBubbles(key, value) {
       .shape("circle")
       .orient("horizontal")
       .shapePadding(100)
-      .cellFilter(function (d) {
-        return d.label !== "e";
-      })
       .scale(ordinal);
 
     legendGroup.call(legendOrdinal);
@@ -500,11 +489,11 @@ async function CreateBubbles(key, value) {
       .range([0, w + gap]);
     let tooltip = d3.select(".tooltip");
 
-    let legi = d3.selectAll(".cell circle");
+    let legends = d3.selectAll(".cell circle");
 
     svg.selectAll("g").data(processedData).transition().duration(500);
 
-    legi.each(function (d) {
+    legends.each(function (d) {
       if (d !== "Existing data") {
         let foreignObject = d3.select(this.parentNode).select("foreignObject");
         foreignObject.classed("nan-value", false);
@@ -563,26 +552,7 @@ async function CreateBubbles(key, value) {
 
     d3.selectAll(".bubble foreignObject")
       .on("mousemove", function divInfo(event, d) {
-        // Move tooltip to follow the mouse
         let text = key.replace(/_/g, " ");
-        // if (key === "Gym_cost" || key === "Bottle_water_cost") {
-        //   tooltip
-        //     .html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
-        //     .style("left", event.pageX + 10 + "px")
-        //     .style("top", event.pageY - 28 + "px");
-
-        // } else {
-        //   tooltip
-        //     .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
-        //     .style("left", event.pageX + 10 + "px")
-        //     .style("top", event.pageY - 28 + "px");
-        // }
-        // if (key === "Obesity") {
-        //   tooltip
-        //     .html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
-        //     .style("left", event.pageX + 10 + "px")
-        //     .style("top", event.pageY - 28 + "px")
-        // }
 
         tooltip
           .style("left", event.pageX + 10 + "px")
