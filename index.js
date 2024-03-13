@@ -8,9 +8,9 @@ function basicLayout() {
   wrapper.innerHTML = `
   <div class="text" id="info">
     <h1> En hälsosam livsstil runt om i världen </h1>
-    <p> Lenstores omfattande analys av 44 globala städer, där olika värden som övervikt  och förorening granskas, syftar till att identifiera platser som främjar en omfattande, hälsosam livsstil. Vår visualisering, som använder Lenstores data, blir ett avgörande verktyg för individer som vill leva ett bra liv med en bredare välbefinnande. Den riktar sig till en mångsidig publik och ger insikter i den övergripande hälsosituationen i olika städer. Genom att adressera mångfacetterade hälsoaspekter bortom träning och kost, hjälper visualiseringen till att fatta informerade beslut om livsmiljöer. Detta främjar ökad effektivitet när det gäller att sträva efter en hälsosammare livsstil och ger individer möjlighet att göra holistiska val som är i linje med välbefinnandemål. </p>
+    <p> Lenstores omfattande analys av 44 globala städer, där olika värden som övervikt  och förorening granskas, syftar till att identifiera platser som främjar en omfattande, hälsosam livsstil. Vår visualisering som använder Lenstores data, blir ett avgörande verktyg för individer som vill leva ett bra liv med bra förutsättningar. Den riktar sig till en mångsidig publik och ger insikter i den övergripande hälsosituationen i olika städer. Genom att adressera hälsoaspekter bortom träning och kost, hjälper visualiseringen till att fatta informerade beslut om livsmiljöer. Detta främjar ökad effektivitet när det gäller att sträva efter en hälsosammare livsstil och ger individer möjlighet att göra ett val som är i linje med välbefinnandemål. </p>
 
-    <p> Som två studenter blev vi fascinerade av Lenstores analys och beslutade att gräva djupare i datan. Vårt mål är att skapa en visualisering som ger användarna värdefulla insikter om faktorer som bidrar till en hälsosam livsstil i olika urbana miljöer. </p>
+    <p> Som två studenter blev vi fascinerade av Lenstores analys och beslutade att gräva djupare i datan. Vårt mål är att skapa en visualisering som ger användarna värdefulla insikter om faktorer som bidrar till en hälsosam livsstil i olika miljöer. </p>
     <p> Genom att kombinera vår passion för dataanalys med vårt engagemang för att främja hälsa och välbefinnande, strävar vi efter att ge individer möjlighet att fatta informerade beslut om sina boende- och livsstilsval. Följ med oss på denna resa när vi utforskar vägarna till ett friskare och mer tillfredsställande liv. </p>
     <p id="finalQuote"> En fråga återstår, bor du i den bästa staden för en hälsosam livsstil? </p>
 
@@ -26,7 +26,7 @@ function basicLayout() {
     
     <br>
 
-    <h2> Kvaliteten på datan</h2>
+    <h2> Datans Kvalité</h2>
     <p> Vi stötte först på denna data när vi letade på Kaggle.com. Den här webbplatsen har tusentals databaser från hela världen. Vi anser att vår databas är pålitlig eftersom forskningen och datan samlades in från flera stora företag, som World Happiness, Our World In Data och Tripadvisor. Datan samlades in från sammanlagt tio mätvärden. Varje av dessa mätvärden tilldelades en viktad poäng och dessa kombinerades för att ge varje stad en total poäng av 100. Denna poäng användes sedan för att rangordna de 44 städerna för att avgöra vilka som var bäst för hälsosamt liv.</p>
 
     <br>
