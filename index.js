@@ -294,6 +294,7 @@ async function CreateBubbles(key, value) {
             tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}%`);
             break;
           case "Sunshine_hours":
+          case "Hours_worked":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
             break;
           case "Life_expectancy":
@@ -301,9 +302,6 @@ async function CreateBubbles(key, value) {
             break;
           case "Pollution":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score`);
-            break;
-          case "Hours_worked":
-            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
             break;
           case "Happiness":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score`);
@@ -489,20 +487,6 @@ async function CreateBubbles(key, value) {
       .range([0, w + gap]);
     let tooltip = d3.select(".tooltip");
 
-    let legends = d3.selectAll(".cell circle");
-
-    svg.selectAll("g").data(processedData).transition().duration(500);
-
-    legends.each(function (d) {
-      if (d !== "Existing data") {
-        let foreignObject = d3.select(this.parentNode).select("foreignObject");
-        foreignObject.classed("nan-value", false);
-      } else {
-        let foreignObject = d3.select(this.parentNode).select("foreignObject");
-        foreignObject.classed("nan-value", false);
-      }
-    });
-
     let deltaMax = (d) => {
       return isNaN(d[key]) ? constantSize : sizeScale(maxValue);
     };
@@ -567,6 +551,7 @@ async function CreateBubbles(key, value) {
             tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}%`);
             break;
           case "Sunshine_hours":
+          case "Hours_worked":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
             break;
           case "Life_expectancy":
@@ -574,9 +559,6 @@ async function CreateBubbles(key, value) {
             break;
           case "Pollution":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score`);
-            break;
-          case "Hours_worked":
-            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
             break;
           case "Happiness":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score`);
