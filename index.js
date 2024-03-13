@@ -494,6 +494,7 @@ async function CreateBubbles(key, value) {
       .scaleLinear()
       .domain([0, d3.max(processedData, (d) => d[key])])
       .range([0, w + gap]);
+
     let tooltip = d3.select(".tooltip");
 
     let deltaMax = (d) => {
@@ -535,7 +536,6 @@ async function CreateBubbles(key, value) {
     svg
       .selectAll(".bubble foreignObject")
       .data(processedData)
-      .join("foreignObject")
       .transition()
       .duration(700)
       .attr("width", deltaWidth)
