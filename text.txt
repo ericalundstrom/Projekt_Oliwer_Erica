@@ -34,3 +34,840 @@
     //       .attr("viewBox", `0 0 1600 600`);
     //   }
     // });
+
+
+
+    // if (key === "Gym_cost" || key === "Bottle_water_cost") {
+        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`);
+        // } else {
+        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`);
+        // }
+        // if (key === "Obesity") {
+        //   tooltip.html(
+        //     `<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `
+        //   );
+        // }
+        // if (key === "Sunshine_hours") {
+        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
+        // }
+        // if (key === "Life_expectancy") {
+        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years  `);
+        // }
+        // if (key === "Pollution") {
+        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score `);
+        // }
+        // if (key === "Hours_worked") {
+        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
+        // }
+        // if (key === "Happiness") {
+        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score `);
+        // }
+
+
+        // console.log(key);
+
+        // switch ([key]) {
+        //   case "Gym_cost":
+        //     tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
+        //     break;
+
+        //   case "Obesity":
+        //     console.log(key);
+        //     tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
+        //     break;
+
+        //   case "Sunshine_hours":
+        //     minValue = `${minValue * 100} hours`;
+        //     maxValue = `${maxValue * 100} hours`;
+        //     break;
+        //   case "Life_expectancy":
+        //     minValue = `${minValue * 100} years`;
+        //     maxValue = `${maxValue * 100} years`;
+        //     break;
+        //   case "Pollution":
+        //     minValue = `${minValue * 100} index score`;
+        //     maxValue = `${maxValue * 100}index score`;
+        //     break;
+        //   case "Hours_worked":
+        //     minValue = `${minValue * 100} hours`;
+        //     maxValue = `${maxValue * 100} hours`;
+        //     break;
+        // }
+
+
+        // .on("click", (e) => {
+      //   let clickedElement = d3.select(e.target.offsetParent);
+      //   let isSelected = clickedElement.classed("selected");
+
+
+      //   if (!isSelected) {
+      //     svg.transition()
+
+
+      //     clickedElement.classed("selected", true);
+      //     let radius = parseInt(e.target.offsetParent.attributes[0].nodeValue);
+      //     console.log(radius);
+      //     let y = e.clientY;
+      //     let x = e.clientX;
+
+
+      //     if (radius < 15 && radius > 0) {
+      //       radius = radius * 3;
+
+      //       let viewBoxX = x - (radius * 4) + 120;
+      //       let viewBoxY = y - (radius * 4);
+      //       let viewBoxWidth = 3 * radius;
+      //       let viewBoxHeight = 3 * radius;
+      //       console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+      //       console.log(e);
+
+      //       // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+      //       svg.transition()
+      //         .duration(2000)
+      //         .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+      //     }
+      //     if (radius < 25 && radius > 15) {
+      //       radius = radius * 3;
+
+      //       let viewBoxX = x - (radius * 4) + 120;
+      //       let viewBoxY = y - (radius * 4);
+      //       let viewBoxWidth = 3 * radius;
+      //       let viewBoxHeight = 3 * radius;
+      //       console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+      //       console.log(e);
+
+      //       // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+      //       svg.transition()
+      //         .duration(2000)
+      //         .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+      //     } else {
+
+      //       console.log(y, x, radius);
+
+      //       let viewBoxX = x - (radius * 4) + 150;
+      //       let viewBoxY = y - (radius * 4);
+      //       let viewBoxWidth = 3 * radius;
+      //       let viewBoxHeight = 3 * radius;
+      //       console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+      //       console.log(e);
+
+      //       // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+      //       svg.transition()
+      //         .duration(2000)
+      //         .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+      //     }
+      //     if (radius > 25 && radius < 30) {
+      //       radius = radius * 3;
+
+      //       let viewBoxX = x - (radius * 4) + 60;
+      //       let viewBoxY = y - (radius * 4) - 60;
+      //       let viewBoxWidth = 3 * radius;
+      //       let viewBoxHeight = 3 * radius;
+      //       console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+      //       console.log(e);
+
+      //       // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+      //       svg.transition()
+      //         .duration(2000)
+      //         .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+      //     }
+      //     if (radius > 30 && radius < 35) {
+      //       radius = radius * 3;
+
+      //       let viewBoxX = x - (radius * 4) + 60;
+      //       let viewBoxY = y - (radius * 4) - 20;
+      //       let viewBoxWidth = 3 * radius;
+      //       let viewBoxHeight = 3 * radius;
+      //       console.log(viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight);
+      //       console.log(e);
+
+      //       // viewBox (cx -r, cy -r, 2 x r, 2 x r) ← Cirkel
+      //       svg.transition()
+      //         .duration(2000)
+      //         .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+      //     }
+
+      //   } else {
+      //     clickedElement.classed("selected", false);
+
+      //     svg.transition()
+      //       .duration(2000)
+      //       .attr("viewBox", `0 0 1400 600`);
+      //   }
+      // })
+
+
+         // if (key === "Gym_cost" || key === "Bottle_water_cost") {
+      //   minValue = `${minValue}£`;
+      //   maxValue = `${maxValue}£`;
+      // }
+      // if (key === "Obesity") {
+      //   minValue = `${minValue * 100}%`;
+      //   maxValue = `${maxValue * 100}%`;
+      // }
+
+      // if (key === "Sunshine_hours") {
+      //   minValue = `${minValue} hours`;
+      //   maxValue = `${maxValue} hours`;
+      // }
+      // if (key === "Life_expectancy") {
+      //   minValue = `${minValue} years`;
+      //   maxValue = `${maxValue} years`;
+      // }
+      // if (key === "Pollution") {
+      //   minValue = `${minValue} index`;
+      //   maxValue = `${maxValue}index`;
+      // }
+      // if (key === "Hours_worked") {
+      //   minValue = `${minValue} hours`;
+      //   maxValue = `${maxValue} hours`;
+      // }
+      // if (key === "Happiness") {
+      //   minValue = `${minValue} level score`;
+      //   maxValue = `${maxValue} level score`;
+      // }
+
+
+
+
+
+
+
+
+      Koden
+
+async function fetching() {
+  const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
+  return data;
+}
+
+function basicLayout() {
+  let wrapper = document.querySelector("#wrapper");
+  wrapper.innerHTML = `
+  <div class="text" id="info">
+    <h1> Healthy lifestyle around the globe </h1>
+    <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals. </p>
+
+    <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
+    <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
+    <p id="finalQuote"> One question remains, do  you live in the best city for healthy living? </p>
+
+    <br>
+    <div id="line"></div>
+  </div>
+  <div id="Viz"></div>
+  <div id="Bottomline"></div>
+  <div class="text" id="moreInfo">
+    <h2> Working with the data </h2>
+    <p>Our initial step involved converting our data from CSV to JSON format. Leveraging a CSV converter within VSCode, we seamlessly transitioned our data into JSON. With this task accomplished, we commenced our data analysis and visualization endeavors.To achieve the desired visualization, we introduced a new key into our database called 'flag,' containing the corresponding country flags. Our objective was to craft an interactive visualization that not only presents data but also engages our audience. </p>
+    <p>Some of the keys were found to have NaN values, yet it was imperative to visualize them to facilitate a comprehensive understanding of the distinctions among cities. To accomplish this, we assigned NaN a placeholder value. We opted for a default value of 40, representing the minimum value within the range. Additionally, to signify the absence of data for these keys, we employed a gray opacity for the corresponding circles. These visualizations serve to transparently communicate the lack of available data while maintaining their significance in facilitating city-to-city comparisons for the user. </p>
+    
+    <br>
+
+    <h2> The quality of the data </h2>
+    <p>We first stumbled upon this data when we were looking on Kaggle.com. This website has thousands and thousands of databases from all over the world. We think that our database is trustworthy because the research and data is gathered from several big companies, such as World Wappiness, Our World In Data, and Tripadvisor. The data was gathered from a total of ten metrics. Each of these metrics were awarded a weighted score and these were combined to give each city a total score out of 100. This score was then used to rank the 44 cities to determine which were best for healthy living. </p>
+
+    <br>
+    <h2> The learning curve </h2>
+    <p> In our first visualization, we needed to investigate the use of d3.hierarchy and d3.pack to position the data within a connected circle. Subsequently, in our second visualization, we tackled the task of arranging the data in a grid, marking a significant departure from the approach in the first visualization. However, by addressing both methods of data placement, we gained valuable insights.
+        Determining the most effective way to visualize our data posed a substantial challenge. While our inspiration led us to choose circles early on, adapting these circles to suit our specific data proved to be a challenging task that we successfully navigated throughout the process.
+    </p>
+
+  </div>
+  `;
+
+  document.querySelector("footer").textContent =
+    "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
+  CreateButtons();
+}
+
+async function CreateButtons() {
+  let keys = [];
+  let bigDataset = await fetching();
+
+  let firstData = bigDataset[0];
+
+  for (const key in firstData) {
+    if (key === "City" || key === "flag" || key === "Rank") {
+    } else {
+      keys.push(key);
+    }
+  }
+
+  let activeButton = null;
+
+  let ButtonWrapper = document.createElement("div");
+  ButtonWrapper.classList.add("ButtonBox");
+  document.querySelector("#Viz").append(ButtonWrapper);
+  keys.forEach((d) => {
+    let ButtonDom = document.createElement("button");
+    ButtonDom.classList.add("button");
+    let text = d.replace(/_/g, " ");
+    ButtonDom.textContent = text;
+    ButtonWrapper.append(ButtonDom);
+    ButtonDom.addEventListener("click", (e) => {
+      if (activeButton) {
+        activeButton.classList.remove("active");
+      }
+
+      ButtonDom.classList.add("active");
+
+      activeButton = ButtonDom;
+      filterDataViz(e, d);
+    });
+  });
+}
+
+let currentFilterKey;
+function isSvgEmpty() {
+  let svg = document.querySelector("svg");
+  if (!svg) {
+    createSvg();
+    return true;
+  }
+  return false;
+}
+
+async function filterDataViz(e, key) {
+  let div = document.querySelector(".chosenFilter");
+  let text = key.replace(/_/g, " ");
+  if (text.charAt(0) !== text.charAt(0).toUpperCase()) {
+    text = text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+  if (div === null) {
+    let divDom = document.createElement("div");
+    divDom.classList.add("info_filter");
+    document.querySelector("#Viz").append(divDom);
+    divDom.innerHTML = `
+                <h2 class="chosenFilter"> ${text} </h2>
+                <h3 class="range"></h3>
+            `;
+  } else {
+    document.querySelector(".chosenFilter").textContent = text;
+  }
+
+  if (key !== currentFilterKey) {
+    currentFilterKey = key;
+    if (!isSvgEmpty()) {
+      CreateBubbles(key, false);
+    } else {
+      CreateBubbles(key, true);
+    }
+  }
+}
+
+function createSvg() {
+  let svg = d3
+    .select("#Viz")
+    .append("svg")
+    .attr("height", hSvg)
+    .attr("width", wSvg);
+}
+
+let wSvg = 1400;
+let hSvg = 600;
+
+let hViz = 0.9 * hSvg;
+let wViz = 0.5 * wSvg;
+let gap = 5;
+let n_cols = 10;
+let w = wViz / n_cols;
+let h = w;
+
+async function CreateBubbles(key, value) {
+  function grid_coords(index) {
+    let x = (index % n_cols) * w + gap;
+    let y = Math.floor(index / n_cols) * h + 10;
+
+    return { x, y };
+  }
+  const bigDataset = await fetching();
+  let svg = d3.select("svg")
+    .attr("viewBox", `0 0 1400 600`)
+
+  let maxValue = 0;
+  let minValue = Infinity;
+
+  bigDataset.forEach((d) => {
+    if (d[key] == "NA") {
+      return;
+    }
+    maxValue = Math.max(maxValue, d[key]);
+    minValue = Math.min(minValue, d[key]);
+  });
+
+  let range = d3.select(".range");
+
+  range
+    .transition()
+    .duration(300)
+    .tween("text", function () {
+
+      switch (key) {
+        case "Gym_cost":
+        case "Bottle_water_cost":
+          minValue = `${minValue}£`;
+          maxValue = `${maxValue}£`;
+          break;
+        case "Obesity":
+          minValue = `${minValue * 100}%`;
+          maxValue = `${maxValue * 100}%`;
+          break;
+        case "Sunshine_hours":
+          minValue = `${minValue} hours`;
+          maxValue = `${maxValue} hours`;
+          break;
+        case "Life_expectancy":
+          minValue = `${minValue} years`;
+          maxValue = `${maxValue} years`;
+          break;
+        case "Pollution":
+          minValue = `${minValue} index`;
+          maxValue = `${maxValue} index`;
+          break;
+        case "Hours_worked":
+          minValue = `${minValue} hours`;
+          maxValue = `${maxValue} hours`;
+          break;
+        case "Happiness":
+          minValue = `${minValue} level score`;
+          maxValue = `${maxValue} level score`;
+          break;
+      }
+
+
+      const interpolate = d3.interpolate(
+        this.textContent,
+        `Min value: ${minValue}, Max value: ${maxValue}`
+      );
+
+      return function (t) {
+        this.innerHTML = interpolate(t);
+      };
+    });
+
+  let processedData = bigDataset.map((d) => {
+    const value = parseFloat(d[key]);
+    return {
+      ...d,
+      [key]: isNaN(value) ? NaN : value,
+    };
+  });
+
+  if (value) {
+    let sizeScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(processedData, (d) => d[key])])
+      .range([0, w - gap]);
+
+    let gViz = svg
+      .attr("x", 0)
+      .attr("y", 0)
+      .selectAll(".bubble")
+      .data(processedData)
+      .enter()
+      .append("g")
+      .attr("class", "bubble")
+      .attr("transform", (d, i) => {
+        const { x, y } = grid_coords(i);
+        const deltaSize = isNaN(sizeScale(d[key]))
+          ? sizeScale.range()[0]
+          : sizeScale(d[key] / 4);
+        return `translate(${x + w / 2 - deltaSize / 2},${y})`;
+      });
+
+    let deltaWidth = (d) => {
+      return isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(d[key]);
+    };
+
+    let deltaHeight = (d) => {
+      return isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(d[key]);
+    };
+    let deltaMax = (d) => {
+      const result = isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(maxValue);
+
+      return result;
+    };
+
+    let deltaMin = (d) => {
+      return isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(minValue);
+    };
+
+    gViz
+      .append("rect")
+      .attr("class", "maxScale")
+      .attr("rx", 50)
+      .attr("ry", 50)
+      .attr("width", deltaMax)
+      .attr("height", deltaMax)
+      .attr("x", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return x + w / 2 - deltaMax(d) / 2;
+      })
+      .attr("y", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return y + h / 2 - deltaMax(d) / 2;
+      });
+
+    gViz
+      .append("foreignObject")
+      .attr("width", deltaWidth)
+      .attr("height", deltaHeight)
+      .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
+      .html(
+        (d) =>
+          `<div class="flag-image" style="background-image: url(${d.flag})"></div>`
+      )
+      .on("mouseover", function (event, d) {
+        tooltip.style("opacity", 0.9);
+      })
+      .on("mousemove", function divInfo(event, d) {
+        let text = key.replace(/_/g, " ");
+
+        tooltip
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px");
+
+        switch (key) {
+          case "Gym_cost":
+          case "Bottle_water_cost":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`);
+            break;
+          case "Obesity":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}%`);
+            break;
+          case "Sunshine_hours":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
+            break;
+          case "Life_expectancy":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years`);
+            break;
+          case "Pollution":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score`);
+            break;
+          case "Hours_worked":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
+            break;
+          case "Happiness":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score`);
+            break;
+          default:
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`);
+            break;
+        }
+
+      })
+
+      .on("click", (e) => {
+        let clickedElement = d3.select(e.target.offsetParent);
+        let isSelected = clickedElement.classed("selected");
+        let radius = parseInt(e.target.offsetParent.attributes[0].nodeValue);
+        let viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight;
+
+        if (!isSelected) {
+          svg.transition();
+          clickedElement.classed("selected", true);
+          let y = e.clientY;
+          let x = e.clientX;
+
+          switch (true) {
+            case (radius < 10 && radius > 0):
+              viewBoxX = x - (w * 2);
+              viewBoxY = y - (w * 3) - 80;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            case (radius < 15 && radius > 10):
+              viewBoxX = x - (w * 4) + 120;
+              viewBoxY = y - (w * 4);
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            case (radius < 25 && radius > 15):
+              viewBoxX = x - (w * 4) + 120;
+              viewBoxY = y - (w * 4);
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            case (radius > 25 && radius < 30):
+              viewBoxX = x - (w * 4) + 60;
+              viewBoxY = y - (w * 4) - 20;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            case (radius > 30 && radius < 35):
+              viewBoxX = x - (w * 2.5) + 20;
+              viewBoxY = y - (w * 3) - 60;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            case (radius > 35 && radius < 45):
+              viewBoxX = x - (w * 2) + 20;
+              viewBoxY = y - (w * 2) - 50;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            case (radius > 45 && radius < 35):
+              viewBoxX = x - (w * 2) + 20;
+              viewBoxY = y - (w * 2) - 20;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            case (radius > 55 && radius < 45):
+              viewBoxX = x - (w * 2) + 20;
+              viewBoxY = y - (w * 2) - 60;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            case (radius > 55):
+              viewBoxX = x - (w * 4) + 150;
+              viewBoxY = y - (w * 4);
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            default:
+              viewBoxX = x - (w * 4) + 150;
+              viewBoxY = y - (w * 4) - 50;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+          }
+
+          svg.transition()
+            .duration(2000)
+            .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+        } else {
+          clickedElement.classed("selected", false);
+          svg.transition()
+            .duration(2000)
+            .attr("viewBox", `0 0 1400 600`);
+        }
+      })
+
+      .on("mouseout", function (event, d) {
+        tooltip.style("opacity", 0);
+      })
+      .attr("x", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return x + w / 2 - deltaWidth(d) / 2;
+      })
+      .attr("y", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return y + h / 2 - deltaHeight(d) / 2;
+      });
+
+    let tooltip = d3
+      .select("#Viz")
+      .append("div")
+      .attr("class", "tooltip")
+      .style("opacity", "0")
+      .on("mouseover", function (event, d) {
+        tooltip.style("opacity", 0.9);
+      });
+
+    gViz
+      .append("rect")
+      .attr("class", "minScale")
+      .style("stroke", "black")
+      .style("stroke-width", "1px")
+      .attr("rx", 50)
+      .attr("ry", 50)
+      .style("fill", "none")
+      .attr("width", deltaMin)
+      .attr("height", deltaMin)
+      .attr("x", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return x + w / 2 - deltaMin(d) / 2;
+      })
+      .attr("y", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return y + h / 2 - deltaMin(d) / 2;
+      });
+
+    let legendGroup = svg
+      .append("g")
+      .attr("class", "legendOrdinal")
+      .attr("transform", `translate(${wSvg / 3 + 50},${hViz})`);
+
+    let ordinal = d3
+      .scaleOrdinal()
+      .domain(["Nan, no data", "Existing data", "Max Value", "Min Value"])
+      .range(["none"]);
+
+    let legendOrdinal = d3
+      .legendColor()
+      .shape("circle")
+      .orient("horizontal")
+      .shapePadding(100)
+      .cellFilter(function (d) {
+        return d.label !== "e";
+      })
+      .scale(ordinal);
+
+    legendGroup.call(legendOrdinal);
+
+    legendGroup
+      .selectAll(".cell circle")
+      .style("stroke", "none")
+      .attr("r", 10)
+      .each(function (d) {
+        d3.select(this.parentNode)
+          .append("foreignObject")
+          .attr("width", 20)
+          .attr("height", 20)
+          .attr("x", -10)
+          .attr("y", -10)
+          .html(
+            `<div class="flag-image" style="background-image: url(images/sweden-flag.jpg)"></div>`
+          );
+
+        if (d === "Nan, no data") {
+          d3.select(this.parentNode).classed("nan-value", true);
+          d3.select(this.parentNode).classed("data", true);
+        }
+
+        if (d === "Min Value") {
+          d3.select(this)
+            .style("stroke", "black")
+            .style("fill", "rgba(255, 255, 255, 0.182)");
+
+          d3.select(this.parentNode).select("foreignObject").remove();
+        }
+
+        if (d === "Max Value") {
+          d3.select(this).style("stroke", "#3700ff").style("fill", "#3700ff2d");
+          d3.select(this.parentNode).select("foreignObject").remove();
+        }
+      });
+  } else {
+    console.log(w);
+    let sizeScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(processedData, (d) => d[key])])
+      .range([0, w + gap]);
+    let tooltip = d3.select(".tooltip");
+
+    let legi = d3.selectAll(".cell circle");
+
+    svg.selectAll("g").data(processedData).transition().duration(500);
+
+    legi.each(function (d) {
+      if (d !== "Existing data") {
+        let foreignObject = d3.select(this.parentNode).select("foreignObject");
+        foreignObject.classed("nan-value", false);
+      } else {
+        let foreignObject = d3.select(this.parentNode).select("foreignObject");
+        foreignObject.classed("nan-value", false);
+      }
+    });
+
+    let deltaMax = (d) => {
+      const result = isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(maxValue);
+
+      return result;
+    };
+
+    let deltaMin = (d) => {
+      const result = isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(minValue);
+
+      return result;
+    };
+
+    let deltaWidth = (d) => {
+      return isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(d[key]);
+    };
+
+    let deltaHeight = (d) => {
+      return isNaN(sizeScale(d[key]))
+        ? sizeScale.range()[0]
+        : sizeScale(d[key]);
+    };
+
+    svg
+      .selectAll(".maxScale")
+      .data(processedData)
+      .transition()
+      .duration(700)
+      .attr("width", deltaMax)
+      .attr("height", deltaMax)
+      .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaMax(d) / 2)
+      .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaMax(d) / 2);
+
+    svg
+      .selectAll(".minScale")
+      .data(processedData)
+      .transition()
+      .duration(700)
+      .attr("width", deltaMin)
+      .attr("height", deltaMin)
+      .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaMin(d) / 2)
+      .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaMin(d) / 2);
+
+    svg
+      .selectAll(".bubble foreignObject")
+      .data(processedData)
+      .join("foreignObject")
+      .transition()
+      .duration(700)
+      .attr("width", deltaWidth)
+      .attr("height", deltaHeight)
+      .attr("x", (d, i) => grid_coords(i).x + w / 2 - deltaWidth(d) / 2)
+      .attr("y", (d, i) => grid_coords(i).y + h / 2 - deltaHeight(d) / 2);
+
+    d3.selectAll(".bubble foreignObject")
+      .on("mousemove", function divInfo(event, d) {
+        // Move tooltip to follow the mouse
+        let text = key.replace(/_/g, " ");
+
+        tooltip
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 28 + "px");
+
+        switch (key) {
+          case "Gym_cost":
+          case "Bottle_water_cost":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`);
+            break;
+          case "Obesity":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}%`);
+            break;
+          case "Sunshine_hours":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
+            break;
+          case "Life_expectancy":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years`);
+            break;
+          case "Pollution":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score`);
+            break;
+          case "Hours_worked":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
+            break;
+          case "Happiness":
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score`);
+            break;
+          default:
+            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`);
+            break;
+        }
+      })
+      .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
+  }
+}
+
+basicLayout();
