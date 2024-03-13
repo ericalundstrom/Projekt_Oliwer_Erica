@@ -76,12 +76,11 @@ async function CreateButtons() {
       ButtonDom.classList.add("active");
 
       activeButton = ButtonDom;
-      filterDataViz(e, d);
+      filterDataViz(d);
     });
   });
 }
 
-let currentFilterKey;
 function isSvgEmpty() {
   let svg = document.querySelector("svg");
   if (!svg) {
@@ -91,12 +90,9 @@ function isSvgEmpty() {
   return false;
 }
 
-async function filterDataViz(e, key) {
+async function filterDataViz(key) {
   let div = document.querySelector(".chosenFilter");
   let text = key.replace(/_/g, " ");
-  if (text.charAt(0) !== text.charAt(0).toUpperCase()) {
-    text = text.charAt(0).toUpperCase() + text.slice(1);
-  }
 
   if (div === null) {
     let divDom = document.createElement("div");
@@ -110,13 +106,10 @@ async function filterDataViz(e, key) {
     document.querySelector(".chosenFilter").textContent = text;
   }
 
-  if (key !== currentFilterKey) {
-    currentFilterKey = key;
-    if (!isSvgEmpty()) {
-      CreateBubbles(key, false);
-    } else {
-      CreateBubbles(key, true);
-    }
+  if (!isSvgEmpty()) {
+    CreateBubbles(key, false);
+  } else {
+    CreateBubbles(key, true);
   }
 }
 
@@ -161,51 +154,48 @@ async function CreateBubbles(key, value) {
 
   let range = d3.select(".range");
 
-  range
-    .transition()
-    .duration(300)
-    .tween("text", function () {
-      switch (key) {
-        case "Gym_cost":
-        case "Bottle_water_cost":
-          minValue = `${minValue}£`;
-          maxValue = `${maxValue}£`;
-          break;
-        case "Obesity":
-          minValue = `${minValue * 100}%`;
-          maxValue = `${maxValue * 100}%`;
-          break;
-        case "Sunshine_hours":
-          minValue = `${minValue} hours`;
-          maxValue = `${maxValue} hours`;
-          break;
-        case "Life_expectancy":
-          minValue = `${minValue} years`;
-          maxValue = `${maxValue} years`;
-          break;
-        case "Pollution":
-          minValue = `${minValue} index`;
-          maxValue = `${maxValue} index`;
-          break;
-        case "Hours_worked":
-          minValue = `${minValue} hours`;
-          maxValue = `${maxValue} hours`;
-          break;
-        case "Happiness":
-          minValue = `${minValue} level score`;
-          maxValue = `${maxValue} level score`;
-          break;
-      }
+  range.transition().tween("text", function () {
+    switch (key) {
+      case "Gym_cost":
+      case "Bottle_water_cost":
+        minValue = `${minValue}£`;
+        maxValue = `${maxValue}£`;
+        break;
+      case "Obesity":
+        minValue = `${minValue * 100}%`;
+        maxValue = `${maxValue * 100}%`;
+        break;
+      case "Sunshine_hours":
+        minValue = `${minValue} hours`;
+        maxValue = `${maxValue} hours`;
+        break;
+      case "Life_expectancy":
+        minValue = `${minValue} years`;
+        maxValue = `${maxValue} years`;
+        break;
+      case "Pollution":
+        minValue = `${minValue} index`;
+        maxValue = `${maxValue} index`;
+        break;
+      case "Hours_worked":
+        minValue = `${minValue} hours`;
+        maxValue = `${maxValue} hours`;
+        break;
+      case "Happiness":
+        minValue = `${minValue} level score`;
+        maxValue = `${maxValue} level score`;
+        break;
+    }
 
-      const interpolate = d3.interpolate(
-        this.textContent,
-        `Min value: ${minValue}, Max value: ${maxValue}`
-      );
+    const interpolate = d3.interpolate(
+      this.textContent,
+      `Min value: ${minValue}, Max value: ${maxValue}`
+    );
 
-      return function (t) {
-        this.innerHTML = interpolate(t);
-      };
-    });
+    return function (t) {
+      this.innerHTML = interpolate(t);
+    };
+  });
 
   let processedData = bigDataset.map((d) => {
     const value = parseFloat(d[key]);
@@ -222,14 +212,14 @@ async function CreateBubbles(key, value) {
       .range([0, w - gap]);
 
     let gViz = svg
-      .selectAll(".bubble")
+      .selectAll("rect")
       .data(processedData)
       .enter()
       .append("g")
       .attr("class", "bubble")
       .attr("transform", (d, i) => {
         const { x, y } = grid_coords(i);
-        const deltaSize = isNaN(d[key]) ? constantSize : sizeScale(d[key] / 4);
+        const deltaSize = isNaN(d[key]) ? constantSize : sizeScale(d[key]);
         return `translate(${x + w / 2 - deltaSize / 2},${y})`;
       });
 
@@ -268,6 +258,14 @@ async function CreateBubbles(key, value) {
       .append("foreignObject")
       .attr("width", deltaWidth)
       .attr("height", deltaHeight)
+      .attr("x", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return x + w / 2 - deltaWidth(d) / 2;
+      })
+      .attr("y", function (d, i) {
+        const { x, y } = grid_coords(i);
+        return y + h / 2 - deltaHeight(d) / 2;
+      })
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
       .html(
         (d) =>
@@ -288,7 +286,9 @@ async function CreateBubbles(key, value) {
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`);
             break;
           case "Obesity":
-            tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}%`);
+            tooltip.html(
+              `<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}%`
+            );
             break;
           case "Sunshine_hours":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
@@ -309,7 +309,6 @@ async function CreateBubbles(key, value) {
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`);
             break;
         }
-
       })
 
       .on("click", (e) => {
@@ -325,90 +324,83 @@ async function CreateBubbles(key, value) {
           let x = e.clientX;
 
           switch (true) {
-            case (radius < 10 && radius > 0):
-              viewBoxX = x - (w * 2);
-              viewBoxY = y - (w * 3) - 80;
+            case radius < 10 && radius > 0:
+              viewBoxX = x - w * 2;
+              viewBoxY = y - w * 3 - 80;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius < 15 && radius > 10):
-              viewBoxX = x - (w * 4) + 120;
-              viewBoxY = y - (w * 4);
+            case radius < 15 && radius > 10:
+              viewBoxX = x - w * 4 + 120;
+              viewBoxY = y - w * 4;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius < 25 && radius > 15):
-              viewBoxX = x - (w * 4) + 120;
-              viewBoxY = y - (w * 4);
+            case radius < 25 && radius > 15:
+              viewBoxX = x - w * 4 + 120;
+              viewBoxY = y - w * 4;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 25 && radius < 30):
-              viewBoxX = x - (w * 4) + 60;
-              viewBoxY = y - (w * 4) - 20;
+            case radius > 25 && radius < 30:
+              viewBoxX = x - w * 4 + 60;
+              viewBoxY = y - w * 4 - 20;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 30 && radius < 35):
-              viewBoxX = x - (w * 2.5) + 20;
-              viewBoxY = y - (w * 3) - 60;
+            case radius > 30 && radius < 35:
+              viewBoxX = x - w * 2.5 + 20;
+              viewBoxY = y - w * 3 - 60;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 35 && radius < 45):
-              viewBoxX = x - (w * 2) + 20;
-              viewBoxY = y - (w * 2) - 50;
+            case radius > 35 && radius < 45:
+              viewBoxX = x - w * 2 + 20;
+              viewBoxY = y - w * 2 - 50;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 45 && radius < 35):
-              viewBoxX = x - (w * 2) + 20;
-              viewBoxY = y - (w * 2) - 20;
+            case radius > 45 && radius < 35:
+              viewBoxX = x - w * 2 + 20;
+              viewBoxY = y - w * 2 - 20;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 55 && radius < 45):
-              viewBoxX = x - (w * 2) + 20;
-              viewBoxY = y - (w * 2) - 60;
+            case radius > 55 && radius < 45:
+              viewBoxX = x - w * 2 + 20;
+              viewBoxY = y - w * 2 - 60;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
-            case (radius > 55):
-              viewBoxX = x - (w * 4) + 150;
-              viewBoxY = y - (w * 4);
+            case radius > 55:
+              viewBoxX = x - w * 4 + 150;
+              viewBoxY = y - w * 4;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
             default:
-              viewBoxX = x - (w * 4) + 150;
-              viewBoxY = y - (w * 4) - 50;
+              viewBoxX = x - w * 4 + 150;
+              viewBoxY = y - w * 4 - 50;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
           }
 
-          svg.transition()
+          svg
+            .transition()
             .duration(2000)
-            .attr("viewBox", `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`);
+            .attr(
+              "viewBox",
+              `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`
+            );
         } else {
           clickedElement.classed("selected", false);
-          svg.transition()
-            .duration(2000)
-            .attr("viewBox", `0 0 1400 600`);
+          svg.transition().duration(2000).attr("viewBox", `0 0 1400 600`);
         }
       })
       .on("mouseout", function (event, d) {
         tooltip.style("opacity", 0);
-      })
-      .attr("x", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaWidth(d) / 2;
-      })
-      .attr("y", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaHeight(d) / 2;
-      })
-      .transition();
+      });
 
     let tooltip = d3
       .select("#Viz")
@@ -422,8 +414,6 @@ async function CreateBubbles(key, value) {
     gViz
       .append("rect")
       .attr("class", "minScale")
-      .style("stroke", "black")
-      .style("stroke-width", "1px")
       .attr("rx", 50)
       .attr("ry", 50)
       .style("fill", "none")
@@ -453,9 +443,6 @@ async function CreateBubbles(key, value) {
       .shape("circle")
       .orient("horizontal")
       .shapePadding(100)
-      .cellFilter(function (d) {
-        return d.label !== "e";
-      })
       .scale(ordinal);
 
     legendGroup.call(legendOrdinal);
@@ -477,7 +464,6 @@ async function CreateBubbles(key, value) {
 
         if (d === "Nan, no data") {
           d3.select(this.parentNode).classed("nan-value", true);
-          d3.select(this.parentNode).classed("data", true);
         }
 
         if (d === "Min Value") {
@@ -499,20 +485,6 @@ async function CreateBubbles(key, value) {
       .domain([0, d3.max(processedData, (d) => d[key])])
       .range([0, w + gap]);
     let tooltip = d3.select(".tooltip");
-
-    let legi = d3.selectAll(".cell circle");
-
-    svg.selectAll("g").data(processedData).transition().duration(500);
-
-    legi.each(function (d) {
-      if (d !== "Existing data") {
-        let foreignObject = d3.select(this.parentNode).select("foreignObject");
-        foreignObject.classed("nan-value", false);
-      } else {
-        let foreignObject = d3.select(this.parentNode).select("foreignObject");
-        foreignObject.classed("nan-value", false);
-      }
-    });
 
     let deltaMax = (d) => {
       return isNaN(d[key]) ? constantSize : sizeScale(maxValue);
@@ -563,26 +535,7 @@ async function CreateBubbles(key, value) {
 
     d3.selectAll(".bubble foreignObject")
       .on("mousemove", function divInfo(event, d) {
-        // Move tooltip to follow the mouse
         let text = key.replace(/_/g, " ");
-        // if (key === "Gym_cost" || key === "Bottle_water_cost") {
-        //   tooltip
-        //     .html(`<b>${d.City}</b>, ${text}: ${d[key]}£`)
-        //     .style("left", event.pageX + 10 + "px")
-        //     .style("top", event.pageY - 28 + "px");
-
-        // } else {
-        //   tooltip
-        //     .html(`<b>${d.City}</b>, ${text}: ${d[key]}`)
-        //     .style("left", event.pageX + 10 + "px")
-        //     .style("top", event.pageY - 28 + "px");
-        // }
-        // if (key === "Obesity") {
-        //   tooltip
-        //     .html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `)
-        //     .style("left", event.pageX + 10 + "px")
-        //     .style("top", event.pageY - 28 + "px")
-        // }
 
         tooltip
           .style("left", event.pageX + 10 + "px")
@@ -594,7 +547,9 @@ async function CreateBubbles(key, value) {
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`);
             break;
           case "Obesity":
-            tooltip.html(`<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}%`);
+            tooltip.html(
+              `<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}%`
+            );
             break;
           case "Sunshine_hours":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
