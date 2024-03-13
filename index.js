@@ -299,6 +299,7 @@ async function CreateBubbles(key, value) {
             );
             break;
           case "Sunshine_hours":
+          case "Hours_worked":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
             break;
           case "Life_expectancy":
@@ -306,9 +307,6 @@ async function CreateBubbles(key, value) {
             break;
           case "Pollution":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score`);
-            break;
-          case "Hours_worked":
-            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
             break;
           case "Happiness":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score`);
@@ -562,6 +560,7 @@ async function CreateBubbles(key, value) {
             );
             break;
           case "Sunshine_hours":
+          case "Hours_worked":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
             break;
           case "Life_expectancy":
@@ -569,9 +568,6 @@ async function CreateBubbles(key, value) {
             break;
           case "Pollution":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score`);
-            break;
-          case "Hours_worked":
-            tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours`);
             break;
           case "Happiness":
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score`);
