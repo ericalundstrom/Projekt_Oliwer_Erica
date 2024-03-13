@@ -7,12 +7,12 @@ function basicLayout() {
   let wrapper = document.querySelector("#wrapper");
   wrapper.innerHTML = `
   <div class="text" id="info">
-    <h1> Healthy lifestyle around the globe </h1>
-    <p> Lenstore's extensive analysis of 44 global cities, examining diverse metrics such as obesity levels and pollution rates, aims to identify places conducive to a comprehensive, healthy lifestyle. Our visualization, utilizing Lenstore's data, becomes a crucial tool for individuals aligning resolutions with broader well-being. It caters to a diverse audience, providing insights into the overall health scenario of different cities. Addressing multifaceted health aspects beyond fitness and diet, the visualization aids informed decisions on living environments. This fosters increased efficiency in pursuing a healthier lifestyle, empowering individuals to make holistic choices aligned with well-being goals. </p>
+    <h1> En hälsosam livsstil runt om i världen </h1>
+    <p> Lenstores omfattande analys av 44 globala städer, där olika värden som övervikt  och förorening granskas, syftar till att identifiera platser som främjar en omfattande, hälsosam livsstil. Vår visualisering, som använder Lenstores data, blir ett avgörande verktyg för individer som vill leva ett bra liv med en bredare välbefinnande. Den riktar sig till en mångsidig publik och ger insikter i den övergripande hälsosituationen i olika städer. Genom att adressera mångfacetterade hälsoaspekter bortom träning och kost, hjälper visualiseringen till att fatta informerade beslut om livsmiljöer. Detta främjar ökad effektivitet när det gäller att sträva efter en hälsosammare livsstil och ger individer möjlighet att göra holistiska val som är i linje med välbefinnandemål. </p>
 
-    <p> As two students at Malmö Universitet, we were intrigued by Lenstore's analysis and decided to delve deeper into the data. Our goal is to create a visualization that provides users with valuable insights into the factors that contribute to a healthy lifestyle in different urban environments. </p>
-    <p> By combining our passion for data analysis with our commitment to promoting health and well-being, we aim to empower individuals to make informed decisions about their living arrangements and lifestyle choices. Join us on this journey as we explore the pathways to a healthier and more fulfilling life. </p>
-    <p id="finalQuote"> One question remains, do  you live in the best city for healthy living? </p>
+    <p> Som två studenter blev vi fascinerade av Lenstores analys och beslutade att gräva djupare i datan. Vårt mål är att skapa en visualisering som ger användarna värdefulla insikter om faktorer som bidrar till en hälsosam livsstil i olika urbana miljöer. </p>
+    <p> Genom att kombinera vår passion för dataanalys med vårt engagemang för att främja hälsa och välbefinnande, strävar vi efter att ge individer möjlighet att fatta informerade beslut om sina boende- och livsstilsval. Följ med oss på denna resa när vi utforskar vägarna till ett friskare och mer tillfredsställande liv. </p>
+    <p id="finalQuote"> En fråga återstår, bor du i den bästa staden för en hälsosam livsstil? </p>
 
     <br>
     <div id="line"></div>
@@ -20,26 +20,27 @@ function basicLayout() {
   <div id="Viz"></div>
   <div id="Bottomline"></div>
   <div class="text" id="moreInfo">
-    <h2> Working with the data </h2>
-    <p>Our initial step involved converting our data from CSV to JSON format. Leveraging a CSV converter within VSCode, we seamlessly transitioned our data into JSON. With this task accomplished, we commenced our data analysis and visualization endeavors.To achieve the desired visualization, we introduced a new key into our database called 'flag,' containing the corresponding country flags. Our objective was to craft an interactive visualization that not only presents data but also engages our audience. </p>
-    <p>Some of the keys were found to have NaN values, yet it was imperative to visualize them to facilitate a comprehensive understanding of the distinctions among cities. To accomplish this, we assigned NaN a placeholder value. We opted for a default value of 40, representing the minimum value within the range. Additionally, to signify the absence of data for these keys, we employed a gray opacity for the corresponding circles. These visualizations serve to transparently communicate the lack of available data while maintaining their significance in facilitating city-to-city comparisons for the user. </p>
+    <h2> Att arbeta med datan </h2>
+    <p> Vårt första steg innebar att konvertera vår data från CSV till JSON-format. Genom att utnyttja en CSV-omvandlare inom VSCode övergick vi smidigt vår data till JSON. Med denna uppgift genomförd påbörjade vi våra dataanalys- och visualiseringssträvanden. För att uppnå den önskade visualiseringen införde vi en ny nyckel i vår databas som heter 'flagga', som innehåller motsvarande landsflaggor. Vårt mål var att skapa en interaktiv visualisering som inte bara presenterar data utan också engagerar vår publik.</p>
+    <p> Vissa av nycklarna visade sig ha NaN-värden, ändå var det viktigt att visualisera dem för att underlätta en omfattande förståelse av skillnaderna mellan städerna. För att åstadkomma detta tilldelade vi NaN ett platshållarvärde. Vi valde ett standardvärde på 10. Dessutom, för att signalera frånvaron av data för dessa nycklar, använde vi en grå opacitet för de motsvarande cirklarna. Dessa visualiseringar syftar till att tydligt kommunicera bristen på tillgängliga data samtidigt som de behåller sin betydelse för att underlätta jämförelser mellan städer för användaren.</p>
     
     <br>
 
-    <h2> The quality of the data </h2>
-    <p>We first stumbled upon this data when we were looking on Kaggle.com. This website has thousands and thousands of databases from all over the world. We think that our database is trustworthy because the research and data is gathered from several big companies, such as World Wappiness, Our World In Data, and Tripadvisor. The data was gathered from a total of ten metrics. Each of these metrics were awarded a weighted score and these were combined to give each city a total score out of 100. This score was then used to rank the 44 cities to determine which were best for healthy living. </p>
+    <h2> Kvaliteten på datan</h2>
+    <p> Vi stötte först på denna data när vi letade på Kaggle.com. Den här webbplatsen har tusentals databaser från hela världen. Vi anser att vår databas är pålitlig eftersom forskningen och datan samlades in från flera stora företag, som World Happiness, Our World In Data och Tripadvisor. Datan samlades in från sammanlagt tio mätvärden. Varje av dessa mätvärden tilldelades en viktad poäng och dessa kombinerades för att ge varje stad en total poäng av 100. Denna poäng användes sedan för att rangordna de 44 städerna för att avgöra vilka som var bäst för hälsosamt liv.</p>
 
     <br>
-    <h2> The learning curve </h2>
-    <p> In our first visualization, we needed to investigate the use of d3.hierarchy and d3.pack to position the data within a connected circle. Subsequently, in our second visualization, we tackled the task of arranging the data in a grid, marking a significant departure from the approach in the first visualization. However, by addressing both methods of data placement, we gained valuable insights.
-        Determining the most effective way to visualize our data posed a substantial challenge. While our inspiration led us to choose circles early on, adapting these circles to suit our specific data proved to be a challenging task that we successfully navigated throughout the process.
+    <h2> Lärdomar </h2>
+    <p> I vår första visualisering behövde vi undersöka användningen av d3.hierarchy och d3.pack för att positionera data inom en sammanlänkad cirkel. Därefter, i vår andra visualisering, tog vi oss an uppgiften att arrangera data i en grid, vilket innebar ett betydande avsteg från tillvägagångssättet i den första visualiseringen. Genom att adressera båda metoderna för dataplacering vann vi värdefulla insikter.
+
+    Att fastställa det mest effektiva sättet att visualisera vår data utgjorde en betydande utmaning. Medan vår inspiration ledde oss till att välja cirklar tidigt, visade det sig vara en utmanande uppgift att anpassa dessa cirklar för att passa vår specifika data, vilket vi lyckades navigera framgångsrikt genom hela processen.
     </p>
 
   </div>
   `;
 
   document.querySelector("footer").textContent =
-    "© This data is provided by Kaggle.com. Made my Oliwer Löfgren and Erica Lundström ©";
+    "© Datan är från av Kaggle.com. Skapad av Oliwer Löfgren och Erica Lundström.©";
   CreateButtons();
 }
 
