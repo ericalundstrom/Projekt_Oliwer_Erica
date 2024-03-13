@@ -23,7 +23,7 @@ body {
 }
 
 #Viz {
-  height: 1100px;
+  height: 800px;
 }
 
 #moreInfo {
@@ -130,6 +130,7 @@ button:hover {
 .info_filter {
   text-align: center;
 }
+
 .chosenFilter {
   margin: 5px;
 }

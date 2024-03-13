@@ -236,7 +236,7 @@
 
       Koden
 
-      async function fetching() {
+async function fetching() {
   const data = await d3.json("dataset/healthy_lifestyle_city_2021.json");
   return data;
 }
@@ -434,9 +434,6 @@ async function CreateBubbles(key, value) {
           minValue = `${minValue} level score`;
           maxValue = `${maxValue} level score`;
           break;
-        default:
-          // Handle default case if needed
-          break;
       }
 
 
@@ -584,59 +581,64 @@ async function CreateBubbles(key, value) {
 
           switch (true) {
             case (radius < 10 && radius > 0):
-              radius *= 3;
-              viewBoxX = x - (radius * 10) + 40;
-              viewBoxY = y - (radius * 10) - 80;
-              viewBoxWidth = 8 * radius;
-              viewBoxHeight = 8 * radius;
+              viewBoxX = x - (w * 2);
+              viewBoxY = y - (w * 3) - 80;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
               break;
             case (radius < 15 && radius > 10):
-              radius *= 3;
-              viewBoxX = x - (radius * 4) + 120;
-              viewBoxY = y - (radius * 4);
-              viewBoxWidth = 3 * radius;
-              viewBoxHeight = 3 * radius;
+              viewBoxX = x - (w * 4) + 120;
+              viewBoxY = y - (w * 4);
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
               break;
             case (radius < 25 && radius > 15):
-              radius *= 3;
-              viewBoxX = x - (radius * 4) + 120;
-              viewBoxY = y - (radius * 4);
-              viewBoxWidth = 3 * radius;
-              viewBoxHeight = 3 * radius;
+              viewBoxX = x - (w * 4) + 120;
+              viewBoxY = y - (w * 4);
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
               break;
             case (radius > 25 && radius < 30):
-              radius *= 3;
-              viewBoxX = x - (radius * 4) + 60;
-              viewBoxY = y - (radius * 4) - 60;
-              viewBoxWidth = 3 * radius;
-              viewBoxHeight = 3 * radius;
+              viewBoxX = x - (w * 4) + 60;
+              viewBoxY = y - (w * 4) - 20;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
               break;
             case (radius > 30 && radius < 35):
-              radius *= 3;
               viewBoxX = x - (w * 2.5) + 20;
               viewBoxY = y - (w * 3) - 60;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
             case (radius > 35 && radius < 45):
-              radius *= 3;
               viewBoxX = x - (w * 2) + 20;
-              viewBoxY = y - (w * 3);
+              viewBoxY = y - (w * 2) - 50;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
             case (radius > 45 && radius < 35):
-              radius *= 3;
               viewBoxX = x - (w * 2) + 20;
               viewBoxY = y - (w * 2) - 20;
               viewBoxWidth = 3 * w;
               viewBoxHeight = 3 * w;
               break;
+            case (radius > 55 && radius < 45):
+              viewBoxX = x - (w * 2) + 20;
+              viewBoxY = y - (w * 2) - 60;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
+            case (radius > 55):
+              viewBoxX = x - (w * 4) + 150;
+              viewBoxY = y - (w * 4);
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
+              break;
             default:
-              viewBoxX = x - (radius * 4) + 150;
-              viewBoxY = y - (radius * 4);
-              viewBoxWidth = 3 * radius;
-              viewBoxHeight = 3 * radius;
+              viewBoxX = x - (w * 4) + 150;
+              viewBoxY = y - (w * 4) - 50;
+              viewBoxWidth = 3 * w;
+              viewBoxHeight = 3 * w;
               break;
           }
 
@@ -863,33 +865,6 @@ async function CreateBubbles(key, value) {
             tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`);
             break;
         }
-
-
-        // if (key === "Gym_cost" || key === "Bottle_water_cost") {
-        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}£`);
-        // } else {
-        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]}`);
-        // }
-        // if (key === "Obesity") {
-        //   tooltip.html(
-        //     `<b>${d.City}</b>, ${text}: ${Math.round(d[key] * 100)}% `
-        //   );
-        // }
-        // if (key === "Sunshine_hours") {
-        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
-        // }
-        // if (key === "Life_expectancy") {
-        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} years  `);
-        // }
-        // if (key === "Pollution") {
-        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} index score `);
-        // }
-        // if (key === "Hours_worked") {
-        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} hours `);
-        // }
-        // if (key === "Happiness") {
-        //   tooltip.html(`<b>${d.City}</b>, ${text}: ${d[key]} level score `);
-        // }
       })
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
   }
