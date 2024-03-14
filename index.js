@@ -134,6 +134,7 @@ let h = w;
 let constantSize = 10;
 
 async function CreateBubbles(key, value) {
+
   function grid_coords(index) {
     let x = (index % n_cols) * w + gap;
     let y = Math.floor(index / n_cols) * h + 10;
@@ -393,10 +394,12 @@ async function CreateBubbles(key, value) {
               "viewBox",
               `${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`
             );
+
         } else {
           clickedElement.classed("selected", false);
           svg.transition().duration(2000).attr("viewBox", `0 0 1400 600`);
         }
+
       })
       .on("mouseout", function (event, d) {
         tooltip.style("opacity", 0);
@@ -479,7 +482,9 @@ async function CreateBubbles(key, value) {
           d3.select(this.parentNode).select("foreignObject").remove();
         }
       });
+
   } else {
+
     let sizeScale = d3
       .scaleLinear()
       .domain([0, d3.max(processedData, (d) => d[key])])
@@ -569,6 +574,7 @@ async function CreateBubbles(key, value) {
             break;
         }
       })
+
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false));
   }
 }
