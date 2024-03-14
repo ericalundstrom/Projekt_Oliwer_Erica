@@ -268,14 +268,6 @@ async function CreateBubbles(key, value) {
         return y + h / 2 - deltaHeight(d) / 2;
       })
       .classed("nan-value", (d) => (isNaN(d[key]) ? true : false))
-      .attr("x", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return x + w / 2 - deltaWidth(d) / 2;
-      })
-      .attr("y", function (d, i) {
-        const { x, y } = grid_coords(i);
-        return y + h / 2 - deltaHeight(d) / 2;
-      })
       .html(
         (d) =>
           `<div class="flag-image" style="background-image: url(${d.flag})"></div>`
@@ -327,7 +319,6 @@ async function CreateBubbles(key, value) {
         let viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight;
 
         if (!isSelected) {
-          svg.transition();
           clickedElement.classed("selected", true);
           let y = e.clientY;
           let x = e.clientX;
